@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SchoolHealth</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Prompt:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f0f6ff;--w:#fff;--pri:#3b82f6;--p2:#6366f1;--g:#10b981;--y:#f59e0b;--r:#ef4444;--o:#f97316;--tx:#111827;--mu:#6b7280;--bo:#e5e7eb;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans Thai','Prompt',sans-serif;background:var(--bg);color:var(--tx);}
+nav{background:#fff;border-bottom:1px solid var(--bo);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Prompt',sans-serif;font-weight:700;font-size:1.1rem;}
+.lb{width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.logo span{color:var(--pri);}
+nav ul{list-style:none;display:flex;gap:.6rem;}
+nav ul a{color:var(--mu);text-decoration:none;font-size:.8rem;cursor:pointer;padding:4px 7px;border-radius:8px;transition:all .2s;}
+nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);}
+.lang-btn{background:rgba(59,130,246,.1);color:var(--pri);border:1px solid var(--pri);padding:5px 12px;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.lang-btn:hover{background:var(--pri);color:#fff;}
+.page{display:none;}.page.active{display:block;}
+.hero{background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;padding:3rem 1.5rem 5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:50px;background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%);}
+.he{font-size:3rem;display:block;margin-bottom:.8rem;animation:bounce 2s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero h1{font-family:'Prompt',sans-serif;font-size:2rem;font-weight:700;line-height:1.3;margin-bottom:.8rem;}
+.hero p{opacity:.9;font-size:.93rem;max-width:480px;margin:0 auto 1.2rem;line-height:1.8;}
+.hsub{font-size:.78rem;opacity:.7;margin-bottom:1rem;}
+.disclaimer-box{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:.9rem 1.2rem;max-width:500px;margin:.8rem auto 1.5rem;font-size:.78rem;line-height:1.7;text-align:left;}
+.bst{background:#fff;color:var(--pri);border:none;padding:12px 34px;border-radius:100px;font-family:'Noto Sans Thai',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.18);transition:transform .2s;}
+.bst:hover{transform:translateY(-3px);}
+.c3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:840px;margin:-34px auto 2.5rem;padding:0 1.5rem;}
+.c3i{background:#fff;border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 4px 14px rgba(59,130,246,.10);border:1px solid var(--bo);}
+.c3i .ic{font-size:1.9rem;margin-bottom:.5rem;display:block;}
+.c3i .tt{font-size:.88rem;font-weight:700;margin-bottom:3px;}
+.c3i .dd{font-size:.76rem;color:var(--mu);line-height:1.5;}
+.sec{max-width:840px;margin:0 auto 2.5rem;padding:0 1.5rem;}
+.stag{display:inline-block;background:rgba(59,130,246,.1);color:var(--pri);padding:3px 12px;border-radius:100px;font-size:.74rem;font-weight:600;margin-bottom:.5rem;}
+.sti{font-family:'Prompt',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:1.1rem;}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.dc{background:#fff;border-radius:13px;padding:1rem;border:1px solid var(--bo);box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s;}
+.dc:hover{transform:translateY(-3px);}
+.de{font-size:1.7rem;margin-bottom:.4rem;display:block;}
+.dn{font-size:.85rem;font-weight:700;margin-bottom:2px;}
+.dz{font-size:.73rem;color:var(--mu);line-height:1.4;}
+.dtag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:100px;font-size:.68rem;font-weight:600;}
+.tr{background:rgba(239,68,68,.1);color:var(--r);}
+.ty{background:rgba(245,158,11,.1);color:var(--y);}
+.tb{background:rgba(59,130,246,.1);color:var(--pri);}
+/* QUIZ */
+.qw{max-width:640px;margin:2rem auto;padding:0 1.5rem 3rem;}
+.qh{text-align:center;margin-bottom:1.4rem;}
+.qh h2{font-family:'Prompt',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:.3rem;}
+.qh p{color:var(--mu);font-size:.83rem;}
+.pt{display:flex;justify-content:space-between;font-size:.78rem;color:var(--mu);margin-bottom:5px;}
+.pb{height:7px;background:var(--bo);border-radius:100px;overflow:hidden;margin-bottom:1.2rem;}
+.pf{height:100%;background:linear-gradient(90deg,var(--pri),var(--p2));border-radius:100px;transition:width .4s ease;}
+.qc{background:#fff;border-radius:18px;padding:1.6rem;box-shadow:0 4px 14px rgba(59,130,246,.10);border:1px solid var(--bo);margin-bottom:.9rem;}
+.qbg{display:inline-flex;align-items:center;gap:5px;background:rgba(59,130,246,.1);color:var(--pri);padding:3px 10px;border-radius:100px;font-size:.73rem;font-weight:600;margin-bottom:.7rem;}
+.qwt{display:inline-flex;align-items:center;gap:4px;background:rgba(249,115,22,.1);color:var(--o);padding:2px 8px;border-radius:100px;font-size:.68rem;font-weight:600;margin-left:6px;}
+.qem{font-size:1.3rem;margin-bottom:.4rem;display:block;}
+.qt{font-size:.96rem;font-weight:600;line-height:1.7;margin-bottom:.6rem;}
+.qhi{font-size:.76rem;color:var(--mu);margin-bottom:.5rem;font-style:italic;}
+.qref{font-size:.71rem;color:#9ca3af;margin-bottom:.9rem;padding:5px 10px;background:#f9fafb;border-radius:8px;border-left:3px solid var(--pri);}
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:center;gap:10px;background:var(--bg);border:2px solid var(--bo);border-radius:11px;padding:10px 13px;cursor:pointer;transition:all .2s;}
+.opt:hover{border-color:var(--pri);background:rgba(59,130,246,.04);}
+.opt.sel{border-color:var(--pri);background:rgba(59,130,246,.07);}
+.oc{width:20px;height:20px;border:2px solid var(--bo);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;}
+.opt.sel .oc{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:800;}
+.ol{font-size:.88rem;line-height:1.4;}
+.qnv{display:flex;justify-content:space-between;margin-top:.5rem;}
+.bbk{background:var(--bg);color:var(--mu);border:1px solid var(--bo);padding:9px 18px;border-radius:10px;font-family:'Noto Sans Thai',sans-serif;font-size:.86rem;cursor:pointer;}
+.bgo{background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:9px 22px;border-radius:10px;font-family:'Noto Sans Thai',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(59,130,246,.3);transition:transform .2s;}
+.bgo:hover{transform:translateY(-2px);}
+/* RESULT */
+.rw{max-width:760px;margin:1.5rem auto;padding:0 1.5rem 3rem;}
+.rtop{background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border-radius:18px 18px 0 0;padding:1.6rem;text-align:center;}
+.rtop h2{font-family:'Prompt',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.3rem;}
+.rtop p{opacity:.85;font-size:.82rem;}
+.tabs{display:flex;background:#fff;border-left:1px solid var(--bo);border-right:1px solid var(--bo);overflow-x:auto;}
+.tab{flex:1;min-width:80px;padding:10px 4px;text-align:center;font-size:.71rem;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;}
+.tab.active{color:var(--pri);border-bottom-color:var(--pri);}
+.tpanel{display:none;background:#fff;border:1px solid var(--bo);border-top:none;border-radius:0 0 18px 18px;padding:1.5rem;box-shadow:0 4px 14px rgba(59,130,246,.10);}
+.tpanel.active{display:block;}
+/* criteria box */
+.criteria-box{background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:1rem;margin-bottom:1.2rem;}
+.criteria-title{font-size:.84rem;font-weight:700;color:#166534;margin-bottom:.6rem;}
+.criteria-row{display:flex;gap:8px;margin-bottom:4px;align-items:center;}
+.criteria-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.criteria-text{font-size:.78rem;color:var(--mu);line-height:1.5;}
+/* result disclaimer */
+.res-disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;font-size:.75rem;color:#92400e;line-height:1.6;}
+.oval{display:flex;align-items:center;gap:1.1rem;background:var(--bg);border-radius:13px;padding:1rem 1.2rem;margin-bottom:1.2rem;border:1px solid var(--bo);}
+.osc{font-family:'Prompt',sans-serif;font-size:2.6rem;font-weight:700;line-height:1;}
+.olb{font-size:.9rem;font-weight:600;margin-bottom:3px;}
+.ods{font-size:.78rem;color:var(--mu);line-height:1.5;}
+.rtit{font-size:.9rem;font-weight:700;margin-bottom:.8rem;}
+.rl{display:flex;flex-direction:column;gap:9px;margin-bottom:1.2rem;}
+.rr{display:flex;align-items:center;gap:9px;background:var(--bg);border-radius:11px;padding:9px 13px;border:1px solid var(--bo);}
+.ric{font-size:1.4rem;flex-shrink:0;}
+.ri{flex:1;}
+.rn{font-size:.84rem;font-weight:600;margin-bottom:3px;}
+.rb{height:5px;background:var(--bo);border-radius:100px;overflow:hidden;}
+.rbf{height:100%;border-radius:100px;}
+.rp{font-size:.78rem;font-weight:700;text-align:right;}
+.rlv{font-size:.7rem;margin-top:1px;text-align:right;}
+.high{color:var(--r);}.high .rbf{background:var(--r);}
+.mid{color:var(--y);}.mid .rbf{background:var(--y);}
+.low{color:var(--g);}.low .rbf{background:var(--g);}
+.abox{background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(59,130,246,.04));border:1px solid rgba(16,185,129,.2);border-radius:13px;padding:1.2rem;margin-bottom:1rem;}
+.atit{font-size:.9rem;font-weight:700;color:#065f46;margin-bottom:.7rem;}
+.al{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.al li{display:flex;gap:7px;font-size:.83rem;line-height:1.6;color:var(--mu);}
+.al li::before{content:'✅';flex-shrink:0;}
+.chart-wrap{max-width:340px;margin:0 auto 1rem;}
+.cat-bars{display:flex;flex-direction:column;gap:10px;margin-top:1rem;}
+.cat-row{background:var(--bg);border-radius:11px;padding:10px 14px;border:1px solid var(--bo);}
+.cat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.cat-name{font-size:.84rem;font-weight:600;}
+.cat-score{font-size:.8rem;font-weight:700;}
+.cat-bar{height:7px;background:var(--bo);border-radius:100px;overflow:hidden;}
+.cat-fill{height:100%;border-radius:100px;}
+.formula-box{background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.78rem;color:#92400e;line-height:1.7;}
+.formula-title{font-weight:700;margin-bottom:.4rem;font-size:.82rem;}
+.month-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem;}
+.month-card{border-radius:13px;padding:1.1rem;border:2px solid;}
+.month-bad{border-color:var(--r);background:rgba(239,68,68,.04);}
+.month-good{border-color:var(--g);background:rgba(16,185,129,.04);}
+.mc-title{font-size:.82rem;font-weight:700;margin-bottom:.6rem;}
+.mc-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.mc-list li{font-size:.78rem;color:var(--mu);display:flex;gap:6px;line-height:1.5;}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1rem;}
+.proj-card{background:var(--bg);border-radius:11px;padding:.9rem;border:1px solid var(--bo);text-align:center;}
+.proj-val{font-family:'Prompt',sans-serif;font-size:1.5rem;font-weight:700;}
+.proj-lbl{font-size:.74rem;color:var(--mu);margin-top:2px;}
+.plan-priority{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
+.priority-tag{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;border:2px solid;}
+.plan-grid{display:flex;flex-direction:column;gap:10px;}
+.plan-day{background:var(--bg);border-radius:12px;padding:1rem;border:1px solid var(--bo);}
+.plan-day-title{font-size:.86rem;font-weight:700;color:var(--pri);margin-bottom:.5rem;}
+.plan-focus{font-size:.74rem;font-weight:600;margin-bottom:.5rem;padding:3px 10px;border-radius:100px;display:inline-block;}
+.plan-tasks{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.plan-tasks li{font-size:.8rem;color:var(--mu);display:flex;gap:6px;line-height:1.5;}
+.plan-tasks li::before{content:'☐';color:var(--pri);font-weight:700;}
+/* PRINT PAGE */
+.print-wrap{max-width:700px;margin:1.5rem auto;padding:0 1.5rem 3rem;}
+.print-card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 14px rgba(59,130,246,.10);border:1px solid var(--bo);}
+.print-header{text-align:center;border-bottom:2px solid var(--bo);padding-bottom:1rem;margin-bottom:1.5rem;}
+.print-header h2{font-family:'Prompt',sans-serif;font-size:1.3rem;font-weight:700;color:var(--pri);}
+.print-header p{font-size:.8rem;color:var(--mu);margin-top:.3rem;}
+.print-score-row{display:flex;justify-content:center;gap:2rem;margin-bottom:1.5rem;}
+.print-score{text-align:center;}
+.print-score-val{font-family:'Prompt',sans-serif;font-size:2rem;font-weight:700;}
+.print-score-lbl{font-size:.75rem;color:var(--mu);}
+.print-diseases{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;}
+.print-disease-row{display:flex;align-items:center;gap:8px;font-size:.8rem;}
+.print-bar{flex:1;height:5px;background:var(--bo);border-radius:100px;overflow:hidden;}
+.print-bar-fill{height:100%;border-radius:100px;}
+.print-advice{margin-bottom:1.5rem;}
+.print-advice-title{font-size:.86rem;font-weight:700;color:#065f46;margin-bottom:.6rem;}
+.print-advice-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.print-advice-list li{font-size:.78rem;color:var(--mu);display:flex;gap:6px;line-height:1.5;}
+.print-advice-list li::before{content:'•';color:var(--pri);font-weight:700;}
+.print-disclaimer{font-size:.7rem;color:#9ca3af;border-top:1px solid var(--bo);padding-top:.8rem;line-height:1.6;}
+.print-btns{display:flex;gap:10px;margin-top:1.2rem;}
+.btn-print{flex:1;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:11px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;}
+.btn-copy{flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--bo);padding:11px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.88rem;cursor:pointer;}
+/* KNOWLEDGE */
+.know-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.know-card{background:var(--bg);border-radius:13px;padding:1.1rem;border:1px solid var(--bo);}
+.know-title{font-size:.86rem;font-weight:700;margin-bottom:.5rem;}
+.know-text{font-size:.78rem;color:var(--mu);line-height:1.6;}
+.know-ref{font-size:.7rem;color:#9ca3af;margin-top:.5rem;font-style:italic;}
+.brt{display:block;width:100%;margin-top:1.2rem;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:12px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;}
+footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
+footer span{color:var(--pri);}
+@media print{nav,footer,.print-btns,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
+@media(max-width:600px){.c3,.dg,.month-grid,.know-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}nav ul li:nth-child(n+4){display:none;}.hero h1{font-size:1.6rem;}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="lb">🏫</div>School<span>Health</span></div>
+  <ul>
+    <li><a onclick="go('home')" id="nav-home" class="active" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a></li>
+    <li><a onclick="go('quiz')" id="nav-quiz" data-th="ตรวจสอบ" data-en="Check">ตรวจสอบ</a></li>
+    <li><a onclick="go('result')" id="nav-result" data-th="ผลลัพธ์" data-en="Result">ผลลัพธ์</a></li>
+    <li><a onclick="go('know')" id="nav-know" data-th="ความรู้โรค" data-en="Knowledge">ความรู้โรค</a></li>
+    <li><a onclick="go('print')" id="nav-print" data-th="พิมพ์/แชร์" data-en="Print/Share">พิมพ์/แชร์</a></li>
+  </ul>
+  <button class="lang-btn" onclick="toggleLang()">🌐 TH</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <span class="he">🏫</span>
+    <h1 data-th="รู้ทันพฤติกรรมเสี่ยงโรค<br>จากชีวิตใน<br>โรงเรียน" data-en="Know Your Health Risks<br>From School Life Behaviors">รู้ทันพฤติกรรมเสี่ยงโรค<br>จากชีวิตในโรงเรียน</h1>
+    <p data-th="ตอบคำถาม 20 ข้อ รู้ผลทันที พร้อมแผนปรับพฤติกรรม 7 วันเฉพาะตัว" data-en="Answer 20 questions, get instant results with a personalized 7-day improvement plan">ตอบคำถาม 20 ข้อ รู้ผลทันที พร้อมแผนปรับพฤติกรรม 7 วันเฉพาะตัว</p>
+    <p class="hsub" data-th="ใช้เวลาประมาณ 5-7 นาที | ฟรี | ไม่ต้องสมัครสมาชิก" data-en="Takes 5-7 minutes | Free | No registration required">ใช้เวลาประมาณ 5-7 นาที | ฟรี | ไม่ต้องสมัครสมาชิก</p>
+    <div class="disclaimer-box">
+      ⚠️ <b data-th="ข้อควรทราบก่อนใช้งาน" data-en="Important Notice">ข้อควรทราบก่อนใช้งาน</b><br>
+      <span data-th="เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์" data-en="This website is a preliminary health behavior screening tool only. It cannot replace medical diagnosis or professional advice. If you have abnormal symptoms or health concerns, please consult a doctor.">เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์</span>
+    </div>
+    <button class="bst" onclick="go('quiz')" data-th="🔍 เริ่มตรวจสอบเลย" data-en="🔍 Start Assessment">🔍 เริ่มตรวจสอบเลย</button>
+  </div>
+  <div class="c3">
+    <div class="c3i"><span class="ic">📋</span><div class="tt" data-th="20 คำถามครอบคลุม" data-en="20 Comprehensive Questions">20 คำถามครอบคลุม</div><div class="dd" data-th="ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ" data-en="Covering all school life behaviors with academic references">ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ</div></div>
+    <div class="c3i"><span class="ic">🕸️</span><div class="tt" data-th="กราฟ 4 มิติ" data-en="4-Dimensional Chart">กราฟ 4 มิติ</div><div class="dd" data-th="วิเคราะห์ใน 4 หมวด การกิน การนอน กายภาพ และการใช้หน้าจอ" data-en="Analysis in 4 categories: nutrition, sleep, physical, and screen use">วิเคราะห์ใน 4 หมวด การกิน การนอน กายภาพ และการใช้หน้าจอ</div></div>
+    <div class="c3i"><span class="ic">📅</span><div class="tt" data-th="แผน 7 วันเฉพาะตัว" data-en="Personalized 7-Day Plan">แผน 7 วันเฉพาะตัว</div><div class="dd" data-th="แผนปรับพฤติกรรมที่ปรับตามคะแนนของคุณ ไม่ใช่แบบเดียวกันทุกคน" data-en="Behavior improvement plan tailored to your scores, not a one-size-fits-all">แผนปรับพฤติกรรมที่ปรับตามคะแนนของคุณ ไม่ใช่แบบเดียวกันทุกคน</div></div>
+  </div>
+  <div class="sec">
+    <div class="stag" data-th="🦠 โรคที่ระบบประเมิน" data-en="🦠 Diseases Assessed">🦠 โรคที่ระบบประเมิน</div>
+    <div class="sti" data-th="พฤติกรรมในโรงเรียน เสี่ยงโรคอะไรบ้าง?" data-en="What diseases are you at risk from school behaviors?">พฤติกรรมในโรงเรียน เสี่ยงโรคอะไรบ้าง?</div>
+    <div class="dg">
+      <div class="dc"><span class="de">🦴</span><div class="dn" data-th="ออฟฟิศซินโดรม" data-en="Office Syndrome">ออฟฟิศซินโดรม</div><div class="dz" data-th="นั่งเรียนนาน ท่านั่งผิด กระเป๋าหนัก" data-en="Long sitting, poor posture, heavy bag">นั่งเรียนนาน ท่านั่งผิด กระเป๋าหนัก</div><span class="dtag tr" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
+      <div class="dc"><span class="de">👁️</span><div class="dn" data-th="สายตาเสื่อม" data-en="Eye Strain">สายตาเสื่อม</div><div class="dz" data-th="จ้องจอ กระดาน โทรศัพท์นานเกินไป" data-en="Staring at screens, boards, phones too long">จ้องจอ กระดาน โทรศัพท์นานเกินไป</div><span class="dtag tr" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
+      <div class="dc"><span class="de">🫁</span><div class="dn" data-th="โรคกระเพาะ" data-en="Gastric Disease">โรคกระเพาะ</div><div class="dz" data-th="กินเร็ว อดมื้อ กินขนมแทนอาหาร" data-en="Eating fast, skipping meals, snacking instead">กินเร็ว อดมื้อ กินขนมแทนอาหาร</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+      <div class="dc"><span class="de">🧠</span><div class="dn" data-th="ภูมิคุ้มกันต่ำ" data-en="Low Immunity">ภูมิคุ้มกันต่ำ</div><div class="dz" data-th="อดนอน ไม่ล้างมือ อยู่ในที่แออัด" data-en="Sleep deprivation, not washing hands, crowded spaces">อดนอน ไม่ล้างมือ อยู่ในที่แออัด</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+      <div class="dc"><span class="de">💧</span><div class="dn" data-th="นิ่วในไต" data-en="Kidney Stones">นิ่วในไต</div><div class="dz" data-th="ดื่มน้ำน้อย กลั้นปัสสาวะนาน" data-en="Low water intake, holding urination too long">ดื่มน้ำน้อย กลั้นปัสสาวะนาน</div><span class="dtag tb" data-th="เสี่ยงต่ำ-ปานกลาง" data-en="Low-Medium Risk">เสี่ยงต่ำ-ปานกลาง</span></div>
+      <div class="dc"><span class="de">😰</span><div class="dn" data-th="ความเครียดสะสม" data-en="Chronic Stress">ความเครียดสะสม</div><div class="dz" data-th="เรียนหนัก สอบบ่อย ปัญหาความสัมพันธ์" data-en="Heavy study, frequent exams, relationship issues">เรียนหนัก สอบบ่อย ปัญหาความสัมพันธ์</div><span class="dtag tr" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
+      <div class="dc"><span class="de">🦷</span><div class="dn" data-th="ฟันผุ" data-en="Tooth Decay">ฟันผุ</div><div class="dz" data-th="กินขนมหวาน น้ำอัดลมบ่อย" data-en="Frequent sweets and sugary drinks">กินขนมหวาน น้ำอัดลมบ่อย</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+      <div class="dc"><span class="de">👂</span><div class="dn" data-th="การได้ยินเสื่อม" data-en="Hearing Loss">การได้ยินเสื่อม</div><div class="dz" data-th="ใช้หูฟังเสียงดังเป็นเวลานาน" data-en="Prolonged use of loud headphones">ใช้หูฟังเสียงดังเป็นเวลานาน</div><span class="dtag tb" data-th="เสี่ยงต่ำ-ปานกลาง" data-en="Low-Medium Risk">เสี่ยงต่ำ-ปานกลาง</span></div>
+      <div class="dc"><span class="de">🦠</span><div class="dn" data-th="โรคติดเชื้อ" data-en="Infectious Disease">โรคติดเชื้อ</div><div class="dz" data-th="ไม่ล้างมือก่อนกิน อยู่ในที่แออัด" data-en="Not washing hands, crowded environments">ไม่ล้างมือก่อนกิน อยู่ในที่แออัด</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="page" id="page-quiz">
+  <div class="qw">
+    <div class="qh"><h2 data-th="📋 แบบประเมินพฤติกรรมเสี่ยงโรค" data-en="📋 Health Risk Behavior Assessment">📋 แบบประเมินพฤติกรรมเสี่ยงโรค</h2><p data-th="ตอบตามความเป็นจริง (20 ข้อ ใช้เวลา 5-7 นาที)" data-en="Answer honestly (20 questions, takes 5-7 minutes)">ตอบตามความเป็นจริง (20 ข้อ ใช้เวลา 5-7 นาที)</p></div>
+    <div class="pt"><span id="plb">ข้อที่ 1 จาก 20</span><span id="ppc">5%</span></div>
+    <div class="pb"><div class="pf" id="pfi" style="width:5%"></div></div>
+    <div class="qc" id="qcard"></div>
+    <div class="qnv">
+      <button class="bbk" onclick="prevQ()" data-th="← ย้อนกลับ" data-en="← Back">← ย้อนกลับ</button>
+      <button class="bgo" id="bgo" onclick="nextQ()" data-th="ถัดไป →" data-en="Next →">ถัดไป →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="page" id="page-result">
+  <div class="rw">
+    <div class="rtop"><h2 data-th="🩺 ผลการประเมินความเสี่ยงของคุณ" data-en="🩺 Your Health Risk Assessment Results">🩺 ผลการประเมินความเสี่ยงของคุณ</h2><p id="rdate"></p></div>
+    <div class="tabs">
+      <div class="tab active" onclick="showTab(0)" data-th="📊 ภาพรวม" data-en="📊 Overview">📊 ภาพรวม</div>
+      <div class="tab" onclick="showTab(1)" data-th="🕸️ กราฟ 4 มิติ" data-en="🕸️ Radar Chart">🕸️ กราฟ 4 มิติ</div>
+      <div class="tab" onclick="showTab(2)" data-th="🔮 จำลอง 6 เดือน" data-en="🔮 6-Month Forecast">🔮 จำลอง 6 เดือน</div>
+      <div class="tab" onclick="showTab(3)" data-th="📅 แผน 7 วัน" data-en="📅 7-Day Plan">📅 แผน 7 วัน</div>
+    </div>
+    <!-- TAB 0 -->
+    <div class="tpanel active" id="tp0">
+      <div class="res-disclaimer" id="res-disc">⚠️ <b>หมายเหตุ:</b> ผลการประเมินนี้คำนวณจากพฤติกรรมที่คุณตอบเท่านั้น ไม่ใช่การตรวจร่างกายหรือตรวจเลือด ควรใช้เป็นแนวทางเบื้องต้นเท่านั้น</div>
+      <div class="criteria-box">
+        <div class="criteria-title" id="ct-title">📐 เกณฑ์การประเมินคะแนนสุขภาพ (อ้างอิง WHO & กรมอนามัย)</div>
+        <div class="criteria-row"><div class="criteria-dot" style="background:#10b981"></div><div class="criteria-text"><b>70-100%</b> = สุขภาพดี — พฤติกรรมส่วนใหญ่อยู่ในเกณฑ์ที่ WHO และกรมอนามัยแนะนำ</div></div>
+        <div class="criteria-row"><div class="criteria-dot" style="background:#ef9905"></div><div class="criteria-text"><b>45-69%</b> = ปานกลาง — มีพฤติกรรมบางอย่างเบี่ยงเบนจากเกณฑ์มาตรฐาน ควรปรับปรุง</div></div>
+        <div class="criteria-row"><div class="criteria-dot" style="background:#ef4444"></div><div class="criteria-text"><b>0-44%</b> = ต้องปรับปรุงด่วน — พฤติกรรมหลายอย่างต่ำกว่าเกณฑ์ WHO อย่างมีนัยสำคัญ</div></div>
+        <div class="criteria-row"><div class="criteria-dot" style="background:#6366f1"></div><div class="criteria-text">ความเสี่ยงรายโรค: <b>สูง ≥60%</b> | <b>ปานกลาง 30-59%</b> | <b>ต่ำ &lt;30%</b> (คำนวณจากน้ำหนักคะแนนตาม WHO Risk Guidelines)</div></div>
+      </div>
+      <div class="oval">
+        <div class="osc" id="osc">-</div>
+        <div><div class="olb" id="olb">-</div><div class="ods" id="ods"></div></div>
+      </div>
+      <div class="rtit" data-th="📊 ความเสี่ยงแต่ละโรค" data-en="📊 Risk by Disease">📊 ความเสี่ยงแต่ละโรค</div>
+      <div class="rl" id="rlist"></div>
+      <div class="abox"><div class="atit" data-th="💡 คำแนะนำสำหรับคุณโดยเฉพาะ" data-en="💡 Personalized Recommendations">💡 คำแนะนำสำหรับคุณโดยเฉพาะ</div><ul class="al" id="alist"></ul></div>
+      <button class="brt" onclick="go('print')" data-th="🖨️ พิมพ์/แชร์ผลลัพธ์" data-en="🖨️ Print/Share Results">🖨️ พิมพ์/แชร์ผลลัพธ์</button>
+      <button class="brt" style="margin-top:.5rem;background:var(--bg);color:var(--tx);box-shadow:none;border:1px solid var(--bo);" onclick="resetQ();go('quiz')" data-th="🔄 ทำแบบประเมินใหม่" data-en="🔄 Retake Assessment">🔄 ทำแบบประเมินใหม่</button>
+    </div>
+    <!-- TAB 1 -->
+    <div class="tpanel" id="tp1">
+      <div class="rtit" data-th="🕸️ กราฟใยแมงมุม 4 หมวดหมู่สุขภาพ" data-en="🕸️ Spider Chart: 4 Health Categories">🕸️ กราฟใยแมงมุม 4 หมวดหมู่สุขภาพ</div>
+      <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+      <div class="cat-bars" id="catbars"></div>
+    </div>
+    <!-- TAB 2 -->
+    <div class="tpanel" id="tp2">
+      <div class="rtit" data-th="🔮 จำลองอนาคตสุขภาพใน 6 เดือน" data-en="🔮 6-Month Health Forecast">🔮 จำลองอนาคตสุขภาพใน 6 เดือน</div>
+      <div class="formula-box">
+        <div class="formula-title" data-th="📐 สูตรที่ใช้ในการคำนวณ (Compound Health Risk Model)" data-en="📐 Calculation Formula (Compound Health Risk Model)">📐 สูตรที่ใช้ในการคำนวณ (Compound Health Risk Model)</div>
+        <span data-th="R = อัตราส่วนความเสี่ยงรวม (0-1) คำนวณจากคะแนนถ่วงน้ำหนัก" data-en="R = Weighted risk ratio (0-1) calculated from weighted scores">R = อัตราส่วนความเสี่ยงรวม (0-1) คำนวณจากคะแนนถ่วงน้ำหนัก</span><br>
+        <span data-th="k = 0.03 (อัตราการสะสมความเสี่ยง 3%/เดือน อ้างอิง WHO Chronic Disease Model)" data-en="k = 0.03 (3%/month risk accumulation rate, ref. WHO Chronic Disease Model)">k = 0.03 (อัตราการสะสมความเสี่ยง 3%/เดือน อ้างอิง WHO Chronic Disease Model)</span><br>
+        <span data-th="R₆ = R × (1 + k)⁶ → คะแนนสุขภาพ 6 เดือน = 100 − (R₆ × 100)" data-en="R₆ = R × (1 + k)⁶ → 6-month health score = 100 − (R₆ × 100)">R₆ = R × (1 + k)⁶ → คะแนนสุขภาพ 6 เดือน = 100 − (R₆ × 100)</span>
+      </div>
+      <div class="proj-grid" id="projgrid"></div>
+      <div class="month-grid">
+        <div class="month-card month-bad"><div class="mc-title" data-th="⚠️ ถ้าไม่เปลี่ยนพฤติกรรม" data-en="⚠️ If behavior unchanged">⚠️ ถ้าไม่เปลี่ยนพฤติกรรม</div><ul class="mc-list" id="bad6m"></ul></div>
+        <div class="month-card month-good"><div class="mc-title" data-th="✅ ถ้าเริ่มปรับพฤติกรรมตั้งแต่วันนี้" data-en="✅ If behavior improved today">✅ ถ้าเริ่มปรับพฤติกรรมตั้งแต่วันนี้</div><ul class="mc-list" id="good6m"></ul></div>
+      </div>
+      <div class="abox"><div class="atit" data-th="🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน" data-en="🎯 Most Concerning Diseases in 6 Months">🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน</div><ul class="al" id="warn6m"></ul></div>
+    </div>
+    <!-- TAB 3 -->
+    <div class="tpanel" id="tp3">
+      <div class="rtit" data-th="📅 แผนปรับพฤติกรรม 7 วัน (เฉพาะตัวตามคะแนนของคุณ)" data-en="📅 Personalized 7-Day Behavior Plan">📅 แผนปรับพฤติกรรม 7 วัน (เฉพาะตัวตามคะแนนของคุณ)</div>
+      <div class="plan-priority" id="planpriority"></div>
+      <div class="plan-grid" id="plan7d"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT/SHARE -->
+<div class="page" id="page-print">
+  <div class="print-wrap">
+    <div class="print-card" id="printable">
+      <div class="print-header">
+        <h2>🏫 SchoolHealth — <span data-th="ผลการประเมินสุขภาพ" data-en="Health Assessment Results">ผลการประเมินสุขภาพ</span></h2>
+        <p id="print-date"></p>
+        <p style="font-size:.72rem;color:#9ca3af;margin-top:4px;" data-th="การประเมินพฤติกรรมสุขภาพจากชีวิตในโรงเรียน" data-en="Health behavior assessment from school life">การประเมินพฤติกรรมสุขภาพจากชีวิตในโรงเรียน</p>
+      </div>
+      <div class="print-score-row">
+        <div class="print-score"><div class="print-score-val" id="ps-health" style="color:#3b82f6">-</div><div class="print-score-lbl" data-th="คะแนนสุขภาพรวม" data-en="Overall Health Score">คะแนนสุขภาพรวม</div></div>
+        <div class="print-score"><div class="print-score-val" id="ps-level" style="font-size:1.2rem">-</div><div class="print-score-lbl" data-th="ระดับสุขภาพ" data-en="Health Level">ระดับสุขภาพ</div></div>
+      </div>
+      <div class="rtit" data-th="ความเสี่ยงแต่ละโรค" data-en="Risk by Disease">ความเสี่ยงแต่ละโรค</div>
+      <div class="print-diseases" id="print-diseases"></div>
+      <div class="print-advice">
+        <div class="print-advice-title" data-th="💡 คำแนะนำหลักสำหรับคุณ" data-en="💡 Key Recommendations">💡 คำแนะนำหลักสำหรับคุณ</div>
+        <ul class="print-advice-list" id="print-advice"></ul>
+      </div>
+      <div class="print-disclaimer" data-th="⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)" data-en="⚠️ This assessment is a preliminary health behavior screening only and cannot replace medical diagnosis. | SchoolHealth — Computer Science Poster Project | References: WHO (2022), Department of Health Thailand (2023)">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
+    </div>
+    <div class="print-btns">
+      <button class="btn-print" onclick="window.print()" data-th="🖨️ พิมพ์เป็น PDF" data-en="🖨️ Print as PDF">🖨️ พิมพ์เป็น PDF</button>
+      <button class="btn-copy" onclick="copyResult()" data-th="📋 คัดลอกสรุป" data-en="📋 Copy Summary">📋 คัดลอกสรุป</button>
+    </div>
+  </div>
+</div>
+
+<!-- KNOWLEDGE -->
+<div class="page" id="page-know">
+  <div class="sec" style="margin-top:2rem;">
+    <div class="stag" data-th="📚 ความรู้เกี่ยวกับโรค" data-en="📚 Disease Knowledge">📚 ความรู้เกี่ยวกับโรค</div>
+    <div class="sti" data-th="รู้จักโรคที่เสี่ยงจากชีวิตในโรงเรียน" data-en="Learn About School Life Health Risks">รู้จักโรคที่เสี่ยงจากชีวิตในโรงเรียน</div>
+    <div class="know-grid" id="knowgrid"></div>
+  </div>
+</div>
+
+<footer>
+  <p>SchoolHealth — <span data-th="โครงงานคอมพิวเตอร์ประเภทโปสเตอร์" data-en="Computer Science Poster Project">โครงงานคอมพิวเตอร์ประเภทโปสเตอร์</span> | <span data-th="พัฒนาโดย" data-en="Developed by">พัฒนาโดย</span> <span>นักเรียนชั้น ม.5/2</span></p>
+  <p style="margin-top:4px;font-size:.71rem;" data-th="⚠️ ผลการประเมินเป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์" data-en="⚠️ Results are preliminary screening only, not medical diagnosis">⚠️ ผลการประเมินเป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์</p>
+  <p style="margin-top:4px;font-size:.69rem;">Ref: WHO (2022), กรมอนามัย (2566), AAP Sleep Guidelines (2016), AOA (2023), CDC (2023)</p>
+</footer>
+
+<script>
+var LANG='th';
+function toggleLang(){
+  LANG=LANG==='th'?'en':'th';
+  document.querySelector('.lang-btn').textContent=LANG==='th'?'🌐 TH':'🌐 EN';
+  document.querySelectorAll('[data-th]').forEach(function(el){
+    var val=el.getAttribute('data-'+LANG);
+    if(!val) return;
+    if(el.tagName==='INPUT'||el.tagName==='BUTTON') el.textContent=val;
+    else el.innerHTML=val;
+  });
+  renderQ();
+}
+
+function T(th,en){return LANG==='th'?th:en;}
+
+// คำถาม 20 ข้อ พร้อม weight
+var Q=[
+  {e:'🪑',th_c:'กายภาพ',en_c:'Physical',cat:'ph',w:1.0,
+   th_t:'ใน 1 วันเรียน คุณนั่งเรียนติดต่อกันนานแค่ไหนโดยไม่ลุกขึ้นเลย?',
+   en_t:'How long do you sit continuously in class without getting up?',
+   h_th:'นับรวมทุกคาบเรียนที่นั่งติดต่อกัน',h_en:'Count all consecutive class periods',
+   ref:'WHO (2020): นั่งนาน >4 ชม./วัน เพิ่มความเสี่ยงโรคกล้ามเนื้อ 2.5 เท่า',
+   o:[{th:'น้อยกว่า 1 ชั่วโมง มีลุกขยับบ่อย',en:'Less than 1 hour, move frequently',s:{of:0,ph:3}},
+      {th:'1-2 ชั่วโมง แล้วพักขยับตัว',en:'1-2 hours then take a break',s:{of:1,ph:2}},
+      {th:'2-4 ชั่วโมง นานๆ ถึงจะลุก',en:'2-4 hours, rarely get up',s:{of:2,ph:1}},
+      {th:'มากกว่า 4 ชั่วโมง แทบไม่ขยับเลย',en:'More than 4 hours, almost never move',s:{of:3,ph:0}}]},
+  {e:'🧍',th_c:'กายภาพ',en_c:'Physical',cat:'ph',w:1.0,
+   th_t:'โดยปกติท่านั่งเรียนของคุณเป็นอย่างไร?',en_t:'How is your usual sitting posture in class?',
+   h_th:'',h_en:'',
+   ref:'กรมการแพทย์ (2565): ท่านั่งผิดเป็นสาเหตุหลักของ Office Syndrome ในวัยเรียน',
+   o:[{th:'นั่งตัวตรง หลังพิงพนัก เท้าวางพื้น',en:'Straight back, feet flat on floor',s:{of:0,ph:3}},
+      {th:'นั่งค่อมบ้างเล็กน้อย',en:'Slightly hunched sometimes',s:{of:1,ph:2}},
+      {th:'นั่งค่อมหรือเอียงคอบ่อยๆ',en:'Often hunched or tilting neck',s:{of:2,ph:1}},
+      {th:'นั่งผิดท่าเกือบตลอดเวลา คอยื่น หลังงอ',en:'Almost always wrong posture, neck forward, back bent',s:{of:3,ph:0}}]},
+  {e:'🎒',th_c:'กายภาพ',en_c:'Physical',cat:'ph',w:0.8,
+   th_t:'กระเป๋านักเรียนของคุณหนักแค่ไหนโดยเฉลี่ย?',en_t:'How heavy is your school bag on average?',
+   h_th:'น้ำหนักกระเป๋าไม่ควรเกิน 10% ของน้ำหนักตัว',h_en:'Bag weight should not exceed 10% of body weight',
+   ref:'American Chiropractic Association (2021): กระเป๋า >10% น้ำหนักตัวเพิ่มความเสี่ยงปวดหลังในเด็ก',
+   o:[{th:'เบามาก ไม่รู้สึกหนักเลย',en:'Very light, no strain',s:{of:0,ph:3}},
+      {th:'หนักนิดหน่อย พอรับได้',en:'Slightly heavy, manageable',s:{of:1,ph:2}},
+      {th:'หนักมาก รู้สึกปวดไหล่บ่อย',en:'Heavy, frequent shoulder pain',s:{of:2,ph:1}},
+      {th:'หนักมากทุกวัน บางทีปวดหลังด้วย',en:'Heavy every day, sometimes back pain too',s:{of:3,ph:0}}]},
+  {e:'🏃',th_c:'กายภาพ',en_c:'Physical',cat:'ph',w:1.0,
+   th_t:'คุณออกกำลังกายหรือเคลื่อนไหวร่างกายบ่อยแค่ไหน?',en_t:'How often do you exercise or move your body?',
+   h_th:'นับรวมวิชาพลศึกษาและกิจกรรมนอกเวลาเรียน',h_en:'Include PE class and extracurricular activities',
+   ref:'WHO Physical Activity Guidelines (2020): วัยรุ่นควรออกกำลังกายอย่างน้อย 60 นาที/วัน',
+   o:[{th:'ทุกวัน หรือ 5-6 วัน/สัปดาห์',en:'Daily or 5-6 days/week',s:{of:0,ph:3,sx:3}},
+      {th:'3-4 วัน/สัปดาห์',en:'3-4 days/week',s:{of:1,ph:2,sx:2}},
+      {th:'1-2 วัน/สัปดาห์',en:'1-2 days/week',s:{of:2,ph:1,sx:1}},
+      {th:'แทบไม่ได้ออกกำลังกายเลย',en:'Rarely exercise',s:{of:3,ph:0,sx:0}}]},
+  {e:'👁️',th_c:'หน้าจอ',en_c:'Screen',cat:'sc',w:1.3,
+   th_t:'คุณใช้สายตาจ้องกระดาน จอคอม หรือโทรศัพท์รวมกันนานแค่ไหนต่อวัน?',
+   en_t:'How long do you stare at boards, computers, or phones per day?',
+   h_th:'รวมทั้งเวลาในโรงเรียนและที่บ้านด้วย',h_en:'Include both school and home time',
+   ref:'American Optometric Association (2023): จ้องหน้าจอ >4 ชม./วัน เพิ่มความเสี่ยงสายตาสั้นในวัยรุ่น',
+   o:[{th:'น้อยกว่า 2 ชั่วโมง',en:'Less than 2 hours',s:{ey:0,sc:3}},
+      {th:'2-4 ชั่วโมง',en:'2-4 hours',s:{ey:1,sc:2}},
+      {th:'4-6 ชั่วโมง',en:'4-6 hours',s:{ey:2,sc:1}},
+      {th:'มากกว่า 6 ชั่วโมงขึ้นไป',en:'More than 6 hours',s:{ey:3,sc:0}}]},
+  {e:'📱',th_c:'หน้าจอ',en_c:'Screen',cat:'sc',w:1.0,
+   th_t:'คุณใช้โทรศัพท์ช่วงพักกลางวันหรือหลังเลิกเรียนนานแค่ไหน?',
+   en_t:'How long do you use your phone during lunch break or after school?',
+   h_th:'',h_en:'',
+   ref:'กรมสุขภาพจิต (2565): วัยรุ่นที่ใช้โทรศัพท์ >2 ชม./วัน มีแนวโน้มนอนน้อยและเครียดกว่า',
+   o:[{th:'น้อยกว่า 30 นาที',en:'Less than 30 minutes',s:{ey:0,sc:3}},
+      {th:'30 นาที - 1 ชั่วโมง',en:'30 min - 1 hour',s:{ey:1,sc:2}},
+      {th:'1-2 ชั่วโมง',en:'1-2 hours',s:{ey:2,sc:1}},
+      {th:'มากกว่า 2 ชั่วโมง',en:'More than 2 hours',s:{ey:3,sc:0}}]},
+  {e:'🎧',th_c:'หน้าจอ',en_c:'Screen',cat:'sc',w:1.0,
+   th_t:'คุณใช้หูฟังฟังเพลงหรือดูวิดีโอด้วยเสียงดังบ่อยแค่ไหน?',
+   en_t:'How often do you use headphones at loud volumes?',
+   h_th:'เสียงดังเกินไปอาจทำให้สูญเสียการได้ยิน',h_en:'Loud volumes may cause permanent hearing loss',
+   ref:'WHO (2022): วัยรุ่น 1.1 พันล้านคนทั่วโลกเสี่ยงสูญเสียการได้ยินจากหูฟัง',
+   o:[{th:'ไม่ใช้หูฟัง หรือใช้เสียงเบามาก',en:'No headphones or very low volume',s:{ea:0,sc:3}},
+      {th:'ใช้บ้าง แต่เสียงไม่ดัง',en:'Sometimes, not loud',s:{ea:1,sc:2}},
+      {th:'ใช้บ่อย เสียงค่อนข้างดัง',en:'Often, fairly loud',s:{ea:2,sc:1}},
+      {th:'ใช้ทุกวัน เสียงดังมาก',en:'Daily, very loud',s:{ea:3,sc:0}}]},
+  {e:'🍱',th_c:'โภชนาการ',en_c:'Nutrition',cat:'nu',w:1.0,
+   th_t:'ในวันเรียน คุณกินข้าวมื้อกลางวันแบบไหนบ่อยที่สุด?',
+   en_t:'How do you usually eat lunch on school days?',
+   h_th:'',h_en:'',
+   ref:'กรมอนามัย (2566): การอดมื้ออาหารเพิ่มความเสี่ยงโรคกระเพาะและขาดสารอาหารในวัยรุ่น',
+   o:[{th:'กินข้าวครบมื้อ ไม่รีบ ครบ 5 หมู่',en:'Full meal, not rushed, all 5 food groups',s:{st:0,nu:3}},
+      {th:'กินข้าวเร็วๆ เพราะเวลาน้อย',en:'Eat fast due to limited time',s:{st:1,nu:2}},
+      {th:'กินขนมหรือของว่างแทนข้าว',en:'Eat snacks instead of a proper meal',s:{st:2,nu:1}},
+      {th:'อดข้าวกลางวันบ่อยๆ',en:'Often skip lunch',s:{st:3,nu:0}}]},
+  {e:'🥤',th_c:'โภชนาการ',en_c:'Nutrition',cat:'nu',w:1.0,
+   th_t:'คุณดื่มน้ำอัดลม ชานม หรือเครื่องดื่มหวานบ่อยแค่ไหน?',
+   en_t:'How often do you drink soda, milk tea, or sugary drinks?',
+   h_th:'เครื่องดื่มหวานมีน้ำตาลสูง ส่งผลต่อฟันและสุขภาพ',h_en:'Sugary drinks are high in sugar, affecting teeth and health',
+   ref:'WHO Sugar Guidelines (2015): น้ำตาลไม่ควรเกิน 10% ของพลังงานทั้งวัน ดื่มหวานทุกวันเพิ่มความเสี่ยงฟันผุ',
+   o:[{th:'แทบไม่ดื่มเลย ดื่มน้ำเปล่าเป็นหลัก',en:'Rarely, mostly plain water',s:{to:0,nu:3}},
+      {th:'ดื่มบ้าง 1-2 ครั้ง/สัปดาห์',en:'Sometimes, 1-2 times/week',s:{to:1,nu:2}},
+      {th:'ดื่มบ่อย 3-5 ครั้ง/สัปดาห์',en:'Often, 3-5 times/week',s:{to:2,nu:1}},
+      {th:'ดื่มทุกวัน หรือมากกว่า 1 แก้ว/วัน',en:'Daily or more than 1 glass/day',s:{to:3,nu:0}}]},
+  {e:'🍫',th_c:'โภชนาการ',en_c:'Nutrition',cat:'nu',w:1.0,
+   th_t:'คุณกินขนมหวานหรือของว่างในโรงเรียนบ่อยแค่ไหน?',
+   en_t:'How often do you eat sweets or snacks at school?',
+   h_th:'',h_en:'',
+   ref:'กรมอนามัย (2566): เด็กนักเรียนไทยบริโภคน้ำตาลเกินเกณฑ์ WHO เฉลี่ย 2 เท่า',
+   o:[{th:'แทบไม่กินเลย',en:'Rarely',s:{to:0,st:0,nu:3}},
+      {th:'กินบ้างเป็นบางวัน',en:'Sometimes on some days',s:{to:1,st:0,nu:2}},
+      {th:'กินเกือบทุกวัน',en:'Almost every day',s:{to:2,st:1,nu:1}},
+      {th:'กินทุกวัน หลายครั้งต่อวัน',en:'Every day, multiple times',s:{to:3,st:2,nu:0}}]},
+  {e:'💧',th_c:'โภชนาการ',en_c:'Nutrition',cat:'nu',w:1.0,
+   th_t:'ในวันเรียน คุณดื่มน้ำเปล่ามากแค่ไหน?',
+   en_t:'How much plain water do you drink on school days?',
+   h_th:'ควรดื่มน้ำอย่างน้อย 8 แก้ว (2 ลิตร) ต่อวัน',h_en:'Should drink at least 8 glasses (2L) per day',
+   ref:'กรมอนามัย (2566): ร่างกายต้องการน้ำ 2-2.5 ลิตร/วัน ดื่มน้ำน้อยเพิ่มความเสี่ยงนิ่วในไต',
+   o:[{th:'มากกว่า 8 แก้ว ดื่มน้ำสม่ำเสมอ',en:'More than 8 glasses, drink regularly',s:{ki:0,nu:3}},
+      {th:'5-7 แก้ว พอได้',en:'5-7 glasses, manageable',s:{ki:1,nu:2}},
+      {th:'3-4 แก้ว ดื่มน้อย',en:'3-4 glasses, drink little',s:{ki:2,nu:1}},
+      {th:'น้อยกว่า 3 แก้ว หรือดื่มน้ำอัดลมแทน',en:'Less than 3 glasses or drink soda instead',s:{ki:3,nu:0}}]},
+  {e:'🚽',th_c:'โภชนาการ',en_c:'Nutrition',cat:'nu',w:0.8,
+   th_t:'คุณกลั้นปัสสาวะระหว่างเรียนบ่อยแค่ไหน?',
+   en_t:'How often do you hold your urination during class?',
+   h_th:'การกลั้นปัสสาวะนานๆ เพิ่มความเสี่ยงโรคไต',h_en:'Holding urination too long increases kidney disease risk',
+   ref:'สมาคมระบบทางเดินปัสสาวะแห่งประเทศไทย (2564): กลั้นปัสสาวะ >4 ชม. เป็นประจำเพิ่มความเสี่ยงกระเพาะปัสสาวะอักเสบ',
+   o:[{th:'ไม่กลั้นเลย ไปห้องน้ำเมื่อปวด',en:'Never hold, go when needed',s:{ki:0,nu:3}},
+      {th:'กลั้นบ้างเป็นบางครั้ง',en:'Hold sometimes',s:{ki:1,nu:2}},
+      {th:'กลั้นบ่อย เพราะไม่อยากออกจากห้องเรียน',en:'Hold often to avoid leaving class',s:{ki:2,nu:1}},
+      {th:'กลั้นตลอด แทบไม่ไปห้องน้ำตอนเรียน',en:'Almost never go during class',s:{ki:3,nu:0}}]},
+  {e:'🌙',th_c:'การนอน',en_c:'Sleep',cat:'sl',w:1.5,
+   th_t:'ในคืนวันเรียน คุณนอนกี่ชั่วโมงโดยเฉลี่ย?',
+   en_t:'How many hours do you sleep on school nights on average?',
+   h_th:'วัยรุ่นควรนอน 8-10 ชั่วโมงต่อคืน',h_en:'Teenagers need 8-10 hours of sleep per night',
+   ref:'American Academy of Pediatrics (2016): วัยรุ่น 13-18 ปีควรนอน 8-10 ชม./คืน นอนน้อยเพิ่มความเสี่ยงโรคอ้วนและซึมเศร้า',
+   o:[{th:'8 ชั่วโมงขึ้นไป นอนหลับสบาย',en:'8+ hours, sleep well',s:{im:0,sl:3}},
+      {th:'6-7 ชั่วโมง พอได้',en:'6-7 hours, manageable',s:{im:1,sl:2}},
+      {th:'4-5 ชั่วโมง เพราะทำการบ้าน',en:'4-5 hours due to homework',s:{im:2,sl:1}},
+      {th:'น้อยกว่า 4 ชั่วโมง อดนอนบ่อยมาก',en:'Less than 4 hours, frequently sleep-deprived',s:{im:3,sl:0}}]},
+  {e:'📚',th_c:'การนอน',en_c:'Sleep',cat:'sl',w:1.5,
+   th_t:'คุณรู้สึกเครียดจากการเรียน การบ้าน หรือการสอบบ่อยแค่ไหน?',
+   en_t:'How often do you feel stressed from studying, homework, or exams?',
+   h_th:'',h_en:'',
+   ref:'กรมสุขภาพจิต (2565): นักเรียนไทย 1 ใน 3 มีระดับความเครียดสูงกว่าเกณฑ์ปกติ',
+   o:[{th:'แทบไม่เครียดเลย จัดการได้ดี',en:'Rarely stressed, handle well',s:{sx:0,sl:3}},
+      {th:'เครียดบ้างบางครั้ง แต่ผ่านได้',en:'Sometimes stressed but manageable',s:{sx:1,sl:2}},
+      {th:'เครียดบ่อย รู้สึกกดดันมาก',en:'Often stressed, feel pressured',s:{sx:2,sl:1}},
+      {th:'เครียดมากเกือบทุกวัน นอนไม่หลับ',en:'Very stressed almost daily, insomnia',s:{sx:3,sl:0}}]},
+  {e:'😤',th_c:'การนอน',en_c:'Sleep',cat:'sl',w:1.0,
+   th_t:'คุณมีความขัดแย้งหรือปัญหากับเพื่อนหรือครูบ่อยแค่ไหน?',
+   en_t:'How often do you have conflicts or problems with friends or teachers?',
+   h_th:'ความสัมพันธ์ที่ดีช่วยลดความเครียดได้มาก',h_en:'Good relationships greatly reduce stress',
+   ref:'กรมสุขภาพจิต (2565): ปัญหาความสัมพันธ์เป็น 1 ใน 3 สาเหตุหลักของความเครียดในวัยรุ่นไทย',
+   o:[{th:'ไม่มีปัญหาเลย มีความสัมพันธ์ดี',en:'No problems, good relationships',s:{sx:0,sl:3}},
+      {th:'มีบ้างเล็กน้อย แต่แก้ไขได้',en:'Minor issues, resolvable',s:{sx:1,sl:2}},
+      {th:'มีบ่อย รู้สึกไม่สบายใจ',en:'Often, feel uncomfortable',s:{sx:2,sl:1}},
+      {th:'มีปัญหาหนักมาก ส่งผลต่อการเรียน',en:'Serious problems affecting studies',s:{sx:3,sl:0}}]},
+  {e:'🧴',th_c:'สุขอนามัย',en_c:'Hygiene',cat:'nu',w:1.0,
+   th_t:'คุณล้างมือก่อนกินอาหารทุกครั้งไหม?',
+   en_t:'Do you wash your hands before eating every time?',
+   h_th:'การล้างมือช่วยป้องกันโรคติดเชื้อได้มากกว่า 70%',h_en:'Handwashing prevents over 70% of infections',
+   ref:'CDC (2023): ล้างมือด้วยสบู่ลดความเสี่ยงโรคทางเดินอาหาร 48% และโรคทางเดินหายใจ 21%',
+   o:[{th:'ล้างมือทุกครั้งก่อนกินอาหาร',en:'Always wash hands before eating',s:{im:0,nu:3}},
+      {th:'ล้างบ้าง แต่ไม่ทุกครั้ง',en:'Sometimes but not always',s:{im:1,nu:2}},
+      {th:'ไม่ค่อยล้าง ถ้าไม่เห็นว่าสกปรก',en:'Rarely, only if visibly dirty',s:{im:2,nu:1}},
+      {th:'แทบไม่ล้างเลย',en:'Almost never wash',s:{im:3,nu:0}}]},
+  {e:'🌬️',th_c:'สิ่งแวดล้อม',en_c:'Environment',cat:'sl',w:0.8,
+   th_t:'ห้องเรียนของคุณอากาศถ่ายเทดีแค่ไหน?',
+   en_t:'How well-ventilated is your classroom?',
+   h_th:'ห้องอากาศไม่ถ่ายเททำให้เชื้อโรคสะสม',h_en:'Poor ventilation leads to germ accumulation',
+   ref:'WHO Indoor Air Quality Guidelines (2010): อากาศไม่ถ่ายเทเพิ่มการแพร่เชื้อทางอากาศ 2-3 เท่า',
+   o:[{th:'ถ่ายเทดีมาก มีหน้าต่างเปิดตลอด',en:'Very well-ventilated, windows always open',s:{im:0,sl:3}},
+      {th:'พอใช้ได้ มีแอร์หรือพัดลม',en:'Adequate, has AC or fan',s:{im:0,sl:2}},
+      {th:'อากาศไม่ค่อยดี ห้องอับ',en:'Poor air quality, stuffy room',s:{im:1,sl:1}},
+      {th:'ห้องอับมาก ร้อนและแน่น',en:'Very stuffy, hot and crowded',s:{im:2,sl:0}}]},
+  {e:'☀️',th_c:'สิ่งแวดล้อม',en_c:'Environment',cat:'ph',w:0.8,
+   th_t:'คุณได้รับแสงแดดหรืออยู่กลางแจ้งบ้างไหมในแต่ละวัน?',
+   en_t:'Do you get sunlight or go outdoors each day?',
+   h_th:'แสงแดดช่วยสร้างวิตามิน D และส่งเสริมอารมณ์ดี',h_en:'Sunlight helps produce Vitamin D and improves mood',
+   ref:'Endocrine Society (2019): แสงแดด 15-30 นาที/วัน ช่วยสังเคราะห์วิตามิน D ลดความเสี่ยงซึมเศร้า',
+   o:[{th:'ได้รับแสงแดดทุกวัน อย่างน้อย 15-30 นาที',en:'Daily sunlight, at least 15-30 minutes',s:{sx:0,ph:3}},
+      {th:'ได้รับบ้าง แต่ไม่สม่ำเสมอ',en:'Sometimes but not regularly',s:{sx:0,ph:2}},
+      {th:'แทบไม่ได้รับแสงแดดเลย',en:'Rarely get sunlight',s:{sx:1,ph:1}},
+      {th:'ไม่ได้รับเลย หลีกเลี่ยงแสงแดดตลอด',en:'Never, always avoid sunlight',s:{sx:2,ph:0}}]},
+  {e:'😴',th_c:'อาการทางร่างกาย',en_c:'Symptoms',cat:'ph',w:1.0,
+   th_t:'คุณมีอาการเหล่านี้บ่อยแค่ไหน? (ปวดคอ บ่า ไหล่ ปวดหัว ตาล้า)',
+   en_t:'How often do you experience these symptoms? (neck, shoulder pain, headache, eye fatigue)',
+   h_th:'',h_en:'',
+   ref:'กรมการแพทย์ (2565): อาการปวดคอ บ่า ไหล่ เป็นสัญญาณเตือน Office Syndrome ที่พบบ่อยในนักเรียนมัธยม',
+   o:[{th:'ไม่มีอาการเลย',en:'No symptoms at all',s:{of:0,ey:0,ph:3}},
+      {th:'มีบางครั้ง สัปดาห์ละ 1-2 ครั้ง',en:'Sometimes, 1-2 times/week',s:{of:1,ey:1,ph:2}},
+      {th:'มีบ่อย เกือบทุกวัน',en:'Often, almost every day',s:{of:2,ey:2,ph:1}},
+      {th:'มีทุกวัน รุนแรงมาก',en:'Every day, very severe',s:{of:3,ey:3,ph:0}}]},
+  {e:'💊',th_c:'อาการทางร่างกาย',en_c:'Symptoms',cat:'sl',w:1.0,
+   th_t:'เมื่อคุณป่วยหรือไม่สบาย คุณดูแลตัวเองอย่างไร?',
+   en_t:'When you are sick, how do you take care of yourself?',
+   h_th:'',h_en:'',
+   ref:'กรมอนามัย (2566): การฝืนไปโรงเรียนขณะป่วยเพิ่มการแพร่เชื้อและทำให้ฟื้นตัวช้าลง',
+   o:[{th:'พักผ่อน ดื่มน้ำ และไปพบแพทย์ทันที',en:'Rest, hydrate, and see a doctor immediately',s:{im:0,sl:3}},
+      {th:'พักผ่อนอยู่บ้าน รอให้หายเอง',en:'Rest at home, wait to recover',s:{im:0,sl:2}},
+      {th:'ฝืนไปโรงเรียนทั้งที่ไม่สบาย',en:'Force myself to go to school despite being sick',s:{im:2,sl:1}},
+      {th:'ไม่ดูแลเลย ปล่อยผ่านไป',en:'No self-care, ignore it',s:{im:3,sl:0}}]}
+];
+
+var D=[
+  {k:'of',th:'ออฟฟิศซินโดรม / ปวดกล้ามเนื้อ',en:'Office Syndrome / Muscle Pain',i:'🦴',m:18},
+  {k:'ey',th:'สายตาเสื่อม / ตาล้า',en:'Eye Strain / Vision Deterioration',i:'👁️',m:12},
+  {k:'sx',th:'ความเครียดสะสม',en:'Chronic Stress',i:'😰',m:12},
+  {k:'im',th:'ภูมิคุ้มกันต่ำ / ติดเชื้อง่าย',en:'Low Immunity / Susceptible to Infection',i:'🧠',m:12},
+  {k:'ki',th:'เสี่ยงนิ่วในไต / ขาดน้ำ',en:'Kidney Stone Risk / Dehydration',i:'💧',m:6},
+  {k:'st',th:'โรคกระเพาะอาหาร',en:'Gastric Disease',i:'🫁',m:9},
+  {k:'to',th:'ฟันผุ / สุขภาพช่องปาก',en:'Tooth Decay / Oral Health',i:'🦷',m:6},
+  {k:'ea',th:'การได้ยินเสื่อม',en:'Hearing Loss',i:'👂',m:3}
+];
+
+var AV={
+  of:{th:'ลุกขึ้นยืดเส้นทุก 45 นาที ฝึกนั่งหลังตรง และลดน้ำหนักกระเป๋าให้น้อยกว่า 10% ของน้ำหนักตัว',en:'Stand and stretch every 45 minutes, practice straight posture, and keep bag weight under 10% of body weight'},
+  ey:{th:'พักสายตาทุก 20 นาทีด้วยกฎ 20-20-20 (มองไกล 6 เมตร นาน 20 วินาที)',en:'Rest eyes every 20 minutes using the 20-20-20 rule (look 6m away for 20 seconds)'},
+  sx:{th:'หาเวลาทำกิจกรรมที่ชอบ ออกกำลังกาย และพูดคุยกับเพื่อนเมื่อรู้สึกกดดัน',en:'Find time for hobbies, exercise, and talk to friends when feeling pressured'},
+  im:{th:'นอนให้ครบ 8 ชั่วโมง ล้างมือก่อนกินอาหารทุกครั้ง',en:'Sleep 8 full hours and wash hands before every meal'},
+  ki:{th:'ดื่มน้ำเปล่าให้ครบ 8 แก้วต่อวัน และอย่ากลั้นปัสสาวะนานเกินไป',en:'Drink 8 glasses of water daily and never hold urination too long'},
+  st:{th:'กินข้าวให้ตรงเวลา เคี้ยวให้ละเอียด ไม่อดมื้ออาหาร',en:'Eat at regular times, chew thoroughly, never skip meals'},
+  to:{th:'ลดการดื่มน้ำอัดลมและขนมหวาน แปรงฟันหลังอาหารทุกมื้อ',en:'Reduce soda and sweets, brush teeth after every meal'},
+  ea:{th:'ลดระดับเสียงหูฟังให้อยู่ที่ 60% และไม่ใช้ติดต่อกันเกิน 60 นาที',en:'Keep headphone volume at 60% and do not use continuously for more than 60 minutes'}
+};
+
+var TASK_POOL={
+  of:[{th:'ลุกขึ้นยืดเส้นทุก 45 นาที เดินรอบห้อง 5 นาที',en:'Stand and stretch every 45 min, walk around 5 min'},
+      {th:'ฝึกนั่งหลังตรง วางเท้าราบพื้น ทุกครั้งที่นึกได้',en:'Practice straight posture, feet flat on floor'},
+      {th:'ลดน้ำหนักกระเป๋า เอาเฉพาะของที่จำเป็น',en:'Reduce bag weight, bring only necessary items'},
+      {th:'ทำท่าบริหารคอและไหล่ก่อนนอน 5 นาที',en:'Do neck and shoulder exercises for 5 min before bed'}],
+  ey:[{th:'ทำกฎ 20-20-20 ทุกครั้งที่จ้องจอนาน',en:'Apply 20-20-20 rule whenever staring at screens'},
+      {th:'ปรับความสว่างหน้าจอให้พอดีกับแสงในห้อง',en:'Adjust screen brightness to match room lighting'},
+      {th:'วางโทรศัพท์ก่อนนอน 30 นาที',en:'Put phone away 30 minutes before sleep'},
+      {th:'กะพริบตาบ่อยขึ้นขณะใช้คอมพิวเตอร์',en:'Blink more frequently while using computer'}],
+  sx:[{th:'เขียนบันทึก 3 สิ่งดีๆ ในวันนี้ก่อนนอน',en:'Write down 3 good things before bed every night'},
+      {th:'หายใจลึกๆ 4-7-8 เมื่อรู้สึกเครียด',en:'Do 4-7-8 breathing when stressed'},
+      {th:'คุยกับเพื่อนหรือครูที่ไว้ใจเมื่อกดดัน',en:'Talk to a trusted friend or teacher when pressured'},
+      {th:'ออกกำลังกายเบาๆ 20 นาทีหลังเลิกเรียน',en:'Light exercise 20 min after school'}],
+  im:[{th:'ล้างมือด้วยสบู่ก่อนกินอาหารทุกครั้ง',en:'Wash hands with soap before every meal'},
+      {th:'ตั้งเป้าหมายนอนก่อน 22.00 น.',en:'Aim to sleep before 10 PM'},
+      {th:'กินผักและผลไม้อย่างน้อย 1 มื้อต่อวัน',en:'Eat vegetables or fruit at least once per day'},
+      {th:'หลีกเลี่ยงการสัมผัสหน้าโดยไม่จำเป็น',en:'Avoid touching your face unnecessarily'}],
+  ki:[{th:'ดื่มน้ำเปล่าทันทีที่ตื่นนอน 1 แก้ว',en:'Drink a glass of water immediately upon waking'},
+      {th:'ตั้งแจ้งเตือนดื่มน้ำทุก 2 ชั่วโมง',en:'Set reminders to drink water every 2 hours'},
+      {th:'ไปห้องน้ำทันทีที่รู้สึกปวด ไม่กลั้น',en:'Go to the restroom immediately when you feel the urge'},
+      {th:'พกขวดน้ำไปโรงเรียนทุกวัน',en:'Bring a water bottle to school every day'}],
+  st:[{th:'กินข้าวเช้าก่อนออกจากบ้านทุกวัน',en:'Eat breakfast before leaving home every day'},
+      {th:'เคี้ยวอาหารให้ละเอียดอย่างน้อย 20 ครั้งต่อคำ',en:'Chew food at least 20 times per bite'},
+      {th:'ไม่กินอาหารมื้อหนักก่อนนอน 2 ชั่วโมง',en:'Do not eat heavy meals within 2 hours of sleep'},
+      {th:'ลดอาหารเผ็ดและเปรี้ยวจัด',en:'Reduce very spicy and sour foods'}],
+  to:[{th:'แปรงฟันหลังอาหารทุกมื้อ อย่างน้อย 2 นาที',en:'Brush teeth after every meal, at least 2 minutes'},
+      {th:'ลดการดื่มน้ำอัดลม ชานม เปลี่ยนเป็นน้ำเปล่า',en:'Reduce soda and milk tea, switch to plain water'},
+      {th:'ล้างปากด้วยน้ำเปล่าหลังกินขนมหวาน',en:'Rinse mouth with water after eating sweets'},
+      {th:'ลดขนมหวาน 1 อย่างจากที่กินเป็นประจำ',en:'Cut out one regular sweet snack from your diet'}],
+  ea:[{th:'ลดระดับเสียงหูฟังให้อยู่ที่ 60% ของระดับสูงสุด',en:'Keep headphone volume at 60% of maximum'},
+      {th:'พักหูทุก 60 นาทีที่ใช้หูฟัง',en:'Rest ears every 60 minutes of headphone use'},
+      {th:'ใช้ลำโพงแทนหูฟังเมื่อทำได้',en:'Use speakers instead of headphones when possible'},
+      {th:'หลีกเลี่ยงการใช้หูฟังในที่เสียงดัง',en:'Avoid using headphones in noisy environments'}]
+};
+
+var KN=[
+  {i:'🦴',th_n:'ออฟฟิศซินโดรม',en_n:'Office Syndrome',
+   th_t:'โรคปวดกล้ามเนื้อและกระดูกจากการนั่งนาน ท่านั่งผิด ทำให้ปวดคอ บ่า ไหล่ หลัง พบมากในนักเรียนยุคปัจจุบัน',
+   en_t:'Muscle and bone pain from prolonged sitting and poor posture, causing neck, shoulder, and back pain common in modern students.',
+   ref:'กรมการแพทย์, 2565'},
+  {i:'👁️',th_n:'สายตาเสื่อม/ตาล้า',en_n:'Eye Strain/Vision Deterioration',
+   th_t:'เกิดจากการจ้องหน้าจอนานเกินไป ทำให้ตาแห้ง ตาพร่า ปวดหัว ในระยะยาวอาจทำให้สายตาสั้นหรือเสื่อมได้',
+   en_t:'Caused by excessive screen time, leading to dry eyes, blurred vision, and headaches. Long-term may cause myopia.',
+   ref:'American Optometric Association, 2023'},
+  {i:'😰',th_n:'ความเครียดสะสม',en_n:'Chronic Stress',
+   th_t:'ความเครียดเรื้อรังจากการเรียน ส่งผลต่อระบบภูมิคุ้มกัน การนอน และสุขภาพจิต อาจนำไปสู่โรคซึมเศร้าได้',
+   en_t:'Chronic stress from studying affects the immune system, sleep, and mental health, potentially leading to depression.',
+   ref:'กรมสุขภาพจิต, 2565'},
+  {i:'🧠',th_n:'ภูมิคุ้มกันต่ำ',en_n:'Low Immunity',
+   th_t:'เกิดจากการอดนอน ไม่ออกกำลังกาย ทำให้ร่างกายอ่อนแอ ติดเชื้อง่าย ป่วยบ่อยกว่าปกติ',
+   en_t:'Caused by sleep deprivation and lack of exercise, making the body weak and susceptible to frequent illness.',
+   ref:'WHO, 2022'},
+  {i:'💧',th_n:'นิ่วในไต',en_n:'Kidney Stones',
+   th_t:'เกิดจากการดื่มน้ำน้อยและกลั้นปัสสาวะนาน ทำให้แร่ธาตุตกตะกอนในไต อาจปวดรุนแรงมาก',
+   en_t:'Caused by low water intake and holding urination, causing mineral deposits in the kidneys with severe pain.',
+   ref:'กรมอนามัย, 2566'},
+  {i:'🫁',th_n:'โรคกระเพาะ',en_n:'Gastric Disease',
+   th_t:'เกิดจากกินข้าวไม่ตรงเวลา กินเร็ว อดมื้ออาหาร ทำให้กรดในกระเพาะกัดเยื่อบุ ปวดท้องเรื้อรัง',
+   en_t:'Caused by irregular eating, eating fast, and skipping meals. Stomach acid erodes the lining causing chronic pain.',
+   ref:'กรมอนามัย, 2566'},
+  {i:'🦷',th_n:'ฟันผุ',en_n:'Tooth Decay',
+   th_t:'เกิดจากน้ำตาลในขนมและเครื่องดื่มหวาน เชื้อแบคทีเรียย่อยน้ำตาลเป็นกรดกัดฟัน ป้องกันได้ด้วยการแปรงฟันและลดหวาน',
+   en_t:'Sugar from sweets and drinks is converted to acid by bacteria that erodes teeth. Preventable by brushing and reducing sugar.',
+   ref:'WHO Sugar Guidelines, 2015'},
+  {i:'👂',th_n:'การได้ยินเสื่อม',en_n:'Hearing Loss',
+   th_t:'เกิดจากการฟังเสียงดังเป็นเวลานาน เซลล์ประสาทหูเสียหายถาวร ป้องกันได้ด้วยการลดเสียงหูฟังและพักหู',
+   en_t:'Caused by prolonged loud sound exposure causing permanent nerve cell damage in the ears. Preventable by lowering volume.',
+   ref:'WHO, 2022'}
+];
+
+var cur=0,chosen=[],sc={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
+var radarChart=null,resultBuilt=false;
+
+function go(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('nav ul a').forEach(function(a){a.classList.remove('active');});
+  document.getElementById('nav-'+id).classList.add('active');
+  if(id==='result'){buildResult();resultBuilt=true;}
+  if(id==='print') buildPrint();
+  if(id==='know') buildKnow();
+  window.scrollTo(0,0);
+}
+
+function showTab(i){
+  document.querySelectorAll('.tab').forEach(function(t,j){t.classList.toggle('active',j===i);});
+  document.querySelectorAll('.tpanel').forEach(function(p,j){p.classList.toggle('active',j===i);});
+  if(i===1) setTimeout(buildRadar,100);
+}
+
+function renderQ(){
+  var q=Q[cur];
+  var pct=Math.round(((cur+1)/Q.length)*100);
+  var progLabel=T('ข้อที่ '+(cur+1)+' จาก '+Q.length,'Question '+(cur+1)+' of '+Q.length);
+  document.getElementById('plb').textContent=progLabel;
+  document.getElementById('ppc').textContent=pct+'%';
+  document.getElementById('pfi').style.width=pct+'%';
+  document.getElementById('bgo').textContent=(cur===Q.length-1)?T('📊 ดูผลลัพธ์','📊 See Results'):T('ถัดไป →','Next →');
+
+  var wLabel=q.w>=1.3?T('⭐ น้ำหนักสูง','⭐ High Weight'):q.w>=1.0?'':T('น้ำหนักต่ำ','Low Weight');
+  var h='<span class="qbg">📌 '+T(q.th_c,q.en_c)+'</span>';
+  if(wLabel) h+='<span class="qwt">'+wLabel+' (×'+q.w+')</span>';
+  h+='<span class="qem">'+q.e+'</span><div class="qt">'+T(q.th_t,q.en_t)+'</div>';
+  var hint=T(q.h_th,q.h_en);
+  if(hint) h+='<div class="qhi">💬 '+hint+'</div>';
+  h+='<div class="qref">📖 '+q.ref+'</div>';
+  h+='<div class="opts">';
+  q.o.forEach(function(o,i){
+    var sel=chosen[cur]===i?'sel':'';
+    h+='<div class="opt '+sel+'" onclick="pick('+i+')"><div class="oc">'+(chosen[cur]===i?'✓':'')+'</div><span class="ol">'+T(o.th,o.en)+'</span></div>';
+  });
+  h+='</div>';
+  document.getElementById('qcard').innerHTML=h;
+}
+
+function pick(i){chosen[cur]=i;renderQ();}
+
+function getWeightedScore(k){
+  var total=0;
+  Q.forEach(function(q,qi){
+    if(chosen[qi]===undefined) return;
+    var s=q.o[chosen[qi]].s;
+    if(s[k]!==undefined) total+=s[k]*q.w;
+  });
+  return total;
+}
+
+function getWeightedMax(k){
+  var total=0;
+  Q.forEach(function(q){
+    var best=0;
+    q.o.forEach(function(o){if((o.s[k]||0)>best) best=o.s[k]||0;});
+    total+=best*q.w;
+  });
+  return total||1;
+}
+
+function nextQ(){
+  if(chosen[cur]===undefined){alert(T('กรุณาเลือกคำตอบก่อนนะคะ 😊','Please select an answer first 😊'));return;}
+  var s=Q[cur].o[chosen[cur]].s;
+  Object.keys(s).forEach(function(k){if(sc[k]!==undefined)sc[k]+=s[k];});
+  if(cur<Q.length-1){cur++;renderQ();}
+  else{go('result');}
+}
+
+function prevQ(){
+  if(cur>0){
+    if(chosen[cur-1]!==undefined){
+      var s=Q[cur-1].o[chosen[cur-1]].s;
+      Object.keys(s).forEach(function(k){if(sc[k]!==undefined)sc[k]-=s[k];});
+    }
+    cur--;renderQ();
+  } else {go('home');}
+}
+
+function resetQ(){
+  cur=0;chosen=[];resultBuilt=false;
+  sc={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
+  renderQ();
+}
+
+function getDiseasePercent(k){
+  var ws=getWeightedScore(k);
+  var wm=getWeightedMax(k);
+  return Math.min(100,Math.round((ws/wm)*100));
+}
+
+function buildResult(){
+  var now=new Date();
+  document.getElementById('rdate').textContent=T(
+    'วิเคราะห์เมื่อ '+now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'}),
+    'Analyzed on '+now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})
+  );
+
+  // overall weighted
+  var totW=0,mxW=0;
+  D.forEach(function(d){
+    var ws=getWeightedScore(d.k);
+    var wm=getWeightedMax(d.k);
+    totW+=ws;mxW+=wm;
+  });
+  var badPct=Math.min(100,Math.round((totW/mxW)*100));
+  var hp=100-badPct;
+  document.getElementById('osc').textContent=hp+'%';
+
+  var lb,ds,col;
+  if(hp>=70){lb=T('✅ สุขภาพดี','✅ Good Health');ds=T('พฤติกรรมของคุณดีมาก รักษาไว้แบบนี้ต่อไปนะคะ 🎉','Your behavior is excellent, keep it up! 🎉');col='#10b981';}
+  else if(hp>=45){lb=T('⚠️ สุขภาพปานกลาง','⚠️ Moderate Health');ds=T('พฤติกรรมบางอย่างอาจส่งผลต่อสุขภาพในระยะยาว ควรปรับปรุง','Some behaviors may affect long-term health, please improve');col='#f59e0b';}
+  else{lb=T('🚨 ต้องปรับปรุงโดยด่วน','🚨 Needs Urgent Improvement');ds=T('พฤติกรรมหลายอย่างเสี่ยงต่อโรค ควรปรับเปลี่ยนทันที','Multiple behaviors are risky, please change immediately');col='#ef4444';}
+  document.getElementById('olb').textContent=lb;
+  document.getElementById('ods').textContent=ds;
+  document.getElementById('osc').style.color=col;
+
+  // disclaimer
+  document.getElementById('res-disc').innerHTML=T(
+    '⚠️ <b>หมายเหตุ:</b> ผลการประเมินนี้คำนวณจากพฤติกรรมที่คุณตอบเท่านั้น ไม่ใช่การตรวจร่างกายหรือตรวจเลือด ควรใช้เป็นแนวทางเบื้องต้นเท่านั้น',
+    '⚠️ <b>Note:</b> This result is calculated from your reported behaviors only, not from physical examination or blood tests. Use as a preliminary guide only.'
+  );
+
+  // criteria
+  document.getElementById('ct-title').textContent=T(
+    '📐 เกณฑ์การประเมินคะแนนสุขภาพ (อ้างอิง WHO & กรมอนามัย)',
+    '📐 Health Score Criteria (Reference: WHO & Department of Health)'
+  );
+
+  var rh='',ah='';
+  D.forEach(function(d){
+    var p=getDiseasePercent(d.k);
+    var cls=p>=60?'high':p>=30?'mid':'low';
+    var lvl=p>=60?T('⚠️ ความเสี่ยงสูง','⚠️ High Risk'):p>=30?T('🔶 ความเสี่ยงปานกลาง','🔶 Medium Risk'):T('✅ ความเสี่ยงต่ำ','✅ Low Risk');
+    var dn=T(d.th,d.en);
+    rh+='<div class="rr"><span class="ric">'+d.i+'</span><div class="ri"><div class="rn">'+dn+'</div><div class="rb"><div class="rbf" style="width:'+p+'%"></div></div></div><div><div class="rp '+cls+'">'+p+'%</div><div class="rlv '+cls+'">'+lvl+'</div></div></div>';
+    if(p>=30&&AV[d.k]) ah+='<li>'+T(AV[d.k].th,AV[d.k].en)+'</li>';
+  });
+  if(!ah) ah='<li>'+T('คุณมีพฤติกรรมที่ดีมาก รักษาไว้แบบนี้ต่อไปนะคะ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
+  document.getElementById('rlist').innerHTML=rh;
+  document.getElementById('alist').innerHTML=ah;
+
+  build6Month();
+  build7Day();
+  buildCatBars();
+}
+
+function build6Month(){
+  var totW=0,mxW=0;
+  D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
+  var R=Math.min(1,totW/mxW);
+  var k=0.03;
+  var R6=Math.min(1,R*Math.pow(1+k,6));
+  var hp_now=Math.round((1-R)*100);
+  var hp_6m_bad=Math.max(0,Math.round((1-R6)*100));
+  var hp_6m_good=Math.min(100,hp_now+15);
+
+  document.getElementById('projgrid').innerHTML=
+    '<div class="proj-card"><div class="proj-val" style="color:#3b82f6">'+hp_now+'%</div><div class="proj-lbl">'+T('คะแนนสุขภาพปัจจุบัน','Current Health Score')+'</div></div>'+
+    '<div class="proj-card"><div class="proj-val" style="color:#ef4444">'+hp_6m_bad+'%</div><div class="proj-lbl">'+T('ถ้าไม่เปลี่ยน (6 เดือน)','If Unchanged (6 Months)')+'</div></div>'+
+    '<div class="proj-card"><div class="proj-val" style="color:#10b981">'+hp_6m_good+'%</div><div class="proj-lbl">'+T('ถ้าเริ่มปรับ (6 เดือน)','If Improved (6 Months)')+'</div></div>'+
+    '<div class="proj-card"><div class="proj-val" style="color:#f97316">'+(hp_6m_good-hp_6m_bad)+'%</div><div class="proj-lbl">'+T('ผลต่างที่ได้ถ้าเปลี่ยน','Gain if Behavior Changes')+'</div></div>';
+
+  var bads=D.map(function(d){
+    var p=getDiseasePercent(d.k);
+    var p6=Math.min(100,Math.round(p*Math.pow(1+k,6)));
+    return {n:T(d.th,d.en),i:d.i,k:d.k,p:p,p6:p6};
+  }).filter(function(b){return b.p>=40;}).sort(function(a,b){return b.p6-a.p6;});
+
+  var badHtml='';
+  bads.slice(0,4).forEach(function(b){badHtml+='<li>'+b.i+' '+b.n+': '+b.p+'% → '+b.p6+'%</li>';});
+  if(!badHtml) badHtml='<li>'+T('🎉 ไม่มีโรคที่น่ากังวล','🎉 No concerning diseases')+'</li>';
+  document.getElementById('bad6m').innerHTML=badHtml;
+  document.getElementById('good6m').innerHTML=
+    '<li>'+T('💪 กล้ามเนื้อแข็งแรงขึ้น','💪 Stronger muscles')+'</li>'+
+    '<li>'+T('😴 นอนหลับดีขึ้น สมาธิดีขึ้น','😴 Better sleep, better focus')+'</li>'+
+    '<li>'+T('😊 เครียดน้อยลง อารมณ์ดีขึ้น','😊 Less stress, better mood')+'</li>'+
+    '<li>'+T('🏃 ร่างกายกระฉับกระเฉงขึ้น','🏃 More energetic body')+'</li>';
+
+  var wh='';
+  bads.slice(0,3).forEach(function(b){
+    wh+='<li>'+b.i+' <b>'+b.n+'</b> — '+T('ปัจจุบัน','Now')+' '+b.p+'% → '+T('6 เดือน','6 months')+' '+b.p6+'% (+'+( b.p6-b.p)+'%)</li>';
+  });
+  if(!wh) wh='<li>'+T('✅ ไม่มีโรคที่น่ากังวลมาก รักษาพฤติกรรมดีๆ ไว้นะคะ','✅ No major concerns, keep up the good behaviors!')+'</li>';
+  document.getElementById('warn6m').innerHTML=wh;
+}
+
+function build7Day(){
+  var ranked=D.map(function(d){
+    return {k:d.k,th:d.th,en:d.en,i:d.i,p:getDiseasePercent(d.k)};
+  }).sort(function(a,b){return b.p-a.p;});
+
+  var tagColors={of:'#3b82f6',ey:'#6366f1',sx:'#f97316',im:'#10b981',ki:'#06b6d4',st:'#84cc16',to:'#ec4899',ea:'#8b5cf6'};
+  var ph='';
+  ranked.slice(0,3).forEach(function(r){
+    if(r.p>=30){
+      var col=tagColors[r.k]||'#6b7280';
+      ph+='<span class="priority-tag" style="color:'+col+';border-color:'+col+'">'+r.i+' '+T('เน้น: ','Focus: ')+T(r.th,r.en)+'</span>';
+    }
+  });
+  document.getElementById('planpriority').innerHTML=ph||'<span style="font-size:.8rem;color:#6b7280">'+T('✅ ทุกด้านอยู่ในเกณฑ์ดี','✅ All categories in good range')+'</span>';
+
+  var focusKeys=ranked.filter(function(r){return r.p>=30;}).map(function(r){return r.k;});
+  if(focusKeys.length===0) focusKeys=['of','ey','sx'];
+
+  var dayThemes=[
+    {th_d:'วันที่ 1',en_d:'Day 1',th_title:'เริ่มต้นเปลี่ยนแปลง',en_title:'Start the Change',e:'🌱'},
+    {th_d:'วันที่ 2',en_d:'Day 2',th_title:'เน้นการกินและดื่มน้ำ',en_title:'Focus on Eating & Hydration',e:'🍱'},
+    {th_d:'วันที่ 3',en_d:'Day 3',th_title:'ดูแลสายตาและหู',en_title:'Eye & Ear Care',e:'👁️'},
+    {th_d:'วันที่ 4',en_d:'Day 4',th_title:'เพิ่มการเคลื่อนไหว',en_title:'Increase Movement',e:'🏃'},
+    {th_d:'วันที่ 5',en_d:'Day 5',th_title:'จัดการความเครียด',en_title:'Manage Stress',e:'😊'},
+    {th_d:'วันที่ 6',en_d:'Day 6',th_title:'นอนหลับให้ดีขึ้น',en_title:'Improve Sleep Quality',e:'🌙'},
+    {th_d:'วันที่ 7',en_d:'Day 7',th_title:'ทบทวนและตั้งเป้าหมาย',en_title:'Review & Set Goals',e:'🎯'}
+  ];
+
+  var taskAssign=[
+    [focusKeys[0]||'of',focusKeys[1]||'ey','sx'],
+    ['st','ki','im'],
+    ['ey','ea','sc'],
+    ['of','ph','sx'],
+    ['sx','im','sl'],
+    ['sl','im','sx'],
+    ['of','ey','ki']
+  ];
+
+  var usedTasks={};
+  var h='';
+  dayThemes.forEach(function(day,di){
+    var keys=taskAssign[di];
+    var tasks=[];
+    keys.forEach(function(k){
+      if(TASK_POOL[k]){
+        if(!usedTasks[k]) usedTasks[k]=0;
+        var idx=usedTasks[k]%TASK_POOL[k].length;
+        tasks.push(T(TASK_POOL[k][idx].th,TASK_POOL[k][idx].en));
+        usedTasks[k]++;
+      }
+    });
+    var mainKey=keys[0];
+    var col=({of:'#3b82f6',ey:'#6366f1',sx:'#f97316',im:'#10b981',ki:'#06b6d4',st:'#84cc16',to:'#ec4899',ea:'#8b5cf6'})[mainKey]||'#3b82f6';
+    var mainRisk=ranked.find(function(r){return r.k===mainKey;});
+    h+='<div class="plan-day">';
+    h+='<div class="plan-day-title">'+day.e+' '+T(day.th_d,day.en_d)+' — '+T(day.th_title,day.en_title)+'</div>';
+    if(mainRisk&&mainRisk.p>=30) h+='<span class="plan-focus" style="background:'+col+'20;color:'+col+'">'+mainRisk.i+' '+T('เน้น: ','Focus: ')+T(mainRisk.th,mainRisk.en)+'</span>';
+    h+='<ul class="plan-tasks">';
+    tasks.forEach(function(t){h+='<li>'+t+'</li>';});
+    h+='</ul></div>';
+  });
+  document.getElementById('plan7d').innerHTML=h;
+}
+
+function buildCatBars(){
+  var cats=[
+    {k:'nu',th_n:'🍱 หมวดการกิน (โภชนาการ)',en_n:'🍱 Nutrition',col:'#10b981',mx:36},
+    {k:'sl',th_n:'🌙 หมวดการนอนและพักผ่อน',en_n:'🌙 Sleep & Rest',col:'#6366f1',mx:24},
+    {k:'ph',th_n:'🏃 หมวดกายภาพ (ท่านั่ง/การขยับตัว)',en_n:'🏃 Physical (Posture/Movement)',col:'#3b82f6',mx:24},
+    {k:'sc',th_n:'📱 หมวดการใช้หน้าจอและเทคโนโลยี',en_n:'📱 Screen & Technology Use',col:'#f97316',mx:12}
+  ];
+  var h='';
+  cats.forEach(function(c){
+    var raw=sc[c.k]||0;
+    var pct=Math.min(100,Math.round((raw/c.mx)*100));
+    var hp=100-pct;
+    h+='<div class="cat-row"><div class="cat-top"><span class="cat-name">'+T(c.th_n,c.en_n)+'</span><span class="cat-score" style="color:'+c.col+'">'+hp+'%</span></div><div class="cat-bar"><div class="cat-fill" style="width:'+hp+'%;background:'+c.col+'"></div></div></div>';
+  });
+  document.getElementById('catbars').innerHTML=h;
+}
+
+function buildRadar(){
+  var cats=[
+    {k:'nu',th:'การกิน',en:'Nutrition',mx:36},
+    {k:'sl',th:'การนอน',en:'Sleep',mx:24},
+    {k:'ph',th:'กายภาพ',en:'Physical',mx:24},
+    {k:'sc',th:'หน้าจอ',en:'Screen',mx:12}
+  ];
+  var healthVals=cats.map(function(c){
+    return Math.min(100,Math.round(((sc[c.k]||0)/c.mx)*100));
+  }).map(function(v){return 100-v;});
+
+  if(radarChart) radarChart.destroy();
+  var ctx=document.getElementById('radarChart').getContext('2d');
+  radarChart=new Chart(ctx,{
+    type:'radar',
+    data:{labels:cats.map(function(c){return T(c.th,c.en);}),
+      datasets:[{label:T('คะแนนสุขภาพ (%)','Health Score (%)'),data:healthVals,
+        backgroundColor:'rgba(59,130,246,0.2)',borderColor:'rgba(59,130,246,0.😎',
+        pointBackgroundColor:'rgba(59,130,246,1)',pointRadius:5,borderWidth:2}]},
+    options:{responsive:true,
+      scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10}},
+        pointLabels:{font:{size:12,family:'Noto Sans Thai'}}}},
+      plugins:{legend:{labels:{font:{size:12,family:'Noto Sans Thai'}}}}}
+  });
+}
+
+function buildPrint(){
+  var now=new Date();
+  document.getElementById('print-date').textContent=T(
+    'วันที่: '+now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'}),
+    'Date: '+now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})
+  );
+
+  var totW=0,mxW=0;
+  D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
+  var hp=Math.round((1-Math.min(1,totW/mxW))*100);
+  document.getElementById('ps-health').textContent=hp+'%';
+  document.getElementById('ps-health').style.color=hp>=70?'#10b981':hp>=45?'#f59e0b':'#ef4444';
+  document.getElementById('ps-level').textContent=hp>=70?T('สุขภาพดี ✅','Good Health ✅'):hp>=45?T('ปานกลาง ⚠️','Moderate ⚠️'):T('ต้องปรับปรุง 🚨','Needs Improvement 🚨');
+
+  var dh='';
+  D.forEach(function(d){
+    var p=getDiseasePercent(d.k);
+    var col=p>=60?'#ef4444':p>=30?'#f59e0b':'#10b981';
+    var lvl=p>=60?T('สูง','High'):p>=30?T('ปานกลาง','Medium'):T('ต่ำ','Low');
+    dh+='<div class="print-disease-row"><span>'+d.i+' '+T(d.th,d.en)+'</span><div class="print-bar"><div class="print-bar-fill" style="width:'+p+'%;background:'+col+'"></div></div><span style="color:'+col+';font-weight:700;font-size:.75rem;">'+p+'% '+lvl+'</span></div>';
+  });
+  document.getElementById('print-diseases').innerHTML=dh;
+
+  var ah='';
+  D.forEach(function(d){
+    var p=getDiseasePercent(d.k);
+    if(p>=30&&AV[d.k]) ah+='<li>'+T(AV[d.k].th,AV[d.k].en)+'</li>';
+  });
+  if(!ah) ah='<li>'+T('พฤติกรรมของคุณดีมาก รักษาไว้นะคะ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
+  document.getElementById('print-advice').innerHTML=ah;
+}
+
+function copyResult(){
+  var totW=0,mxW=0;
+  D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
+  var hp=Math.round((1-Math.min(1,totW/mxW))*100);
+  var txt=T('🏫 SchoolHealth — ผลการประเมินสุขภาพ\n','🏫 SchoolHealth — Health Assessment Results\n');
+  txt+=T('คะแนนสุขภาพรวม: ','Overall Health Score: ')+hp+'%\n\n';
+  txt+=T('ความเสี่ยงแต่ละโรค:\n','Risk by Disease:\n');
+  D.forEach(function(d){
+    var p=getDiseasePercent(d.k);
+    var lvl=p>=60?T('สูง','High'):p>=30?T('ปานกลาง','Medium'):T('ต่ำ','Low');
+    txt+=d.i+' '+T(d.th,d.en)+': '+p+'% ('+lvl+')\n';
+  });
+  txt+='\n'+T('⚠️ ผลนี้เป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์','⚠️ This is a preliminary screening only, not medical diagnosis');
+  navigator.clipboard.writeText(txt).then(function(){
+    alert(T('คัดลอกสรุปผลลัพธ์แล้ว! 📋','Result summary copied! 📋'));
+  }).catch(function(){alert(T('ไม่สามารถคัดลอกได้ กรุณาลองใหม่','Copy failed, please try again'));});
+}
+
+function buildKnow(){
+  var h='';
+  KN.forEach(function(k){
+    h+='<div class="know-card"><div class="know-title">'+k.i+' '+T(k.th_n,k.en_n)+'</div><div class="know-text">'+T(k.th_t,k.en_t)+'</div><div class="know-ref">📖 '+k.ref+'</div></div>';
+  });
+  document.getElementById('knowgrid').innerHTML=h;
+}
+
+renderQ();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
