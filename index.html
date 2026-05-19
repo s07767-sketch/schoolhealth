@@ -11,14 +11,15 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Noto Sans Thai','Prompt',sans-serif;background:var(--bg);color:var(--tx);}
 nav{background:#fff;border-bottom:1px solid var(--bo);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.logo{display:flex;align-items:center;gap:8px;font-family:'Prompt',sans-serif;font-weight:700;font-size:1.1rem;}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Prompt',sans-serif;font-weight:700;border:1.5px solid var(--bo);border-radius:12px;padding:5px 10px;background:#fff;}
 .lb{width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
-.logo span{color:var(--pri);}
+.logo-text{display:flex;flex-direction:column;line-height:1.2;}
+.logo-school{color:var(--tx);font-size:.82rem;}
+.logo-health{color:var(--pri);font-size:.82rem;}
 nav ul{list-style:none;display:flex;gap:.6rem;}
 nav ul a{color:var(--mu);text-decoration:none;font-size:.8rem;cursor:pointer;padding:4px 7px;border-radius:8px;transition:all .2s;white-space:nowrap;}
-.logo-school{color:var(--tx);}
 nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);}
-.lang-btn{background:rgba(59,130,246,.1);color:var(--pri);border:1px solid var(--pri);padding:5px 12px;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.lang-btn{background:rgba(59,130,246,.1);color:var(--pri);border:2px solid rgba(59,130,246,.4);width:42px;height:42px;border-radius:50%;font-size:.58rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.3;padding:0;flex-shrink:0;}
 .lang-btn:hover{background:var(--pri);color:#fff;}
 .page{display:none;}.page.active{display:block;}
 .hero{background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;padding:3rem 1.5rem 5rem;text-align:center;position:relative;overflow:hidden;}
@@ -168,6 +169,7 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .print-btns{display:flex;gap:10px;margin-top:1.2rem;}
 .btn-print{flex:1;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:11px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;}
 .btn-copy{flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--bo);padding:11px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.88rem;cursor:pointer;}
+.print-mobile-tip{font-size:.72rem;color:var(--mu);text-align:center;margin-top:.6rem;line-height:1.5;}
 /* KNOWLEDGE */
 .know-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .know-card{background:var(--bg);border-radius:13px;padding:1.1rem;border:1px solid var(--bo);}
@@ -189,12 +191,12 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
 @media print{nav,footer,.print-btns,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
-@media(max-width:600px){.c3,.dg,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo-school{display:none;}.logo{font-size:.95rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;}nav ul::-webkit-scrollbar{display:none;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{margin:0 -1.5rem;padding:0 1.5rem 8px;width:calc(100% + 3rem);}.know-grid{display:flex!important;flex-wrap:nowrap;gap:12px;width:max-content;padding-right:1.5rem;}.know-card{width:78vw;flex-shrink:0;scroll-snap-align:start;}.know-fade{display:block;}.know-hint{display:block;}.know-dots{display:flex;}}
+@media(max-width:600px){.c3,.dg,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo{padding:3px 7px;gap:5px;}.logo-school,.logo-health{font-size:.72rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;}nav ul::-webkit-scrollbar{display:none;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{margin:0 -1.5rem;padding:0 1.5rem 8px;width:calc(100% + 3rem);}.know-grid{display:flex!important;flex-wrap:nowrap;gap:12px;width:max-content;padding-right:1.5rem;}.know-card{width:78vw;flex-shrink:0;scroll-snap-align:start;}.know-fade{display:block;}.know-hint{display:block;}.know-dots{display:flex;}}
 </style>
 </head>
 <body>
 <nav>
-  <div class="logo"><div class="lb">🏫</div><span class="logo-school">School</span><span>Health</span></div>
+  <div class="logo"><div class="lb">🏫</div><div class="logo-text"><span class="logo-school">School</span><span class="logo-health">Health</span></div></div>
   <ul>
     <li><a onclick="go('home')" id="nav-home" class="active" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a></li>
     <li><a onclick="go('quiz')" id="nav-quiz" data-th="ตรวจสอบ" data-en="Check">ตรวจสอบ</a></li>
@@ -337,9 +339,10 @@ footer span{color:var(--pri);}
       <div class="print-disclaimer" data-th="⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)" data-en="⚠️ This assessment is a preliminary health behavior screening only and cannot replace medical diagnosis. | SchoolHealth — Computer Science Poster Project | References: WHO (2022), Department of Health Thailand (2023)">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
     </div>
     <div class="print-btns">
-      <button class="btn-print" onclick="doPrint()" data-th="🖨️ พิมพ์เป็น PDF" data-en="🖨️ Print as PDF">🖨️ พิมพ์เป็น PDF</button>
+      <button class="btn-print" onclick="window.print()" data-th="🖨️ พิมพ์เป็น PDF" data-en="🖨️ Print as PDF">🖨️ พิมพ์เป็น PDF</button>
       <button class="btn-copy" onclick="copyResult()" data-th="📋 คัดลอกสรุป" data-en="📋 Copy Summary">📋 คัดลอกสรุป</button>
     </div>
+    <p class="print-mobile-tip" data-th="📱 บนมือถือ: กด 'พิมพ์เป็น PDF' → เลือก 'บันทึก' หรือ 'Save to Files'" data-en="📱 On mobile: tap 'Print as PDF' → select 'Save' or 'Save to Files'">📱 บนมือถือ: กด 'พิมพ์เป็น PDF' → เลือก 'บันทึก' หรือ 'Save to Files'</p>
   </div>
 </div>
 
@@ -1045,18 +1048,6 @@ function buildKnow(){
   }
   scroll.addEventListener('scroll',onScroll,{passive:true});
   onScroll();
-}
-
-function doPrint(){
-  var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if(isMobile){
-    alert(T(
-      '📱 บนมือถือ:\n1. กดเมนู ⋮ (มุมขวาบน) ของ browser\n2. เลือก "พิมพ์" หรือ "แชร์"\n3. เลือก "บันทึกเป็น PDF"',
-      '📱 On mobile:\n1. Tap browser menu ⋮ (top right)\n2. Select "Print" or "Share"\n3. Choose "Save as PDF"'
-    ));
-  } else {
-    window.print();
-  }
 }
 
 renderQ();
