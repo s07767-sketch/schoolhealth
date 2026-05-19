@@ -15,7 +15,8 @@ nav{background:#fff;border-bottom:1px solid var(--bo);padding:0 1.5rem;height:56
 .lb{width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
 .logo span{color:var(--pri);}
 nav ul{list-style:none;display:flex;gap:.6rem;}
-nav ul a{color:var(--mu);text-decoration:none;font-size:.8rem;cursor:pointer;padding:4px 7px;border-radius:8px;transition:all .2s;}
+nav ul a{color:var(--mu);text-decoration:none;font-size:.8rem;cursor:pointer;padding:4px 7px;border-radius:8px;transition:all .2s;white-space:nowrap;}
+.logo-school{color:var(--tx);}
 nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);}
 .lang-btn{background:rgba(59,130,246,.1);color:var(--pri);border:1px solid var(--pri);padding:5px 12px;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;}
 .lang-btn:hover{background:var(--pri);color:#fff;}
@@ -188,12 +189,12 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
 @media print{nav,footer,.print-btns,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
-@media(max-width:600px){.c3,.dg,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}nav ul li:nth-child(n+4){display:none;}.hero h1{font-size:1.6rem;}.know-scroll-inner{margin:0 -1.5rem;padding:0 1.5rem 8px;width:calc(100% + 3rem);}.know-grid{display:flex!important;flex-wrap:nowrap;gap:12px;width:max-content;padding-right:1.5rem;}.know-card{width:78vw;flex-shrink:0;scroll-snap-align:start;}.know-fade{display:block;}.know-hint{display:block;}.know-dots{display:flex;}}
+@media(max-width:600px){.c3,.dg,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo-school{display:none;}.logo{font-size:.95rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;}nav ul::-webkit-scrollbar{display:none;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{margin:0 -1.5rem;padding:0 1.5rem 8px;width:calc(100% + 3rem);}.know-grid{display:flex!important;flex-wrap:nowrap;gap:12px;width:max-content;padding-right:1.5rem;}.know-card{width:78vw;flex-shrink:0;scroll-snap-align:start;}.know-fade{display:block;}.know-hint{display:block;}.know-dots{display:flex;}}
 </style>
 </head>
 <body>
 <nav>
-  <div class="logo"><div class="lb">🏫</div>School<span>Health</span></div>
+  <div class="logo"><div class="lb">🏫</div><span class="logo-school">School</span><span>Health</span></div>
   <ul>
     <li><a onclick="go('home')" id="nav-home" class="active" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a></li>
     <li><a onclick="go('quiz')" id="nav-quiz" data-th="ตรวจสอบ" data-en="Check">ตรวจสอบ</a></li>
