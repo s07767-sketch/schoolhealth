@@ -173,11 +173,21 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .know-title{font-size:.86rem;font-weight:700;margin-bottom:.5rem;}
 .know-text{font-size:.78rem;color:var(--mu);line-height:1.6;}
 .know-ref{font-size:.7rem;color:#9ca3af;margin-top:.5rem;font-style:italic;}
+.know-scroll-outer{position:relative;}
+.know-scroll-inner{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:6px;}
+.know-scroll-inner::-webkit-scrollbar{height:4px;}
+.know-scroll-inner::-webkit-scrollbar-track{background:var(--bo);border-radius:100px;}
+.know-scroll-inner::-webkit-scrollbar-thumb{background:var(--pri);border-radius:100px;}
+.know-fade{display:none;position:absolute;top:0;right:0;bottom:6px;width:48px;background:linear-gradient(to left,var(--bg) 20%,transparent);pointer-events:none;border-radius:0 13px 13px 0;}
+.know-hint{display:none;text-align:center;font-size:.73rem;color:var(--mu);margin-top:8px;letter-spacing:.02em;}
+.know-dots{display:none;justify-content:center;gap:6px;margin-top:10px;}
+.know-dot{width:7px;height:7px;border-radius:50%;background:var(--bo);transition:background .2s,transform .2s;}
+.know-dot.active{background:var(--pri);transform:scale(1.3);}
 .brt{display:block;width:100%;margin-top:1.2rem;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:12px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;}
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
 @media print{nav,footer,.print-btns,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
-@media(max-width:600px){.c3,.dg,.month-grid,.know-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}nav ul li:nth-child(n+4){display:none;}.hero h1{font-size:1.6rem;}}
+@media(max-width:600px){.c3,.dg,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}nav ul li:nth-child(n+4){display:none;}.hero h1{font-size:1.6rem;}.know-grid{display:flex!important;flex-wrap:nowrap;gap:12px;width:max-content;padding-right:16px;}.know-card{width:75vw;flex-shrink:0;scroll-snap-align:start;}.know-fade{display:block;}.know-hint{display:block;}.know-dots{display:flex;}}
 </style>
 </head>
 <body>
@@ -199,7 +209,7 @@ footer span{color:var(--pri);}
     <span class="he">🏫</span>
     <h1 data-th="รู้ทันพฤติกรรมเสี่ยงโรค<br>จากชีวิตใน<br>โรงเรียน" data-en="Know Your Health Risks<br>From School Life Behaviors">รู้ทันพฤติกรรมเสี่ยงโรค<br>จากชีวิตในโรงเรียน</h1>
     <p data-th="ตอบคำถาม 20 ข้อ รู้ผลทันที พร้อมแผนปรับพฤติกรรม 7 วันเฉพาะตัว" data-en="Answer 20 questions, get instant results with a personalized 7-day improvement plan">ตอบคำถาม 20 ข้อ รู้ผลทันที พร้อมแผนปรับพฤติกรรม 7 วันเฉพาะตัว</p>
-    <p class="hsub" data-th="ใช้เวลาประมาณ 5-7 นาที | ฟรี | ไม่ต้องสมัครสมาชิก" data-en="Takes 5-7 minutes | Free | No registration required">ใช้เวลาประมาณ 5-7 นาที | ฟรี | ไม่ต้องสมัครสมาชิก</p>
+    <p class="hsub" data-th="ใช้เวลาประมาณ 5-7 นาที | ฟรี | ไม่ต้องสมัครสมาชิก" data-en="Takes 5-7 minutes | Free | No registration required">ใช้เวลาประมาณ 4-5 นาที | ฟรี | ไม่ต้องสมัครสมาชิก</p>
     <div class="disclaimer-box">
       ⚠️ <b data-th="ข้อควรทราบก่อนใช้งาน" data-en="Important Notice">ข้อควรทราบก่อนใช้งาน</b><br>
       <span data-th="เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์" data-en="This website is a preliminary health behavior screening tool only. It cannot replace medical diagnosis or professional advice. If you have abnormal symptoms or health concerns, please consult a doctor.">เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์</span>
@@ -336,12 +346,19 @@ footer span{color:var(--pri);}
   <div class="sec" style="margin-top:2rem;">
     <div class="stag" data-th="📚 ความรู้เกี่ยวกับโรค" data-en="📚 Disease Knowledge">📚 ความรู้เกี่ยวกับโรค</div>
     <div class="sti" data-th="รู้จักโรคที่เสี่ยงจากชีวิตในโรงเรียน" data-en="Learn About School Life Health Risks">รู้จักโรคที่เสี่ยงจากชีวิตในโรงเรียน</div>
-    <div class="know-grid" id="knowgrid"></div>
+    <div class="know-scroll-outer">
+      <div class="know-scroll-inner" id="knowscroll">
+        <div class="know-grid" id="knowgrid"></div>
+      </div>
+      <div class="know-fade" id="knowfade"></div>
+      <div class="know-hint" data-th="👉 เลื่อนเพื่อดูโรคอื่นๆ" data-en="👉 Scroll to see more">👉 เลื่อนเพื่อดูโรคอื่นๆ</div>
+      <div class="know-dots" id="knowdots"></div>
+    </div>
   </div>
 </div>
 
 <footer>
-  <p>SchoolHealth — <span data-th="โครงงานคอมพิวเตอร์ประเภทโปสเตอร์" data-en="Computer Science Poster Project">โครงงานคอมพิวเตอร์ประเภทโปสเตอร์</span> | <span data-th="พัฒนาโดย" data-en="Developed by">พัฒนาโดย</span> <span>นักเรียนชั้น ม.5/2</span></p>
+  <p>SchoolHealth — <span data-th="โครงงานคอมพิวเตอร์ประเภทโปสเตอร์" data-en="Computer Science Poster Project">โครงงานคอมพิวเตอร์ประเภทโปสเตอร์</span> | <span data-th="พัฒนาโดย" data-en="Developed by">พัฒนาโดย</span> <span>นักเรียนชั้น ม.6/2</span></p>
   <p style="margin-top:4px;font-size:.71rem;" data-th="⚠️ ผลการประเมินเป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์" data-en="⚠️ Results are preliminary screening only, not medical diagnosis">⚠️ ผลการประเมินเป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์</p>
   <p style="margin-top:4px;font-size:.69rem;">Ref: WHO (2022), กรมอนามัย (2566), AAP Sleep Guidelines (2016), AOA (2023), CDC (2023)</p>
 </footer>
@@ -597,7 +614,15 @@ var TASK_POOL={
   ea:[{th:'ลดระดับเสียงหูฟังให้อยู่ที่ 60% ของระดับสูงสุด',en:'Keep headphone volume at 60% of maximum'},
       {th:'พักหูทุก 60 นาทีที่ใช้หูฟัง',en:'Rest ears every 60 minutes of headphone use'},
       {th:'ใช้ลำโพงแทนหูฟังเมื่อทำได้',en:'Use speakers instead of headphones when possible'},
-      {th:'หลีกเลี่ยงการใช้หูฟังในที่เสียงดัง',en:'Avoid using headphones in noisy environments'}]
+      {th:'หลีกเลี่ยงการใช้หูฟังในที่เสียงดัง',en:'Avoid using headphones in noisy environments'}],
+  ph:[{th:'ลุกขึ้นยืดเส้นทุก 45 นาที เดินรอบห้อง 2-3 นาที',en:'Stand and stretch every 45 min, walk around 2-3 min'},
+      {th:'ฝึกนั่งหลังตรง วางเท้าราบพื้น สังเกตท่านั่งตัวเอง',en:'Practice straight posture, feet flat, check your sitting position'},
+      {th:'ทำท่าบริหารคอและไหล่ก่อนนอน 5 นาที',en:'Do neck and shoulder exercises for 5 min before bed'},
+      {th:'ลดน้ำหนักกระเป๋า เอาเฉพาะของที่จำเป็นในวันนั้น',en:'Lighten your bag, bring only what is needed that day'}],
+  sl:[{th:'ตั้งเวลานอนให้สม่ำเสมอทุกวัน แม้วันหยุด',en:'Set a consistent sleep time every day, even on weekends'},
+      {th:'วางโทรศัพท์ก่อนนอนอย่างน้อย 30 นาที',en:'Put your phone away at least 30 minutes before sleep'},
+      {th:'หลีกเลี่ยงเครื่องดื่มคาเฟอีนหลัง 16.00 น.',en:'Avoid caffeinated drinks after 4 PM'},
+      {th:'ทำกิจวัตรผ่อนคลายก่อนนอน เช่น อ่านหนังสือ หรือฟังเพลงเบาๆ',en:'Do a relaxing bedtime routine such as reading or soft music'}]
 };
 
 var KN=[
@@ -636,9 +661,13 @@ var KN=[
 ];
 
 var cur=0,chosen=[],sc={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
-var radarChart=null,resultBuilt=false;
+var radarChart=null,resultBuilt=false,quizDone=false;
 
 function go(id){
+  if((id==='result'||id==='print')&&!quizDone){
+    alert(T('กรุณาทำแบบประเมินให้ครบทุกข้อก่อนนะคะ 😊','Please complete the assessment first 😊'));
+    id='quiz';
+  }
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('nav ul a').forEach(function(a){a.classList.remove('active');});
@@ -707,7 +736,7 @@ function nextQ(){
   var s=Q[cur].o[chosen[cur]].s;
   Object.keys(s).forEach(function(k){if(sc[k]!==undefined)sc[k]+=s[k];});
   if(cur<Q.length-1){cur++;renderQ();}
-  else{go('result');}
+  else{quizDone=true;go('result');}
 }
 
 function prevQ(){
@@ -721,7 +750,7 @@ function prevQ(){
 }
 
 function resetQ(){
-  cur=0;chosen=[];resultBuilt=false;
+  cur=0;chosen=[];resultBuilt=false;quizDone=false;
   sc={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
   renderQ();
 }
@@ -894,10 +923,10 @@ function build7Day(){
 
 function buildCatBars(){
   var cats=[
-    {k:'nu',th_n:'🍱 หมวดการกิน (โภชนาการ)',en_n:'🍱 Nutrition',col:'#10b981',mx:36},
-    {k:'sl',th_n:'🌙 หมวดการนอนและพักผ่อน',en_n:'🌙 Sleep & Rest',col:'#6366f1',mx:24},
-    {k:'ph',th_n:'🏃 หมวดกายภาพ (ท่านั่ง/การขยับตัว)',en_n:'🏃 Physical (Posture/Movement)',col:'#3b82f6',mx:24},
-    {k:'sc',th_n:'📱 หมวดการใช้หน้าจอและเทคโนโลยี',en_n:'📱 Screen & Technology Use',col:'#f97316',mx:12}
+    {k:'nu',th_n:'🍱 หมวดการกิน (โภชนาการ)',en_n:'🍱 Nutrition',col:'#10b981',mx:18},
+    {k:'sl',th_n:'🌙 หมวดการนอนและพักผ่อน',en_n:'🌙 Sleep & Rest',col:'#6366f1',mx:15},
+    {k:'ph',th_n:'🏃 หมวดกายภาพ (ท่านั่ง/การขยับตัว)',en_n:'🏃 Physical (Posture/Movement)',col:'#3b82f6',mx:18},
+    {k:'sc',th_n:'📱 หมวดการใช้หน้าจอและเทคโนโลยี',en_n:'📱 Screen & Technology Use',col:'#f97316',mx:9}
   ];
   var h='';
   cats.forEach(function(c){
@@ -911,10 +940,10 @@ function buildCatBars(){
 
 function buildRadar(){
   var cats=[
-    {k:'nu',th:'การกิน',en:'Nutrition',mx:36},
-    {k:'sl',th:'การนอน',en:'Sleep',mx:24},
-    {k:'ph',th:'กายภาพ',en:'Physical',mx:24},
-    {k:'sc',th:'หน้าจอ',en:'Screen',mx:12}
+    {k:'nu',th:'การกิน',en:'Nutrition',mx:18},
+    {k:'sl',th:'การนอน',en:'Sleep',mx:15},
+    {k:'ph',th:'กายภาพ',en:'Physical',mx:18},
+    {k:'sc',th:'หน้าจอ',en:'Screen',mx:9}
   ];
   var healthVals=cats.map(function(c){
     return Math.min(100,Math.round(((sc[c.k]||0)/c.mx)*100));
@@ -926,7 +955,7 @@ function buildRadar(){
     type:'radar',
     data:{labels:cats.map(function(c){return T(c.th,c.en);}),
       datasets:[{label:T('คะแนนสุขภาพ (%)','Health Score (%)'),data:healthVals,
-        backgroundColor:'rgba(59,130,246,0.2)',borderColor:'rgba(59,130,246,0.😎',
+        backgroundColor:'rgba(59,130,246,0.2)',borderColor:'rgba(59,130,246,0.8',
         pointBackgroundColor:'rgba(59,130,246,1)',pointRadius:5,borderWidth:2}]},
     options:{responsive:true,
       scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10}},
@@ -991,6 +1020,29 @@ function buildKnow(){
     h+='<div class="know-card"><div class="know-title">'+k.i+' '+T(k.th_n,k.en_n)+'</div><div class="know-text">'+T(k.th_t,k.en_t)+'</div><div class="know-ref">📖 '+k.ref+'</div></div>';
   });
   document.getElementById('knowgrid').innerHTML=h;
+
+  var scroll=document.getElementById('knowscroll');
+  var fade=document.getElementById('knowfade');
+  var dotsEl=document.getElementById('knowdots');
+  var dh='';
+  KN.forEach(function(_,i){dh+='<div class="know-dot'+(i===0?' active':'')+'"></div>';});
+  dotsEl.innerHTML=dh;
+  var dots=dotsEl.querySelectorAll('.know-dot');
+
+  function onScroll(){
+    var cards=document.getElementById('knowgrid').querySelectorAll('.know-card');
+    var scrollLeft=scroll.scrollLeft;
+    var atEnd=scroll.scrollLeft+scroll.clientWidth>=scroll.scrollWidth-8;
+    if(fade) fade.style.opacity=atEnd?'0':'1';
+    var idx=0,minDist=Infinity;
+    cards.forEach(function(c,i){
+      var dist=Math.abs(c.offsetLeft-scrollLeft);
+      if(dist<minDist){minDist=dist;idx=i;}
+    });
+    dots.forEach(function(d,i){d.classList.toggle('active',i===idx);});
+  }
+  scroll.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
 }
 
 renderQ();
