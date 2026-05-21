@@ -6,6 +6,7 @@
 <title>SchoolHealth</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Prompt:wght@600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f0f6ff;--w:#fff;--pri:#3b82f6;--p2:#6366f1;--g:#10b981;--y:#f59e0b;--r:#ef4444;--o:#f97316;--tx:#111827;--mu:#6b7280;--bo:#e5e7eb;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -343,10 +344,10 @@ footer span{color:var(--pri);}
       <div class="print-disclaimer" data-th="⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)" data-en="⚠️ This assessment is a preliminary health behavior screening only and cannot replace medical diagnosis. | SchoolHealth — Computer Science Poster Project | References: WHO (2022), Department of Health Thailand (2023)">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
     </div>
     <div class="print-btns">
-      <button class="btn-print" onclick="window.print()" data-th="🖨️ พิมพ์เป็น PDF" data-en="🖨️ Print as PDF">🖨️ พิมพ์เป็น PDF</button>
+      <button class="btn-print" id="btn-print-main" onclick="doPrint()" data-th="🖨️ พิมพ์เป็น PDF" data-en="🖨️ Print as PDF">🖨️ พิมพ์เป็น PDF</button>
       <button class="btn-copy" onclick="copyResult()" data-th="📋 คัดลอกสรุป" data-en="📋 Copy Summary">📋 คัดลอกสรุป</button>
     </div>
-    <p class="print-mobile-tip" data-th="📱 บนมือถือ: กด 'พิมพ์เป็น PDF' → เลือก 'บันทึก' หรือ 'Save to Files'" data-en="📱 On mobile: tap 'Print as PDF' → select 'Save' or 'Save to Files'">📱 บนมือถือ: กด 'พิมพ์เป็น PDF' → เลือก 'บันทึก' หรือ 'Save to Files'</p>
+    <p class="print-mobile-tip" id="print-tip" data-th="💡 เลือก 'บันทึกเป็น PDF' ในหน้าต่างพิมพ์" data-en="💡 Choose 'Save as PDF' in the print dialog">💡 เลือก 'บันทึกเป็น PDF' ในหน้าต่างพิมพ์</p>
   </div>
 </div>
 
@@ -1005,6 +1006,15 @@ function buildPrint(){
   });
   if(!ah) ah='<li>'+T('พฤติกรรมของคุณดีมาก รักษาไว้นะคะ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
   document.getElementById('print-advice').innerHTML=ah;
+
+  var mob=/android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent)||window.innerWidth<=768;
+  var btnEl=document.getElementById('btn-print-main');
+  var tipEl=document.getElementById('print-tip');
+  if(mob){
+    var lbl=T('💾 บันทึกเป็นรูปภาพ','💾 Save as Image');
+    if(btnEl){btnEl.textContent=lbl;btnEl.setAttribute('data-th','💾 บันทึกเป็นรูปภาพ');btnEl.setAttribute('data-en','💾 Save as Image');}
+    if(tipEl){var tip=T('📱 iOS: รูปจะเปิดในแท็บใหม่ → กดค้างที่รูป → เลือก "บันทึกรูปภาพ"','📱 iOS: image opens in new tab → long-press → "Save Image"');tipEl.textContent=tip;tipEl.setAttribute('data-th',tip);tipEl.setAttribute('data-en',T('📱 iOS: image opens in new tab → long-press → "Save Image"','📱 iOS: image opens in new tab → long-press → "Save Image"'));}
+  }
 }
 
 function copyResult(){
@@ -1054,6 +1064,39 @@ function buildKnow(){
   }
   scroll.addEventListener('scroll',onScroll,{passive:true});
   onScroll();
+}
+
+function isMob(){return /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent)||window.innerWidth<=768;}
+
+function doPrint(){
+  if(isMob()){saveAsImage();}
+  else{window.print();}
+}
+
+function saveAsImage(){
+  var el=document.getElementById('printable');
+  var btn=document.getElementById('btn-print-main');
+  var orig=btn?btn.textContent:'';
+  if(btn){btn.textContent=T('⏳ กำลังสร้างรูป...','⏳ Creating...');btn.disabled=true;}
+  html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false}).then(function(canvas){
+    if(btn){btn.textContent=orig;btn.disabled=false;}
+    var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
+    if(isIOS){
+      var w=window.open('','_blank');
+      if(w){
+        w.document.write('<html><head><title>SchoolHealth Result</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#f3f4f6;display:flex;justify-content:center;padding:12px;box-sizing:border-box;}img{max-width:100%;border-radius:12px;}</style></head><body><img src="'+canvas.toDataURL('image/png')+'"></body></html>');
+        w.document.close();
+      }
+    }else{
+      var a=document.createElement('a');
+      a.download='schoolhealth-result.png';
+      a.href=canvas.toDataURL('image/png');
+      a.click();
+    }
+  }).catch(function(){
+    if(btn){btn.textContent=orig;btn.disabled=false;}
+    alert(T('สร้างรูปไม่สำเร็จ ลองใช้ Screenshot แทนได้เลยครับ','Could not create image. Please use Screenshot instead.'));
+  });
 }
 
 renderQ();
