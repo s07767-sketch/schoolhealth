@@ -8,7 +8,7 @@
 <script src="libs/chart.umd.min.js" onerror="(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';s.onerror=function(){window._chartFailed=true;};document.head.appendChild(s);}())"></script>
 <script src="libs/html2canvas.min.js" onerror="(function(){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onerror=function(){window._h2cFailed=true;};document.head.appendChild(s);}())"></script>
 <style>
-:root{--bg:#f0f6ff;--w:#fff;--pri:#3b82f6;--p2:#6366f1;--g:#10b981;--y:#f59e0b;--r:#ef4444;--o:#f97316;--tx:#111827;--mu:#6b7280;--bo:#e5e7eb;}
+:root{--bg:#f0f6ff;--w:#fff;--pri:hsl(214, 99%, 59%);--p2:#6366f1;--g:#10b981;--y:#f59e0b;--r:#ef4444;--o:#f97316;--tx:#111827;--mu:#6b7280;--bo:#e5e7eb;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Noto Sans Thai','Prompt',sans-serif;background:var(--bg);color:var(--tx);}
 nav{background:#fff;border-bottom:1px solid var(--bo);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.06);}
@@ -948,11 +948,32 @@ function build6Month(){
 }
 
 function build7Day(){
+  // จัดอันดับโรคทั้ง 8 ตัวตามความเสี่ยง (สูง → ต่ำ)
   var ranked=D.map(function(d){
     return {k:d.k,th:d.th,en:d.en,i:d.i,p:getDiseasePercent(d.k)};
   }).sort(function(a,b){return b.p-a.p;});
 
   var tagColors={of:'#3b82f6',ey:'#6366f1',sx:'#f97316',im:'#10b981',ki:'#06b6d4',st:'#84cc16',to:'#ec4899',ea:'#8b5cf6'};
+
+  // ── ชื่อธีมและอีโมจิของแต่ละ key ──
+  var keyMeta={
+    of:{th:'ปรับท่านั่งและยืดเส้น',  en:'Posture & Stretching',       e:'🦴'},
+    ey:{th:'พักสายตาและดูแลดวงตา',   en:'Eye Rest & Care',             e:'👁️'},
+    sx:{th:'จัดการความเครียดสะสม',   en:'Stress Management',           e:'😊'},
+    im:{th:'เสริมสร้างภูมิคุ้มกัน', en:'Boost Immunity',              e:'🛡️'},
+    ki:{th:'ดื่มน้ำและดูแลไต',       en:'Hydration & Kidney Care',     e:'💧'},
+    st:{th:'ดูแลกระเพาะอาหาร',       en:'Stomach Health',              e:'🫁'},
+    to:{th:'ดูแลสุขภาพช่องปาก',      en:'Oral Health',                 e:'🦷'},
+    ea:{th:'ปกป้องการได้ยิน',        en:'Hearing Protection',          e:'👂'},
+    sl:{th:'นอนหลับให้ดีขึ้น',       en:'Improve Sleep Quality',       e:'🌙'}
+  };
+
+  // key เสริมที่ complement กับ primary (เพิ่ม task ความหลากหลาย)
+  // เหตุผล: of+ph(ท่านั่ง+การขยับ), ey+sl(ตา+นอนหลับ), sx+im(เครียด→ภูมิต่ำ)
+  //         im+ki(ภูมิ+น้ำ), ki+st(ไต+กระเพาะ กินตรงเวลา), st+im, to+ki(ฟัน+น้ำ), ea+sx
+  var complement={of:'ph',ey:'sl',sx:'im',im:'ki',ki:'st',st:'im',to:'ki',ea:'sx'};
+
+  // ── Priority tags (top 3 ที่เสี่ยง >= 30%) ──
   var ph='';
   ranked.slice(0,3).forEach(function(r){
     if(r.p>=30){
@@ -960,54 +981,65 @@ function build7Day(){
       ph+='<span class="priority-tag" style="color:'+col+';border-color:'+col+'">'+r.i+' '+T('เน้น: ','Focus: ')+T(r.th,r.en)+'</span>';
     }
   });
-  document.getElementById('planpriority').innerHTML=ph||'<span style="font-size:.8rem;color:#6b7280">'+T('✅ ทุกด้านอยู่ในเกณฑ์ดี','✅ All categories in good range')+'</span>';
+  document.getElementById('planpriority').innerHTML=ph||'<span style="font-size:.8rem;color:#6b7280">'+T('✅ ทุกด้านอยู่ในเกณฑ์ดี — รักษาและสร้างนิสัยสุขภาพต่อไป','✅ All areas in good range — keep building healthy habits')+'</span>';
 
-  var focusKeys=ranked.filter(function(r){return r.p>=30;}).map(function(r){return r.k;});
-  if(focusKeys.length===0) focusKeys=['of','ey','sx'];
+  // ── ตัวช่วยดึง task ถัดไปจาก TASK_POOL (ไม่ซ้ำภายใน key เดียวกัน) ──
+  var usedIdx={};
+  function nextTask(k){
+    if(!TASK_POOL[k]) return null;
+    if(!usedIdx[k]) usedIdx[k]=0;
+    var entry=TASK_POOL[k][usedIdx[k]%TASK_POOL[k].length];
+    usedIdx[k]++;
+    return T(entry.th,entry.en);
+  }
 
-  var dayThemes=[
-    {th_d:'วันที่ 1',en_d:'Day 1',th_title:'เริ่มต้นเปลี่ยนแปลง',en_title:'Start the Change',e:'🌱'},
-    {th_d:'วันที่ 2',en_d:'Day 2',th_title:'เน้นการกินและดื่มน้ำ',en_title:'Focus on Eating & Hydration',e:'🍱'},
-    {th_d:'วันที่ 3',en_d:'Day 3',th_title:'ดูแลสายตาและหู',en_title:'Eye & Ear Care',e:'👁️'},
-    {th_d:'วันที่ 4',en_d:'Day 4',th_title:'เพิ่มการเคลื่อนไหว',en_title:'Increase Movement',e:'🏃'},
-    {th_d:'วันที่ 5',en_d:'Day 5',th_title:'จัดการความเครียด',en_title:'Manage Stress',e:'😊'},
-    {th_d:'วันที่ 6',en_d:'Day 6',th_title:'นอนหลับให้ดีขึ้น',en_title:'Improve Sleep Quality',e:'🌙'},
-    {th_d:'วันที่ 7',en_d:'Day 7',th_title:'ทบทวนและตั้งเป้าหมาย',en_title:'Review & Set Goals',e:'🎯'}
+  var dayLabels=[
+    {th:'วันที่ 1',en:'Day 1'},{th:'วันที่ 2',en:'Day 2'},{th:'วันที่ 3',en:'Day 3'},
+    {th:'วันที่ 4',en:'Day 4'},{th:'วันที่ 5',en:'Day 5'},{th:'วันที่ 6',en:'Day 6'},
+    {th:'วันที่ 7',en:'Day 7'}
   ];
 
-  var taskAssign=[
-    [focusKeys[0]||'of',focusKeys[1]||'ey','sx'],
-    ['st','ki','im'],
-    ['ey','ea','sc'],
-    ['of','ph','sx'],
-    ['sx','im','sl'],
-    ['sl','im','sx'],
-    ['of','ey','ki']
-  ];
-
-  var usedTasks={};
   var h='';
-  dayThemes.forEach(function(day,di){
-    var keys=taskAssign[di];
+
+  // ── วันที่ 1–5: เน้นตาม ranked[0..4] ตามลำดับความเสี่ยงของผู้ใช้ ──
+  for(var di=0;di<5;di++){
+    var main=ranked[di];
+    var meta=keyMeta[main.k]||{th:T(main.th,main.en),en:T(main.th,main.en),e:main.i};
+    var col=tagColors[main.k]||'#3b82f6';
+    var compKey=complement[main.k]||'im';
+
     var tasks=[];
-    keys.forEach(function(k){
-      if(TASK_POOL[k]){
-        if(!usedTasks[k]) usedTasks[k]=0;
-        var idx=usedTasks[k]%TASK_POOL[k].length;
-        tasks.push(T(TASK_POOL[k][idx].th,TASK_POOL[k][idx].en));
-        usedTasks[k]++;
-      }
-    });
-    var mainKey=keys[0];
-    var col=({of:'#3b82f6',ey:'#6366f1',sx:'#f97316',im:'#10b981',ki:'#06b6d4',st:'#84cc16',to:'#ec4899',ea:'#8b5cf6'})[mainKey]||'#3b82f6';
-    var mainRisk=ranked.find(function(r){return r.k===mainKey;});
+    var t1=nextTask(main.k); if(t1) tasks.push(t1);
+    var t2=nextTask(main.k); if(t2) tasks.push(t2);
+    var t3=nextTask(compKey); if(t3) tasks.push(t3);
+
     h+='<div class="plan-day">';
-    h+='<div class="plan-day-title">'+day.e+' '+T(day.th_d,day.en_d)+' — '+T(day.th_title,day.en_title)+'</div>';
-    if(mainRisk&&mainRisk.p>=30) h+='<span class="plan-focus" style="background:'+col+'20;color:'+col+'">'+mainRisk.i+' '+T('เน้น: ','Focus: ')+T(mainRisk.th,mainRisk.en)+'</span>';
+    h+='<div class="plan-day-title">'+meta.e+' '+T(dayLabels[di].th,dayLabels[di].en)+' — '+T(meta.th,meta.en)+'</div>';
+    h+='<span class="plan-focus" style="background:'+col+'20;color:'+col+'">'+main.i+' '+T('เน้น: ','Focus: ')+T(main.th,main.en)+'</span>';
     h+='<ul class="plan-tasks">';
     tasks.forEach(function(t){h+='<li>'+t+'</li>';});
     h+='</ul></div>';
-  });
+  }
+
+  // ── วันที่ 6: นอนหลับ (universal — ช่วยฟื้นฟูทุกด้าน) ──
+  var slMeta=keyMeta['sl'];
+  h+='<div class="plan-day">';
+  h+='<div class="plan-day-title">'+slMeta.e+' '+T(dayLabels[5].th,dayLabels[5].en)+' — '+T(slMeta.th,slMeta.en)+'</div>';
+  h+='<span class="plan-focus" style="background:#6366f120;color:#6366f1">🌙 '+T('สำหรับทุกคน — การนอนหลับดีช่วยฟื้นฟูทุกด้าน','For everyone — quality sleep restores all health areas')+'</span>';
+  h+='<ul class="plan-tasks">';
+  for(var si=0;si<3;si++){var slTask=nextTask('sl');if(slTask)h+='<li>'+slTask+'</li>';}
+  h+='</ul></div>';
+
+  // ── วันที่ 7: ทบทวนและตั้งเป้าหมาย ──
+  h+='<div class="plan-day">';
+  h+='<div class="plan-day-title">🎯 '+T(dayLabels[6].th,dayLabels[6].en)+' — '+T('ทบทวนและตั้งเป้าหมาย','Review & Set Goals')+'</div>';
+  h+='<span class="plan-focus" style="background:#10b98120;color:#10b981">✨ '+T('ทำซ้ำสิ่งที่ทำได้ดี ปรับสิ่งที่ยังยาก','Repeat what worked, adjust what was hard')+'</span>';
+  h+='<ul class="plan-tasks">';
+  var rv1=nextTask(ranked[0].k); if(rv1) h+='<li>'+rv1+'</li>';
+  if(ranked[1]){var rv2=nextTask(ranked[1].k);if(rv2)h+='<li>'+rv2+'</li>';}
+  h+='<li>'+T('เลือก 1 นิสัยที่อยากทำต่อเนื่อง แล้วตั้งเป้าทำให้ได้ 30 วัน 💪','Choose 1 habit to continue and commit to it for 30 days 💪')+'</li>';
+  h+='</ul></div>';
+
   document.getElementById('plan7d').innerHTML=h;
 }
 
@@ -1071,9 +1103,10 @@ function buildRadar(){
 
 function buildPrint(){
   var now=new Date();
+  var timeStr=now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
   document.getElementById('print-date').textContent=T(
-    'วันที่: '+now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'}),
-    'Date: '+now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})
+    'วันที่: '+now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'})+' เวลา '+timeStr+' น.',
+    'Date: '+now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})+' at '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
   );
 
   var totW=0,mxW=0;
