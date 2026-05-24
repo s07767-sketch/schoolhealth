@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SchoolHealth</title>
 <link href="fonts/fonts.css" rel="stylesheet">
-<script src="libs/chart.umd.min.js"></script>
-<script src="libs/html2canvas.min.js"></script>
+<script src="libs/chart.umd.min.js" onerror="(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';s.onerror=function(){window._chartFailed=true;};document.head.appendChild(s);}())"></script>
+<script src="libs/html2canvas.min.js" onerror="(function(){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onerror=function(){window._h2cFailed=true;};document.head.appendChild(s);}())"></script>
 <style>
 :root{--bg:#f0f6ff;--w:#fff;--pri:#3b82f6;--p2:#6366f1;--g:#10b981;--y:#f59e0b;--r:#ef4444;--o:#f97316;--tx:#111827;--mu:#6b7280;--bo:#e5e7eb;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -1031,6 +1031,19 @@ function buildCatBars(){
 }
 
 function buildRadar(){
+  // ── ตรวจสอบว่า Chart.js โหลดสำเร็จหรือไม่ ──
+  if(typeof Chart==='undefined'){
+    var chartWrap=document.querySelector('#tp1 .chart-wrap');
+    if(chartWrap) chartWrap.innerHTML=
+      '<div style="text-align:center;padding:2rem 1rem;color:var(--r);font-size:.85rem;line-height:1.8;">'
+      +'<div style="font-size:2.5rem;margin-bottom:.5rem;">📊</div>'
+      +'<strong>'+T('โหลดกราฟไม่สำเร็จ','Chart failed to load')+'</strong><br>'
+      +T('ไฟล์ chart.js หาย หรือไม่มีอินเทอร์เน็ต<br>กรุณาเชื่อมต่อเน็ตแล้วรีเฟรชหน้า',
+         'chart.js is missing or no internet.<br>Please connect and refresh the page.')
+      +'</div>';
+    return;
+  }
+
   var cats=[
     {k:'nu',th:'การกิน',en:'Nutrition',mx:18},
     {k:'sl',th:'การนอน',en:'Sleep',mx:15},
@@ -1154,25 +1167,28 @@ function doPrint(){
 }
 
 function saveAsImage(){
+  // ── ตรวจสอบว่า html2canvas โหลดสำเร็จหรือไม่ ──
+  if(typeof html2canvas==='undefined'){
+    alert(T(
+      '⚠️ โหลด html2canvas ไม่สำเร็จ\n\nสาเหตุ: ไฟล์ html2canvas.min.js หาย หรือไม่มีอินเทอร์เน็ต\n\nแนะนำ: เชื่อมต่อเน็ตแล้วรีเฟรชหน้า\nหรือใช้ฟีเชอร์ Screenshot ของเครื่องแทนได้เลยครับ',
+      '⚠️ html2canvas failed to load.\n\nReason: html2canvas.min.js is missing or no internet.\n\nTip: Connect to internet and refresh the page,\nor use your device\'s built-in screenshot instead.'
+    ));
+    return;
+  }
+
   var el=document.getElementById('printable');
   var btn=document.getElementById('btn-print-main');
   var orig=btn?btn.textContent:'';
   if(btn){btn.textContent=T('⏳ กำลังสร้างรูป...','⏳ Creating...');btn.disabled=true;}
   html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false}).then(function(canvas){
     if(btn){btn.textContent=orig;btn.disabled=false;}
-    var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
-    if(isIOS){
-      var w=window.open('','_blank');
-      if(w){
-        w.document.write('<html><head><title>SchoolHealth Result</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#f3f4f6;display:flex;justify-content:center;padding:12px;box-sizing:border-box;}img{max-width:100%;border-radius:12px;}</style></head><body><img src="'+canvas.toDataURL('image/png')+'"></body></html>');
-        w.document.close();
-      }
-    }else{
-      var a=document.createElement('a');
-      a.download='schoolhealth-result.png';
-      a.href=canvas.toDataURL('image/png');
-      a.click();
-    }
+    var dataUrl=canvas.toDataURL('image/png');
+    var a=document.createElement('a');
+    a.download='schoolhealth-result.png';
+    a.href=dataUrl;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }).catch(function(){
     if(btn){btn.textContent=orig;btn.disabled=false;}
     alert(T('สร้างรูปไม่สำเร็จ ลองใช้ Screenshot แทนได้เลยครับ','Could not create image. Please use Screenshot instead.'));
