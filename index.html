@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SchoolHealth</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Prompt:wght@600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="fonts/fonts.css" rel="stylesheet">
+<script src="libs/chart.umd.min.js"></script>
+<script src="libs/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f0f6ff;--w:#fff;--pri:#3b82f6;--p2:#6366f1;--g:#10b981;--y:#f59e0b;--r:#ef4444;--o:#f97316;--tx:#111827;--mu:#6b7280;--bo:#e5e7eb;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -25,68 +25,68 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .page{display:none;}.page.active{display:block;}
 .hero{background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;padding:3rem 1.5rem 5rem;text-align:center;position:relative;overflow:hidden;}
 .hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:50px;background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%);}
-.he{font-size:3rem;display:block;margin-bottom:.8rem;animation:bounce 2s infinite;}
+.hero-emoji{font-size:3rem;display:block;margin-bottom:.8rem;animation:bounce 2s infinite;}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .hero h1{font-family:'Prompt',sans-serif;font-size:2rem;font-weight:700;line-height:1.3;margin-bottom:.8rem;}
 .hero p{opacity:.9;font-size:.93rem;max-width:480px;margin:0 auto 1.2rem;line-height:1.8;}
-.hsub{font-size:.78rem;opacity:.7;margin-bottom:1rem;}
+.hero-subtitle{font-size:.78rem;opacity:.7;margin-bottom:1rem;}
 .disclaimer-box{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:.9rem 1.2rem;max-width:500px;margin:.8rem auto 1.5rem;font-size:.78rem;line-height:1.7;text-align:left;}
-.bst{background:#fff;color:var(--pri);border:none;padding:12px 34px;border-radius:100px;font-family:'Noto Sans Thai',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.18);transition:transform .2s;}
-.bst:hover{transform:translateY(-3px);}
-.c3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:840px;margin:-34px auto 2.5rem;padding:0 1.5rem;}
-.c3i{background:#fff;border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 4px 14px rgba(59,130,246,.10);border:1px solid var(--bo);}
-.c3i .ic{font-size:1.9rem;margin-bottom:.5rem;display:block;}
-.c3i .tt{font-size:.88rem;font-weight:700;margin-bottom:3px;}
-.c3i .dd{font-size:.76rem;color:var(--mu);line-height:1.5;}
+.btn-start{background:#fff;color:var(--pri);border:none;padding:12px 34px;border-radius:100px;font-family:'Noto Sans Thai',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.18);transition:transform .2s;}
+.btn-start:hover{transform:translateY(-3px);}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:840px;margin:-34px auto 2.5rem;padding:0 1.5rem;}
+.feature-card{background:#fff;border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 4px 14px rgba(59,130,246,.10);border:1px solid var(--bo);}
+.feature-card .feature-icon{font-size:1.9rem;margin-bottom:.5rem;display:block;}
+.feature-card .feature-title{font-size:.88rem;font-weight:700;margin-bottom:3px;}
+.feature-card .feature-desc{font-size:.76rem;color:var(--mu);line-height:1.5;}
 .sec{max-width:840px;margin:0 auto 2.5rem;padding:0 1.5rem;}
 .stag{display:inline-block;background:rgba(59,130,246,.1);color:var(--pri);padding:3px 12px;border-radius:100px;font-size:.74rem;font-weight:600;margin-bottom:.5rem;}
 .sti{font-family:'Prompt',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:1.1rem;}
-.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.dc{background:#fff;border-radius:13px;padding:1rem;border:1px solid var(--bo);box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s;}
-.dc:hover{transform:translateY(-3px);}
-.de{font-size:1.7rem;margin-bottom:.4rem;display:block;}
-.dn{font-size:.85rem;font-weight:700;margin-bottom:2px;}
-.dz{font-size:.73rem;color:var(--mu);line-height:1.4;}
-.dtag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:100px;font-size:.68rem;font-weight:600;}
-.tr{background:rgba(239,68,68,.1);color:var(--r);}
-.ty{background:rgba(245,158,11,.1);color:var(--y);}
-.tb{background:rgba(59,130,246,.1);color:var(--pri);}
+.disease-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.disease-card{background:#fff;border-radius:13px;padding:1rem;border:1px solid var(--bo);box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s;}
+.disease-card:hover{transform:translateY(-3px);}
+.disease-emoji{font-size:1.7rem;margin-bottom:.4rem;display:block;}
+.disease-name{font-size:.85rem;font-weight:700;margin-bottom:2px;}
+.disease-desc{font-size:.73rem;color:var(--mu);line-height:1.4;}
+.disease-tag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:100px;font-size:.68rem;font-weight:600;}
+.tag-red{background:rgba(239,68,68,.1);color:var(--r);}
+.tag-yellow{background:rgba(245,158,11,.1);color:var(--y);}
+.tag-blue{background:rgba(59,130,246,.1);color:var(--pri);}
 /* QUIZ */
-.qw{max-width:640px;margin:2rem auto;padding:0 1.5rem 3rem;}
-.qh{text-align:center;margin-bottom:1.4rem;}
-.qh h2{font-family:'Prompt',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:.3rem;}
-.qh p{color:var(--mu);font-size:.83rem;}
-.pt{display:flex;justify-content:space-between;font-size:.78rem;color:var(--mu);margin-bottom:5px;}
-.pb{height:7px;background:var(--bo);border-radius:100px;overflow:hidden;margin-bottom:1.2rem;}
-.pf{height:100%;background:linear-gradient(90deg,var(--pri),var(--p2));border-radius:100px;transition:width .4s ease;}
-.qc{background:#fff;border-radius:18px;padding:1.6rem;box-shadow:0 4px 14px rgba(59,130,246,.10);border:1px solid var(--bo);margin-bottom:.9rem;}
-.qbg{display:inline-flex;align-items:center;gap:5px;background:rgba(59,130,246,.1);color:var(--pri);padding:3px 10px;border-radius:100px;font-size:.73rem;font-weight:600;margin-bottom:.7rem;}
-.qwt{display:inline-flex;align-items:center;gap:4px;background:rgba(249,115,22,.1);color:var(--o);padding:2px 8px;border-radius:100px;font-size:.68rem;font-weight:600;margin-left:6px;}
-.qem{font-size:1.3rem;margin-bottom:.4rem;display:block;}
-.qt{font-size:.96rem;font-weight:600;line-height:1.7;margin-bottom:.6rem;}
-.qhi{font-size:.76rem;color:var(--mu);margin-bottom:.5rem;font-style:italic;}
-.qref{font-size:.71rem;color:#9ca3af;margin-bottom:.9rem;padding:5px 10px;background:#f9fafb;border-radius:8px;border-left:3px solid var(--pri);}
-.opts{display:flex;flex-direction:column;gap:8px;}
-.opt{display:flex;align-items:center;gap:10px;background:var(--bg);border:2px solid var(--bo);border-radius:11px;padding:10px 13px;cursor:pointer;transition:all .2s;}
-.opt:hover{border-color:var(--pri);background:rgba(59,130,246,.04);}
-.opt.sel{border-color:var(--pri);background:rgba(59,130,246,.07);}
-.oc{width:20px;height:20px;border:2px solid var(--bo);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;}
-.opt.sel .oc{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:800;}
-.ol{font-size:.88rem;line-height:1.4;}
-.qnv{display:flex;justify-content:space-between;margin-top:.5rem;}
-.bbk{background:var(--bg);color:var(--mu);border:1px solid var(--bo);padding:9px 18px;border-radius:10px;font-family:'Noto Sans Thai',sans-serif;font-size:.86rem;cursor:pointer;}
-.bgo{background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:9px 22px;border-radius:10px;font-family:'Noto Sans Thai',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(59,130,246,.3);transition:transform .2s;}
-.bgo:hover{transform:translateY(-2px);}
+.quiz-wrap{max-width:640px;margin:2rem auto;padding:0 1.5rem 3rem;}
+.quiz-header{text-align:center;margin-bottom:1.4rem;}
+.quiz-header h2{font-family:'Prompt',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:.3rem;}
+.quiz-header p{color:var(--mu);font-size:.83rem;}
+.progress-text{display:flex;justify-content:space-between;font-size:.78rem;color:var(--mu);margin-bottom:5px;}
+.progress-bar-wrap{height:7px;background:var(--bo);border-radius:100px;overflow:hidden;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--pri),var(--p2));border-radius:100px;transition:width .4s ease;}
+.quiz-card{background:#fff;border-radius:18px;padding:1.6rem;box-shadow:0 4px 14px rgba(59,130,246,.10);border:1px solid var(--bo);margin-bottom:.9rem;}
+.quiz-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(59,130,246,.1);color:var(--pri);padding:3px 10px;border-radius:100px;font-size:.73rem;font-weight:600;margin-bottom:.7rem;}
+.quiz-weight-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(249,115,22,.1);color:var(--o);padding:2px 8px;border-radius:100px;font-size:.68rem;font-weight:600;margin-left:6px;}
+.quiz-emoji{font-size:1.3rem;margin-bottom:.4rem;display:block;}
+.quiz-question{font-size:.96rem;font-weight:600;line-height:1.7;margin-bottom:.6rem;}
+.quiz-hint{font-size:.76rem;color:var(--mu);margin-bottom:.5rem;font-style:italic;}
+.quiz-ref{font-size:.71rem;color:#9ca3af;margin-bottom:.9rem;padding:5px 10px;background:#f9fafb;border-radius:8px;border-left:3px solid var(--pri);}
+.options-list{display:flex;flex-direction:column;gap:8px;}
+.option-item{display:flex;align-items:center;gap:10px;background:var(--bg);border:2px solid var(--bo);border-radius:11px;padding:10px 13px;cursor:pointer;transition:all .2s;}
+.option-item:hover{border-color:var(--pri);background:rgba(59,130,246,.04);}
+.option-item.sel{border-color:var(--pri);background:rgba(59,130,246,.07);}
+.option-circle{width:20px;height:20px;border:2px solid var(--bo);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;}
+.option-item.sel .option-circle{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:800;}
+.option-label{font-size:.88rem;line-height:1.4;}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:.5rem;}
+.btn-back{background:var(--bg);color:var(--mu);border:1px solid var(--bo);padding:9px 18px;border-radius:10px;font-family:'Noto Sans Thai',sans-serif;font-size:.86rem;cursor:pointer;}
+.btn-next{background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:9px 22px;border-radius:10px;font-family:'Noto Sans Thai',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(59,130,246,.3);transition:transform .2s;}
+.btn-next:hover{transform:translateY(-2px);}
 /* RESULT */
-.rw{max-width:760px;margin:1.5rem auto;padding:0 1.5rem 3rem;}
-.rtop{background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border-radius:18px 18px 0 0;padding:1.6rem;text-align:center;}
-.rtop h2{font-family:'Prompt',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.3rem;}
-.rtop p{opacity:.85;font-size:.82rem;}
+.result-wrap{max-width:760px;margin:1.5rem auto;padding:0 1.5rem 3rem;}
+.result-header{background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border-radius:18px 18px 0 0;padding:1.6rem;text-align:center;}
+.result-header h2{font-family:'Prompt',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.3rem;}
+.result-header p{opacity:.85;font-size:.82rem;}
 .tabs{display:flex;background:#fff;border-left:1px solid var(--bo);border-right:1px solid var(--bo);overflow-x:auto;}
 .tab{flex:1;min-width:80px;padding:10px 4px;text-align:center;font-size:.71rem;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;}
 .tab.active{color:var(--pri);border-bottom-color:var(--pri);}
-.tpanel{display:none;background:#fff;border:1px solid var(--bo);border-top:none;border-radius:0 0 18px 18px;padding:1.5rem;box-shadow:0 4px 14px rgba(59,130,246,.10);}
-.tpanel.active{display:block;}
+.tab-panel{display:none;background:#fff;border:1px solid var(--bo);border-top:none;border-radius:0 0 18px 18px;padding:1.5rem;box-shadow:0 4px 14px rgba(59,130,246,.10);}
+.tab-panel.active{display:block;}
 /* criteria box */
 .criteria-box{background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:1rem;margin-bottom:1.2rem;}
 .criteria-title{font-size:.84rem;font-weight:700;color:#166534;margin-bottom:.6rem;}
@@ -95,28 +95,28 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .criteria-text{font-size:.78rem;color:var(--mu);line-height:1.5;}
 /* result disclaimer */
 .res-disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;font-size:.75rem;color:#92400e;line-height:1.6;}
-.oval{display:flex;align-items:center;gap:1.1rem;background:var(--bg);border-radius:13px;padding:1rem 1.2rem;margin-bottom:1.2rem;border:1px solid var(--bo);}
-.osc{font-family:'Prompt',sans-serif;font-size:2.6rem;font-weight:700;line-height:1;}
-.olb{font-size:.9rem;font-weight:600;margin-bottom:3px;}
-.ods{font-size:.78rem;color:var(--mu);line-height:1.5;}
-.rtit{font-size:.9rem;font-weight:700;margin-bottom:.8rem;}
-.rl{display:flex;flex-direction:column;gap:9px;margin-bottom:1.2rem;}
-.rr{display:flex;align-items:center;gap:9px;background:var(--bg);border-radius:11px;padding:9px 13px;border:1px solid var(--bo);}
-.ric{font-size:1.4rem;flex-shrink:0;}
-.ri{flex:1;}
-.rn{font-size:.84rem;font-weight:600;margin-bottom:3px;}
-.rb{height:5px;background:var(--bo);border-radius:100px;overflow:hidden;}
-.rbf{height:100%;border-radius:100px;}
-.rp{font-size:.78rem;font-weight:700;text-align:right;}
-.rlv{font-size:.7rem;margin-top:1px;text-align:right;}
-.high{color:var(--r);}.high .rbf{background:var(--r);}
-.mid{color:var(--y);}.mid .rbf{background:var(--y);}
-.low{color:var(--g);}.low .rbf{background:var(--g);}
-.abox{background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(59,130,246,.04));border:1px solid rgba(16,185,129,.2);border-radius:13px;padding:1.2rem;margin-bottom:1rem;}
-.atit{font-size:.9rem;font-weight:700;color:#065f46;margin-bottom:.7rem;}
-.al{list-style:none;display:flex;flex-direction:column;gap:7px;}
-.al li{display:flex;gap:7px;font-size:.83rem;line-height:1.6;color:var(--mu);}
-.al li::before{content:'✅';flex-shrink:0;}
+.score-overview{display:flex;align-items:center;gap:1.1rem;background:var(--bg);border-radius:13px;padding:1rem 1.2rem;margin-bottom:1.2rem;border:1px solid var(--bo);}
+.score-value{font-family:'Prompt',sans-serif;font-size:2.6rem;font-weight:700;line-height:1;}
+.score-label{font-size:.9rem;font-weight:600;margin-bottom:3px;}
+.score-desc{font-size:.78rem;color:var(--mu);line-height:1.5;}
+.result-title{font-size:.9rem;font-weight:700;margin-bottom:.8rem;}
+.risk-list{display:flex;flex-direction:column;gap:9px;margin-bottom:1.2rem;}
+.risk-row{display:flex;align-items:center;gap:9px;background:var(--bg);border-radius:11px;padding:9px 13px;border:1px solid var(--bo);}
+.risk-icon{font-size:1.4rem;flex-shrink:0;}
+.risk-info{flex:1;}
+.risk-name{font-size:.84rem;font-weight:600;margin-bottom:3px;}
+.risk-bar{height:5px;background:var(--bo);border-radius:100px;overflow:hidden;}
+.risk-bar-fill{height:100%;border-radius:100px;}
+.risk-pct{font-size:.78rem;font-weight:700;text-align:right;}
+.risk-level-label{font-size:.7rem;margin-top:1px;text-align:right;}
+.high{color:var(--r);}.high .risk-bar-fill{background:var(--r);}
+.mid{color:var(--y);}.mid .risk-bar-fill{background:var(--y);}
+.low{color:var(--g);}.low .risk-bar-fill{background:var(--g);}
+.advice-box{background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(59,130,246,.04));border:1px solid rgba(16,185,129,.2);border-radius:13px;padding:1.2rem;margin-bottom:1rem;}
+.advice-title{font-size:.9rem;font-weight:700;color:#065f46;margin-bottom:.7rem;}
+.advice-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.advice-list li{display:flex;gap:7px;font-size:.83rem;line-height:1.6;color:var(--mu);}
+.advice-list li::before{content:'✅';flex-shrink:0;}
 .chart-wrap{max-width:340px;margin:0 auto 1rem;}
 .cat-bars{display:flex;flex-direction:column;gap:10px;margin-top:1rem;}
 .cat-row{background:var(--bg);border-radius:11px;padding:10px 14px;border:1px solid var(--bo);}
@@ -125,10 +125,10 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .cat-score{font-size:.8rem;font-weight:700;}
 .cat-bar{height:7px;background:var(--bo);border-radius:100px;overflow:hidden;}
 .cat-fill{height:100%;border-radius:100px;}
-.cat-lv{font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:100px;}
-.cat-lv-good{background:rgba(16,185,129,.12);color:#065f46;}
-.cat-lv-mid{background:rgba(245,158,11,.15);color:#92400e;}
-.cat-lv-low{background:rgba(239,68,68,.12);color:#991b1b;}
+.cat-level{font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.cat-level-good{background:rgba(16,185,129,.12);color:#065f46;}
+.cat-level-mid{background:rgba(245,158,11,.15);color:#92400e;}
+.cat-level-low{background:rgba(239,68,68,.12);color:#991b1b;}
 .formula-box{background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.78rem;color:#92400e;line-height:1.7;}
 .formula-title{font-weight:700;margin-bottom:.4rem;font-size:.82rem;}
 .month-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem;}
@@ -140,8 +140,8 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .mc-list li{font-size:.78rem;color:var(--mu);display:flex;gap:6px;line-height:1.5;}
 .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1rem;}
 .proj-card{background:var(--bg);border-radius:11px;padding:.9rem;border:1px solid var(--bo);text-align:center;}
-.proj-val{font-family:'Prompt',sans-serif;font-size:1.5rem;font-weight:700;}
-.proj-lbl{font-size:.74rem;color:var(--mu);margin-top:2px;}
+.proj-value{font-family:'Prompt',sans-serif;font-size:1.5rem;font-weight:700;}
+.proj-label{font-size:.74rem;color:var(--mu);margin-top:2px;}
 .plan-priority{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
 .priority-tag{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;border:2px solid;}
 .plan-grid{display:flex;flex-direction:column;gap:10px;}
@@ -159,8 +159,8 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .print-header p{font-size:.8rem;color:var(--mu);margin-top:.3rem;}
 .print-score-row{display:flex;justify-content:center;gap:2rem;margin-bottom:1.5rem;}
 .print-score{text-align:center;}
-.print-score-val{font-family:'Prompt',sans-serif;font-size:2rem;font-weight:700;}
-.print-score-lbl{font-size:.75rem;color:var(--mu);}
+.print-score-value{font-family:'Prompt',sans-serif;font-size:2rem;font-weight:700;}
+.print-score-label{font-size:.75rem;color:var(--mu);}
 .print-diseases{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;}
 .print-disease-row{display:flex;align-items:center;gap:8px;font-size:.8rem;}
 .print-bar{flex:1;height:5px;background:var(--bo);border-radius:100px;overflow:hidden;}
@@ -171,7 +171,7 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .print-advice-list li{font-size:.78rem;color:var(--mu);display:flex;gap:6px;line-height:1.5;}
 .print-advice-list li::before{content:'•';color:var(--pri);font-weight:700;}
 .print-disclaimer{font-size:.7rem;color:#9ca3af;border-top:1px solid var(--bo);padding-top:.8rem;line-height:1.6;}
-.print-btns{display:flex;gap:10px;margin-top:1.2rem;}
+.print-buttons{display:flex;gap:10px;margin-top:1.2rem;}
 .btn-print{flex:1;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:11px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;}
 .btn-copy{flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--bo);padding:11px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.88rem;cursor:pointer;}
 .print-mobile-tip{font-size:.72rem;color:var(--mu);text-align:center;margin-top:.6rem;line-height:1.5;}
@@ -192,11 +192,11 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .know-dot{width:7px;height:7px;border-radius:50%;background:var(--bo);transition:background .2s,transform .2s;}
 .know-dot.active{background:var(--pri);transform:scale(1.3);}
 .know-scroll-inner-mobile{display:none;}
-.brt{display:block;width:100%;margin-top:1.2rem;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:12px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;}
+.btn-action{display:block;width:100%;margin-top:1.2rem;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:12px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;}
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
-@media print{nav,footer,.print-btns,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
-@media(max-width:600px){.c3,.dg,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo{padding:3px 7px;gap:5px;}.logo-school,.logo-health{font-size:.72rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;}nav ul::-webkit-scrollbar{display:none;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{overflow-x:visible;margin:0;padding:0;width:100%;scroll-snap-type:none;}.know-grid{display:grid!important;grid-template-columns:1fr!important;width:100%;gap:12px;padding-right:0;}.know-card{width:auto;}.know-fade{display:none!important;}.know-hint{display:none!important;}.know-dots{display:none!important;}}
+@media print{nav,footer,.print-buttons,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
+@media(max-width:600px){.feature-grid,.disease-grid,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo{padding:3px 7px;gap:5px;}.logo-school,.logo-health{font-size:.72rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;}nav ul::-webkit-scrollbar{display:none;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{overflow-x:visible;margin:0;padding:0;width:100%;scroll-snap-type:none;}.know-grid{display:grid!important;grid-template-columns:1fr!important;width:100%;gap:12px;padding-right:0;}.know-card{width:auto;}.know-fade{display:none!important;}.know-hint{display:none!important;}.know-dots{display:none!important;}}
 </style>
 </head>
 <body>
@@ -215,56 +215,56 @@ footer span{color:var(--pri);}
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero">
-    <span class="he">🏫</span>
+    <span class="hero-emoji">🏫</span>
     <h1 data-th="ระบบประเมินและพยากรณ์<br>ความเสี่ยงสุขภาพและโรค<br>จากชีวิตในโรงเรียน" data-en="Health and Disease Risk<br>Assessment and Forecasting System<br>for School Life">ระบบประเมินและพยากรณ์<br>ความเสี่ยงสุขภาพและโรค<br>จากชีวิตในโรงเรียน</h1>
     <p data-th="ตอบคำถาม 20 ข้อ รู้ผลทันที พร้อมแผนปรับพฤติกรรม 7 วันเฉพาะตัว" data-en="Answer 20 questions, get instant results with a personalized 7-day improvement plan">ตอบคำถาม 20 ข้อ รู้ผลทันที พร้อมแผนปรับพฤติกรรม 7 วันเฉพาะตัว</p>
-    <p class="hsub" data-th="ใช้เวลาประมาณ 4-5 นาที | ฟรี | ไม่ต้องสมัครสมาชิก" data-en="Takes 4-5 minutes | Free | No registration required">ใช้เวลาประมาณ 4-5 นาที | ฟรี | ไม่ต้องสมัครสมาชิก</p>
+    <p class="hero-subtitle" data-th="ใช้เวลาประมาณ 4-5 นาที | ฟรี | ไม่ต้องสมัครสมาชิก" data-en="Takes 4-5 minutes | Free | No registration required">ใช้เวลาประมาณ 4-5 นาที | ฟรี | ไม่ต้องสมัครสมาชิก</p>
     <div class="disclaimer-box">
       ⚠️ <b data-th="ข้อควรทราบก่อนใช้งาน" data-en="Important Notice">ข้อควรทราบก่อนใช้งาน</b><br>
       <span data-th="เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์" data-en="This website is a preliminary health behavior screening tool only. It cannot replace medical diagnosis or professional advice. If you have abnormal symptoms or health concerns, please consult a doctor.">เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์</span>
     </div>
-    <button class="bst" onclick="go('quiz')" data-th="🔍 เริ่มตรวจสอบเลย" data-en="🔍 Start Assessment">🔍 เริ่มตรวจสอบเลย</button>
+    <button class="btn-start" onclick="go('quiz')" data-th="🔍 เริ่มตรวจสอบเลย" data-en="🔍 Start Assessment">🔍 เริ่มตรวจสอบเลย</button>
   </div>
-  <div class="c3">
-    <div class="c3i"><span class="ic">📋</span><div class="tt" data-th="20 คำถามครอบคลุม" data-en="20 Comprehensive Questions">20 คำถามครอบคลุม</div><div class="dd" data-th="ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ" data-en="Covering all school life behaviors with academic references">ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ</div></div>
-    <div class="c3i"><span class="ic">🕸️</span><div class="tt" data-th="กราฟ 4 มิติ" data-en="4-Dimensional Chart">กราฟ 4 มิติ</div><div class="dd" data-th="วิเคราะห์ใน 4 หมวด การกิน การนอน กายภาพ และการใช้หน้าจอ" data-en="Analysis in 4 categories: nutrition, sleep, physical, and screen use">วิเคราะห์ใน 4 หมวด การกิน การนอน กายภาพ และการใช้หน้าจอ</div></div>
-    <div class="c3i"><span class="ic">📅</span><div class="tt" data-th="แผน 7 วันเฉพาะตัว" data-en="Personalized 7-Day Plan">แผน 7 วันเฉพาะตัว</div><div class="dd" data-th="แผนปรับพฤติกรรมที่ปรับตามคะแนนของคุณ ไม่ใช่แบบเดียวกันทุกคน" data-en="Behavior improvement plan tailored to your scores, not a one-size-fits-all">แผนปรับพฤติกรรมที่ปรับตามคะแนนของคุณ ไม่ใช่แบบเดียวกันทุกคน</div></div>
+  <div class="feature-grid">
+    <div class="feature-card"><span class="feature-icon">📋</span><div class="feature-title" data-th="20 คำถามครอบคลุม" data-en="20 Comprehensive Questions">20 คำถามครอบคลุม</div><div class="feature-desc" data-th="ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ" data-en="Covering all school life behaviors with academic references">ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ</div></div>
+    <div class="feature-card"><span class="feature-icon">🕸️</span><div class="feature-title" data-th="กราฟ 4 มิติ" data-en="4-Dimensional Chart">กราฟ 4 มิติ</div><div class="feature-desc" data-th="วิเคราะห์ใน 4 หมวด การกิน การนอน กายภาพ และการใช้หน้าจอ" data-en="Analysis in 4 categories: nutrition, sleep, physical, and screen use">วิเคราะห์ใน 4 หมวด การกิน การนอน กายภาพ และการใช้หน้าจอ</div></div>
+    <div class="feature-card"><span class="feature-icon">📅</span><div class="feature-title" data-th="แผน 7 วันเฉพาะตัว" data-en="Personalized 7-Day Plan">แผน 7 วันเฉพาะตัว</div><div class="feature-desc" data-th="แผนปรับพฤติกรรมที่ปรับตามคะแนนของคุณ ไม่ใช่แบบเดียวกันทุกคน" data-en="Behavior improvement plan tailored to your scores, not a one-size-fits-all">แผนปรับพฤติกรรมที่ปรับตามคะแนนของคุณ ไม่ใช่แบบเดียวกันทุกคน</div></div>
   </div>
   <div class="sec">
     <div class="stag" data-th="🦠 โรคที่ระบบประเมิน" data-en="🦠 Diseases Assessed">🦠 โรคที่ระบบประเมิน</div>
     <div class="sti" data-th="พฤติกรรมในโรงเรียน เสี่ยงโรคอะไรบ้าง?" data-en="What diseases are you at risk from school behaviors?">พฤติกรรมในโรงเรียน เสี่ยงโรคอะไรบ้าง?</div>
-    <div class="dg">
-      <div class="dc"><span class="de">🦴</span><div class="dn" data-th="ออฟฟิศซินโดรม" data-en="Office Syndrome">ออฟฟิศซินโดรม</div><div class="dz" data-th="นั่งเรียนนาน ท่านั่งผิด กระเป๋าหนัก" data-en="Long sitting, poor posture, heavy bag">นั่งเรียนนาน ท่านั่งผิด กระเป๋าหนัก</div><span class="dtag tr" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
-      <div class="dc"><span class="de">👁️</span><div class="dn" data-th="สายตาเสื่อม" data-en="Eye Strain">สายตาเสื่อม</div><div class="dz" data-th="จ้องจอ กระดาน โทรศัพท์นานเกินไป" data-en="Staring at screens, boards, phones too long">จ้องจอ กระดาน โทรศัพท์นานเกินไป</div><span class="dtag tr" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
-      <div class="dc"><span class="de">🫁</span><div class="dn" data-th="โรคกระเพาะ" data-en="Gastric Disease">โรคกระเพาะ</div><div class="dz" data-th="กินเร็ว อดมื้อ กินขนมแทนอาหาร" data-en="Eating fast, skipping meals, snacking instead">กินเร็ว อดมื้อ กินขนมแทนอาหาร</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
-      <div class="dc"><span class="de">🧠</span><div class="dn" data-th="ภูมิคุ้มกันต่ำ" data-en="Low Immunity">ภูมิคุ้มกันต่ำ</div><div class="dz" data-th="อดนอน ไม่ล้างมือ อยู่ในที่แออัด" data-en="Sleep deprivation, not washing hands, crowded spaces">อดนอน ไม่ล้างมือ อยู่ในที่แออัด</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
-      <div class="dc"><span class="de">💧</span><div class="dn" data-th="นิ่วในไต" data-en="Kidney Stones">นิ่วในไต</div><div class="dz" data-th="ดื่มน้ำน้อย กลั้นปัสสาวะนาน" data-en="Low water intake, holding urination too long">ดื่มน้ำน้อย กลั้นปัสสาวะนาน</div><span class="dtag tb" data-th="เสี่ยงต่ำ-ปานกลาง" data-en="Low-Medium Risk">เสี่ยงต่ำ-ปานกลาง</span></div>
-      <div class="dc"><span class="de">😰</span><div class="dn" data-th="ความเครียดสะสม" data-en="Chronic Stress">ความเครียดสะสม</div><div class="dz" data-th="เรียนหนัก สอบบ่อย ปัญหาความสัมพันธ์" data-en="Heavy study, frequent exams, relationship issues">เรียนหนัก สอบบ่อย ปัญหาความสัมพันธ์</div><span class="dtag tr" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
-      <div class="dc"><span class="de">🦷</span><div class="dn" data-th="ฟันผุ" data-en="Tooth Decay">ฟันผุ</div><div class="dz" data-th="กินขนมหวาน น้ำอัดลมบ่อย" data-en="Frequent sweets and sugary drinks">กินขนมหวาน น้ำอัดลมบ่อย</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
-      <div class="dc"><span class="de">👂</span><div class="dn" data-th="การได้ยินเสื่อม" data-en="Hearing Loss">การได้ยินเสื่อม</div><div class="dz" data-th="ใช้หูฟังเสียงดังเป็นเวลานาน" data-en="Prolonged use of loud headphones">ใช้หูฟังเสียงดังเป็นเวลานาน</div><span class="dtag tb" data-th="เสี่ยงต่ำ-ปานกลาง" data-en="Low-Medium Risk">เสี่ยงต่ำ-ปานกลาง</span></div>
-      <div class="dc"><span class="de">🦠</span><div class="dn" data-th="โรคติดเชื้อ" data-en="Infectious Disease">โรคติดเชื้อ</div><div class="dz" data-th="ไม่ล้างมือก่อนกิน อยู่ในที่แออัด" data-en="Not washing hands, crowded environments">ไม่ล้างมือก่อนกิน อยู่ในที่แออัด</div><span class="dtag ty" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+    <div class="disease-grid">
+      <div class="disease-card"><span class="disease-emoji">🦴</span><div class="disease-name" data-th="ออฟฟิศซินโดรม" data-en="Office Syndrome">ออฟฟิศซินโดรม</div><div class="disease-desc" data-th="นั่งเรียนนาน ท่านั่งผิด กระเป๋าหนัก" data-en="Long sitting, poor posture, heavy bag">นั่งเรียนนาน ท่านั่งผิด กระเป๋าหนัก</div><span class="disease-tag tag-red" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
+      <div class="disease-card"><span class="disease-emoji">👁️</span><div class="disease-name" data-th="สายตาเสื่อม" data-en="Eye Strain">สายตาเสื่อม</div><div class="disease-desc" data-th="จ้องจอ กระดาน โทรศัพท์นานเกินไป" data-en="Staring at screens, boards, phones too long">จ้องจอ กระดาน โทรศัพท์นานเกินไป</div><span class="disease-tag tag-red" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
+      <div class="disease-card"><span class="disease-emoji">🫁</span><div class="disease-name" data-th="โรคกระเพาะ" data-en="Gastric Disease">โรคกระเพาะ</div><div class="disease-desc" data-th="กินเร็ว อดมื้อ กินขนมแทนอาหาร" data-en="Eating fast, skipping meals, snacking instead">กินเร็ว อดมื้อ กินขนมแทนอาหาร</div><span class="disease-tag tag-yellow" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+      <div class="disease-card"><span class="disease-emoji">🧠</span><div class="disease-name" data-th="ภูมิคุ้มกันต่ำ" data-en="Low Immunity">ภูมิคุ้มกันต่ำ</div><div class="disease-desc" data-th="อดนอน ไม่ล้างมือ อยู่ในที่แออัด" data-en="Sleep deprivation, not washing hands, crowded spaces">อดนอน ไม่ล้างมือ อยู่ในที่แออัด</div><span class="disease-tag tag-yellow" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+      <div class="disease-card"><span class="disease-emoji">💧</span><div class="disease-name" data-th="นิ่วในไต" data-en="Kidney Stones">นิ่วในไต</div><div class="disease-desc" data-th="ดื่มน้ำน้อย กลั้นปัสสาวะนาน" data-en="Low water intake, holding urination too long">ดื่มน้ำน้อย กลั้นปัสสาวะนาน</div><span class="disease-tag tag-blue" data-th="เสี่ยงต่ำ-ปานกลาง" data-en="Low-Medium Risk">เสี่ยงต่ำ-ปานกลาง</span></div>
+      <div class="disease-card"><span class="disease-emoji">😰</span><div class="disease-name" data-th="ความเครียดสะสม" data-en="Chronic Stress">ความเครียดสะสม</div><div class="disease-desc" data-th="เรียนหนัก สอบบ่อย ปัญหาความสัมพันธ์" data-en="Heavy study, frequent exams, relationship issues">เรียนหนัก สอบบ่อย ปัญหาความสัมพันธ์</div><span class="disease-tag tag-red" data-th="เสี่ยงสูง" data-en="High Risk">เสี่ยงสูง</span></div>
+      <div class="disease-card"><span class="disease-emoji">🦷</span><div class="disease-name" data-th="ฟันผุ" data-en="Tooth Decay">ฟันผุ</div><div class="disease-desc" data-th="กินขนมหวาน น้ำอัดลมบ่อย" data-en="Frequent sweets and sugary drinks">กินขนมหวาน น้ำอัดลมบ่อย</div><span class="disease-tag tag-yellow" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
+      <div class="disease-card"><span class="disease-emoji">👂</span><div class="disease-name" data-th="การได้ยินเสื่อม" data-en="Hearing Loss">การได้ยินเสื่อม</div><div class="disease-desc" data-th="ใช้หูฟังเสียงดังเป็นเวลานาน" data-en="Prolonged use of loud headphones">ใช้หูฟังเสียงดังเป็นเวลานาน</div><span class="disease-tag tag-blue" data-th="เสี่ยงต่ำ-ปานกลาง" data-en="Low-Medium Risk">เสี่ยงต่ำ-ปานกลาง</span></div>
+      <div class="disease-card"><span class="disease-emoji">🦠</span><div class="disease-name" data-th="โรคติดเชื้อ" data-en="Infectious Disease">โรคติดเชื้อ</div><div class="disease-desc" data-th="ไม่ล้างมือก่อนกิน อยู่ในที่แออัด" data-en="Not washing hands, crowded environments">ไม่ล้างมือก่อนกิน อยู่ในที่แออัด</div><span class="disease-tag tag-yellow" data-th="เสี่ยงปานกลาง" data-en="Medium Risk">เสี่ยงปานกลาง</span></div>
     </div>
   </div>
 </div>
 
 <!-- QUIZ -->
 <div class="page" id="page-quiz">
-  <div class="qw">
-    <div class="qh"><h2 data-th="📋 แบบประเมินพฤติกรรมเสี่ยงโรค" data-en="📋 Health Risk Behavior Assessment">📋 แบบประเมินพฤติกรรมเสี่ยงโรค</h2><p data-th="ตอบตามความเป็นจริง (20 ข้อ ใช้เวลา 4-5 นาที)" data-en="Answer honestly (20 questions, takes 4-5 minutes)">ตอบตามความเป็นจริง (20 ข้อ ใช้เวลา 4-5 นาที)</p></div>
-    <div class="pt"><span id="plb">ข้อที่ 1 จาก 20</span><span id="ppc">5%</span></div>
-    <div class="pb"><div class="pf" id="pfi" style="width:5%"></div></div>
-    <div class="qc" id="qcard"></div>
-    <div class="qnv">
-      <button class="bbk" onclick="prevQ()" data-th="← ย้อนกลับ" data-en="← Back">← ย้อนกลับ</button>
-      <button class="bgo" id="bgo" onclick="nextQ()" data-th="ถัดไป →" data-en="Next →">ถัดไป →</button>
+  <div class="quiz-wrap">
+    <div class="quiz-header"><h2 data-th="📋 แบบประเมินพฤติกรรมเสี่ยงโรค" data-en="📋 Health Risk Behavior Assessment">📋 แบบประเมินพฤติกรรมเสี่ยงโรค</h2><p data-th="ตอบตามความเป็นจริง (20 ข้อ ใช้เวลา 4-5 นาที)" data-en="Answer honestly (20 questions, takes 4-5 minutes)">ตอบตามความเป็นจริง (20 ข้อ ใช้เวลา 4-5 นาที)</p></div>
+    <div class="progress-text"><span id="plb">ข้อที่ 1 จาก 20</span><span id="ppc">5%</span></div>
+    <div class="progress-bar-wrap"><div class="progress-fill" id="pfi" style="width:5%"></div></div>
+    <div class="quiz-card" id="qcard"></div>
+    <div class="quiz-nav">
+      <button class="btn-back" onclick="prevQ()" data-th="← ย้อนกลับ" data-en="← Back">← ย้อนกลับ</button>
+      <button class="btn-next" id="bgo" onclick="nextQ()" data-th="ถัดไป →" data-en="Next →">ถัดไป →</button>
     </div>
   </div>
 </div>
 
 <!-- RESULT -->
 <div class="page" id="page-result">
-  <div class="rw">
-    <div class="rtop"><h2 data-th="🩺 ผลการประเมินความเสี่ยงของคุณ" data-en="🩺 Your Health Risk Assessment Results">🩺 ผลการประเมินความเสี่ยงของคุณ</h2><p id="rdate"></p></div>
+  <div class="result-wrap">
+    <div class="result-header"><h2 data-th="🩺 ผลการประเมินความเสี่ยงของคุณ" data-en="🩺 Your Health Risk Assessment Results">🩺 ผลการประเมินความเสี่ยงของคุณ</h2><p id="rdate"></p></div>
     <div class="tabs">
       <div class="tab active" onclick="showTab(0)" data-th="📊 ภาพรวม" data-en="📊 Overview">📊 ภาพรวม</div>
       <div class="tab" onclick="showTab(1)" data-th="🕸️ กราฟ 4 มิติ" data-en="🕸️ Radar Chart">🕸️ กราฟ 4 มิติ</div>
@@ -272,7 +272,7 @@ footer span{color:var(--pri);}
       <div class="tab" onclick="showTab(3)" data-th="📅 แผน 7 วัน" data-en="📅 7-Day Plan">📅 แผน 7 วัน</div>
     </div>
     <!-- TAB 0 -->
-    <div class="tpanel active" id="tp0">
+    <div class="tab-panel active" id="tp0">
       <div class="res-disclaimer" id="res-disc">⚠️ <b>หมายเหตุ:</b> ผลการประเมินนี้คำนวณจากพฤติกรรมที่คุณตอบเท่านั้น ไม่ใช่การตรวจร่างกายหรือตรวจเลือด ควรใช้เป็นแนวทางเบื้องต้นเท่านั้น</div>
       <div class="criteria-box">
         <div class="criteria-title" id="ct-title">📐 เกณฑ์การประเมินคะแนนสุขภาพ (อ้างอิง WHO & กรมอนามัย)</div>
@@ -281,25 +281,25 @@ footer span{color:var(--pri);}
         <div class="criteria-row"><div class="criteria-dot" style="background:#ef4444"></div><div class="criteria-text"><b>0-44%</b> = ต้องปรับปรุงด่วน — พฤติกรรมหลายอย่างต่ำกว่าเกณฑ์ WHO อย่างมีนัยสำคัญ</div></div>
         <div class="criteria-row"><div class="criteria-dot" style="background:#6366f1"></div><div class="criteria-text">ความเสี่ยงรายโรค: <b>สูง ≥60%</b> | <b>ปานกลาง 30-59%</b> | <b>ต่ำ &lt;30%</b> (คำนวณจากน้ำหนักคะแนนตาม WHO Risk Guidelines)</div></div>
       </div>
-      <div class="oval">
-        <div class="osc" id="osc">-</div>
-        <div><div class="olb" id="olb">-</div><div class="ods" id="ods"></div></div>
+      <div class="score-overview">
+        <div class="score-value" id="osc">-</div>
+        <div><div class="score-label" id="olb">-</div><div class="score-desc" id="ods"></div></div>
       </div>
-      <div class="rtit" data-th="📊 ความเสี่ยงแต่ละโรค" data-en="📊 Risk by Disease">📊 ความเสี่ยงแต่ละโรค</div>
-      <div class="rl" id="rlist"></div>
-      <div class="abox"><div class="atit" data-th="💡 คำแนะนำสำหรับคุณโดยเฉพาะ" data-en="💡 Personalized Recommendations">💡 คำแนะนำสำหรับคุณโดยเฉพาะ</div><ul class="al" id="alist"></ul></div>
-      <button class="brt" onclick="go('print')" data-th="🖨️ พิมพ์/แชร์ผลลัพธ์" data-en="🖨️ Print/Share Results">🖨️ พิมพ์/แชร์ผลลัพธ์</button>
-      <button class="brt" style="margin-top:.5rem;background:var(--bg);color:var(--tx);box-shadow:none;border:1px solid var(--bo);" onclick="resetQ();go('quiz')" data-th="🔄 ทำแบบประเมินใหม่" data-en="🔄 Retake Assessment">🔄 ทำแบบประเมินใหม่</button>
+      <div class="result-title" data-th="📊 ความเสี่ยงแต่ละโรค" data-en="📊 Risk by Disease">📊 ความเสี่ยงแต่ละโรค</div>
+      <div class="risk-list" id="rlist"></div>
+      <div class="advice-box"><div class="advice-title" data-th="💡 คำแนะนำสำหรับคุณโดยเฉพาะ" data-en="💡 Personalized Recommendations">💡 คำแนะนำสำหรับคุณโดยเฉพาะ</div><ul class="advice-list" id="alist"></ul></div>
+      <button class="btn-action" onclick="go('print')" data-th="🖨️ พิมพ์/แชร์ผลลัพธ์" data-en="🖨️ Print/Share Results">🖨️ พิมพ์/แชร์ผลลัพธ์</button>
+      <button class="btn-action" style="margin-top:.5rem;background:var(--bg);color:var(--tx);box-shadow:none;border:1px solid var(--bo);" onclick="resetQ();go('quiz')" data-th="🔄 ทำแบบประเมินใหม่" data-en="🔄 Retake Assessment">🔄 ทำแบบประเมินใหม่</button>
     </div>
     <!-- TAB 1 -->
-    <div class="tpanel" id="tp1">
-      <div class="rtit" data-th="🕸️ กราฟใยแมงมุม 4 หมวดหมู่สุขภาพ" data-en="🕸️ Spider Chart: 4 Health Categories">🕸️ กราฟใยแมงมุม 4 หมวดหมู่สุขภาพ</div>
+    <div class="tab-panel" id="tp1">
+      <div class="result-title" data-th="🕸️ กราฟใยแมงมุม 4 หมวดหมู่สุขภาพ" data-en="🕸️ Spider Chart: 4 Health Categories">🕸️ กราฟใยแมงมุม 4 หมวดหมู่สุขภาพ</div>
       <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
       <div class="cat-bars" id="catbars"></div>
     </div>
     <!-- TAB 2 -->
-    <div class="tpanel" id="tp2">
-      <div class="rtit" data-th="🔮 จำลองอนาคตสุขภาพใน 6 เดือน" data-en="🔮 6-Month Health Forecast">🔮 จำลองอนาคตสุขภาพใน 6 เดือน</div>
+    <div class="tab-panel" id="tp2">
+      <div class="result-title" data-th="🔮 จำลองอนาคตสุขภาพใน 6 เดือน" data-en="🔮 6-Month Health Forecast">🔮 จำลองอนาคตสุขภาพใน 6 เดือน</div>
       <div class="formula-box">
         <div class="formula-title" data-th="📐 สูตรที่ใช้ในการคำนวณ (Compound Health Risk Model)" data-en="📐 Calculation Formula (Compound Health Risk Model)">📐 สูตรที่ใช้ในการคำนวณ (Compound Health Risk Model)</div>
         <span data-th="R = อัตราส่วนความเสี่ยงรวม (0-1) คำนวณจากคะแนนถ่วงน้ำหนัก" data-en="R = Weighted risk ratio (0-1) calculated from weighted scores">R = อัตราส่วนความเสี่ยงรวม (0-1) คำนวณจากคะแนนถ่วงน้ำหนัก</span><br>
@@ -311,11 +311,11 @@ footer span{color:var(--pri);}
         <div class="month-card month-bad"><div class="mc-title" data-th="⚠️ ถ้าไม่เปลี่ยนพฤติกรรม" data-en="⚠️ If behavior unchanged">⚠️ ถ้าไม่เปลี่ยนพฤติกรรม</div><ul class="mc-list" id="bad6m"></ul></div>
         <div class="month-card month-good"><div class="mc-title" data-th="✅ ถ้าเริ่มปรับพฤติกรรมตั้งแต่วันนี้" data-en="✅ If behavior improved today">✅ ถ้าเริ่มปรับพฤติกรรมตั้งแต่วันนี้</div><ul class="mc-list" id="good6m"></ul></div>
       </div>
-      <div class="abox"><div class="atit" data-th="🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน" data-en="🎯 Most Concerning Diseases in 6 Months">🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน</div><ul class="al" id="warn6m"></ul></div>
+      <div class="advice-box"><div class="advice-title" data-th="🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน" data-en="🎯 Most Concerning Diseases in 6 Months">🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน</div><ul class="advice-list" id="warn6m"></ul></div>
     </div>
     <!-- TAB 3 -->
-    <div class="tpanel" id="tp3">
-      <div class="rtit" data-th="📅 แผนปรับพฤติกรรม 7 วัน (เฉพาะตัวตามคะแนนของคุณ)" data-en="📅 Personalized 7-Day Behavior Plan">📅 แผนปรับพฤติกรรม 7 วัน (เฉพาะตัวตามคะแนนของคุณ)</div>
+    <div class="tab-panel" id="tp3">
+      <div class="result-title" data-th="📅 แผนปรับพฤติกรรม 7 วัน (เฉพาะตัวตามคะแนนของคุณ)" data-en="📅 Personalized 7-Day Behavior Plan">📅 แผนปรับพฤติกรรม 7 วัน (เฉพาะตัวตามคะแนนของคุณ)</div>
       <div class="plan-priority" id="planpriority"></div>
       <div class="plan-grid" id="plan7d"></div>
     </div>
@@ -332,10 +332,10 @@ footer span{color:var(--pri);}
         <p style="font-size:.72rem;color:#9ca3af;margin-top:4px;" data-th="การประเมินพฤติกรรมสุขภาพจากชีวิตในโรงเรียน" data-en="Health behavior assessment from school life">การประเมินพฤติกรรมสุขภาพจากชีวิตในโรงเรียน</p>
       </div>
       <div class="print-score-row">
-        <div class="print-score"><div class="print-score-val" id="ps-health" style="color:#3b82f6">-</div><div class="print-score-lbl" data-th="คะแนนสุขภาพรวม" data-en="Overall Health Score">คะแนนสุขภาพรวม</div></div>
-        <div class="print-score"><div class="print-score-val" id="ps-level" style="font-size:1.2rem">-</div><div class="print-score-lbl" data-th="ระดับสุขภาพ" data-en="Health Level">ระดับสุขภาพ</div></div>
+        <div class="print-score"><div class="print-score-value" id="ps-health" style="color:#3b82f6">-</div><div class="print-score-label" data-th="คะแนนสุขภาพรวม" data-en="Overall Health Score">คะแนนสุขภาพรวม</div></div>
+        <div class="print-score"><div class="print-score-value" id="ps-level" style="font-size:1.2rem">-</div><div class="print-score-label" data-th="ระดับสุขภาพ" data-en="Health Level">ระดับสุขภาพ</div></div>
       </div>
-      <div class="rtit" data-th="ความเสี่ยงแต่ละโรค" data-en="Risk by Disease">ความเสี่ยงแต่ละโรค</div>
+      <div class="result-title" data-th="ความเสี่ยงแต่ละโรค" data-en="Risk by Disease">ความเสี่ยงแต่ละโรค</div>
       <div class="print-diseases" id="print-diseases"></div>
       <div class="print-advice">
         <div class="print-advice-title" data-th="💡 คำแนะนำหลักสำหรับคุณ" data-en="💡 Key Recommendations">💡 คำแนะนำหลักสำหรับคุณ</div>
@@ -343,7 +343,7 @@ footer span{color:var(--pri);}
       </div>
       <div class="print-disclaimer" data-th="⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)" data-en="⚠️ This assessment is a preliminary health behavior screening only and cannot replace medical diagnosis. | SchoolHealth — Computer Science Poster Project | References: WHO (2022), Department of Health Thailand (2023)">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
     </div>
-    <div class="print-btns">
+    <div class="print-buttons">
       <button class="btn-print" id="btn-print-main" onclick="doPrint()" data-th="🖨️ พิมพ์เป็น PDF" data-en="🖨️ Print as PDF">🖨️ พิมพ์เป็น PDF</button>
       <button class="btn-copy" onclick="copyResult()" data-th="📋 คัดลอกสรุป" data-en="📋 Copy Summary">📋 คัดลอกสรุป</button>
     </div>
@@ -378,6 +378,7 @@ var LANG='th';
 function toggleLang(){
   LANG=LANG==='th'?'en':'th';
   document.querySelector('.lang-btn').textContent=LANG==='th'?'🌐 TH':'🌐 EN';
+  // แปลข้อความที่ใช้ data-th / data-en attribute (static HTML)
   document.querySelectorAll('[data-th]').forEach(function(el){
     var val=el.getAttribute('data-'+LANG);
     if(!val) return;
@@ -385,6 +386,11 @@ function toggleLang(){
     else el.innerHTML=val;
   });
   renderQ();
+  // Re-render หน้าที่มีเนื้อหาสร้างด้วย JS (ชื่อโรค คำแนะนำ ฯลฯ)
+  if(quizDone&&resultBuilt) buildResult();
+  var activePage=document.querySelector('.page.active');
+  if(activePage&&activePage.id==='page-print'&&quizDone) buildPrint();
+  if(activePage&&activePage.id==='page-know') buildKnow();
 }
 
 function T(th,en){return LANG==='th'?th:en;}
@@ -670,8 +676,43 @@ var KN=[
    ref:'WHO, 2022'}
 ];
 
-var cur=0,chosen=[],sc={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
+// scores = ตัวสะสมคะแนน  key โรค: of ey sx im ki st to ea  |  key หมวดสุขภาพ: ph sc(หน้าจอ) nu sl
+var cur=0,chosen=[],scores={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
 var radarChart=null,resultBuilt=false,quizDone=false;
+
+// ═══ บันทึก/โหลดข้อมูลจาก localStorage ═══
+function saveToStorage(){
+  try{
+    localStorage.setItem('sh_chosen',JSON.stringify(chosen));
+    localStorage.setItem('sh_sc',JSON.stringify(scores));
+    localStorage.setItem('sh_done',quizDone?'1':'0');
+    localStorage.setItem('sh_cur',String(cur));
+  }catch(e){}
+}
+
+function loadFromStorage(){
+  try{
+    var c=localStorage.getItem('sh_chosen');
+    var s=localStorage.getItem('sh_sc');
+    var d=localStorage.getItem('sh_done');
+    var cu=localStorage.getItem('sh_cur');
+    if(c&&s){
+      // แปลง null → undefined สำหรับคำถามที่ยังไม่ตอบ
+      var pc=JSON.parse(c);
+      chosen=Array.isArray(pc)?pc.map(function(v){return v===null?undefined:v;}):[];
+      var ps=JSON.parse(s);
+      Object.keys(scores).forEach(function(k){if(ps[k]!==undefined)scores[k]=ps[k];});
+      quizDone=d==='1';
+      cur=Math.max(0,Math.min(parseInt(cu)||0,Q.length-1));
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+function clearStorage(){
+  try{['sh_chosen','sh_sc','sh_done','sh_cur'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+}
 
 function go(id){
   if((id==='result'||id==='print')&&!quizDone){
@@ -690,7 +731,7 @@ function go(id){
 
 function showTab(i){
   document.querySelectorAll('.tab').forEach(function(t,j){t.classList.toggle('active',j===i);});
-  document.querySelectorAll('.tpanel').forEach(function(p,j){p.classList.toggle('active',j===i);});
+  document.querySelectorAll('.tab-panel').forEach(function(p,j){p.classList.toggle('active',j===i);});
   if(i===1) setTimeout(buildRadar,100);
 }
 
@@ -704,22 +745,22 @@ function renderQ(){
   document.getElementById('bgo').textContent=(cur===Q.length-1)?T('📊 ดูผลลัพธ์','📊 See Results'):T('ถัดไป →','Next →');
 
   var wLabel=q.w>=1.3?T('⭐ น้ำหนักสูง','⭐ High Weight'):q.w>=1.0?'':T('น้ำหนักต่ำ','Low Weight');
-  var h='<span class="qbg">📌 '+T(q.th_c,q.en_c)+'</span>';
-  if(wLabel) h+='<span class="qwt">'+wLabel+' (×'+q.w+')</span>';
-  h+='<span class="qem">'+q.e+'</span><div class="qt">'+T(q.th_t,q.en_t)+'</div>';
+  var h='<span class="quiz-badge">📌 '+T(q.th_c,q.en_c)+'</span>';
+  if(wLabel) h+='<span class="quiz-weight-tag">'+wLabel+' (×'+q.w+')</span>';
+  h+='<span class="quiz-emoji">'+q.e+'</span><div class="quiz-question">'+T(q.th_t,q.en_t)+'</div>';
   var hint=T(q.h_th,q.h_en);
-  if(hint) h+='<div class="qhi">💬 '+hint+'</div>';
-  h+='<div class="qref">📖 '+q.ref+'</div>';
-  h+='<div class="opts">';
+  if(hint) h+='<div class="quiz-hint">💬 '+hint+'</div>';
+  h+='<div class="quiz-ref">📖 '+q.ref+'</div>';
+  h+='<div class="options-list">';
   q.o.forEach(function(o,i){
     var sel=chosen[cur]===i?'sel':'';
-    h+='<div class="opt '+sel+'" onclick="pick('+i+')"><div class="oc">'+(chosen[cur]===i?'✓':'')+'</div><span class="ol">'+T(o.th,o.en)+'</span></div>';
+    h+='<div class="option-item '+sel+'" onclick="pick('+i+')"><div class="option-circle">'+(chosen[cur]===i?'✓':'')+'</div><span class="option-label">'+T(o.th,o.en)+'</span></div>';
   });
   h+='</div>';
   document.getElementById('qcard').innerHTML=h;
 }
 
-function pick(i){chosen[cur]=i;renderQ();}
+function pick(i){chosen[cur]=i;renderQ();saveToStorage();}
 
 function getWeightedScore(k){
   var total=0;
@@ -744,24 +785,25 @@ function getWeightedMax(k){
 function nextQ(){
   if(chosen[cur]===undefined){alert(T('กรุณาเลือกคำตอบก่อนนะคะ 😊','Please select an answer first 😊'));return;}
   var s=Q[cur].o[chosen[cur]].s;
-  Object.keys(s).forEach(function(k){if(sc[k]!==undefined)sc[k]+=s[k];});
-  if(cur<Q.length-1){cur++;renderQ();}
-  else{quizDone=true;go('result');}
+  Object.keys(s).forEach(function(k){if(scores[k]!==undefined)scores[k]+=s[k];});
+  if(cur<Q.length-1){cur++;saveToStorage();renderQ();}
+  else{quizDone=true;saveToStorage();go('result');}
 }
 
 function prevQ(){
   if(cur>0){
     if(chosen[cur-1]!==undefined){
       var s=Q[cur-1].o[chosen[cur-1]].s;
-      Object.keys(s).forEach(function(k){if(sc[k]!==undefined)sc[k]-=s[k];});
+      Object.keys(s).forEach(function(k){if(scores[k]!==undefined)scores[k]-=s[k];});
     }
-    cur--;renderQ();
+    cur--;saveToStorage();renderQ();
   } else {go('home');}
 }
 
 function resetQ(){
   cur=0;chosen=[];resultBuilt=false;quizDone=false;
-  sc={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
+  scores={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
+  clearStorage();
   renderQ();
 }
 
@@ -815,7 +857,7 @@ function buildResult(){
     var cls=p>=60?'high':p>=30?'mid':'low';
     var lvl=p>=60?T('⚠️ ความเสี่ยงสูง','⚠️ High Risk'):p>=30?T('🔶 ความเสี่ยงปานกลาง','🔶 Medium Risk'):T('✅ ความเสี่ยงต่ำ','✅ Low Risk');
     var dn=T(d.th,d.en);
-    rh+='<div class="rr"><span class="ric">'+d.i+'</span><div class="ri"><div class="rn">'+dn+'</div><div class="rb"><div class="rbf" style="width:'+p+'%"></div></div></div><div><div class="rp '+cls+'">'+p+'%</div><div class="rlv '+cls+'">'+lvl+'</div></div></div>';
+    rh+='<div class="risk-row"><span class="risk-icon">'+d.i+'</span><div class="risk-info"><div class="risk-name">'+dn+'</div><div class="risk-bar"><div class="risk-bar-fill" style="width:'+p+'%"></div></div></div><div><div class="risk-pct '+cls+'">'+p+'%</div><div class="risk-level-label '+cls+'">'+lvl+'</div></div></div>';
     if(p>=30&&AV[d.k]) ah+='<li>'+T(AV[d.k].th,AV[d.k].en)+'</li>';
   });
   if(!ah) ah='<li>'+T('คุณมีพฤติกรรมที่ดีมาก รักษาไว้แบบนี้ต่อไปนะคะ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
@@ -835,13 +877,29 @@ function build6Month(){
   var R6=Math.min(1,R*Math.pow(1+k,6));
   var hp_now=Math.round((1-R)*100);
   var hp_6m_bad=Math.max(0,Math.round((1-R6)*100));
-  var hp_6m_good=Math.min(100,hp_now+15);
+
+  // ── คำนวณการปรับปรุงเฉพาะบุคคล ──
+  // อ้างอิง: WHO Health Behavior Change Framework (2020)
+  // ความเสี่ยงสูง   (≥60%) → ลดได้ ~35% ใน 6 เดือนถ้าเปลี่ยนพฤติกรรมจริงจัง
+  // ความเสี่ยง ปกลาง-สูง (45-59%) → ลดได้ ~25%
+  // ความเสี่ยงปานกลาง (30-44%) → ลดได้ ~15%
+  // ความเสี่ยงต่ำ   (<30%)  → ปรับได้เล็กน้อย ~5% (ดีอยู่แล้ว)
+  var improvedTotW=0;
+  var diseaseBetter=D.map(function(d){
+    var p=getDiseasePercent(d.k);
+    var ws=getWeightedScore(d.k);
+    var rf=p>=60?0.35:p>=45?0.25:p>=30?0.15:0.05;
+    var p6good=Math.max(0,Math.round(p*(1-rf)));
+    improvedTotW+=ws*(1-rf);
+    return {k:d.k,n:T(d.th,d.en),i:d.i,p:p,p6good:p6good};
+  });
+  var hp_6m_good=Math.min(100,Math.round((1-Math.min(1,improvedTotW/mxW))*100));
 
   document.getElementById('projgrid').innerHTML=
-    '<div class="proj-card"><div class="proj-val" style="color:#3b82f6">'+hp_now+'%</div><div class="proj-lbl">'+T('คะแนนสุขภาพปัจจุบัน','Current Health Score')+'</div></div>'+
-    '<div class="proj-card"><div class="proj-val" style="color:#ef4444">'+hp_6m_bad+'%</div><div class="proj-lbl">'+T('ถ้าไม่เปลี่ยน (6 เดือน)','If Unchanged (6 Months)')+'</div></div>'+
-    '<div class="proj-card"><div class="proj-val" style="color:#10b981">'+hp_6m_good+'%</div><div class="proj-lbl">'+T('ถ้าเริ่มปรับ (6 เดือน)','If Improved (6 Months)')+'</div></div>'+
-    '<div class="proj-card"><div class="proj-val" style="color:#f97316">'+(hp_6m_good-hp_6m_bad)+'%</div><div class="proj-lbl">'+T('ผลต่างที่ได้ถ้าเปลี่ยน','Gain if Behavior Changes')+'</div></div>';
+    '<div class="proj-card"><div class="proj-value" style="color:#3b82f6">'+hp_now+'%</div><div class="proj-label">'+T('คะแนนสุขภาพปัจจุบัน','Current Health Score')+'</div></div>'+
+    '<div class="proj-card"><div class="proj-value" style="color:#ef4444">'+hp_6m_bad+'%</div><div class="proj-label">'+T('ถ้าไม่เปลี่ยน (6 เดือน)','If Unchanged (6 Months)')+'</div></div>'+
+    '<div class="proj-card"><div class="proj-value" style="color:#10b981">'+hp_6m_good+'%</div><div class="proj-label">'+T('ถ้าเริ่มปรับ (6 เดือน)','If Improved (6 Months)')+'</div></div>'+
+    '<div class="proj-card"><div class="proj-value" style="color:#f97316">'+(hp_6m_good-hp_6m_bad)+'%</div><div class="proj-label">'+T('ผลต่างที่ได้ถ้าเปลี่ยน','Gain if Behavior Changes')+'</div></div>';
 
   var bads=D.map(function(d){
     var p=getDiseasePercent(d.k);
@@ -853,11 +911,33 @@ function build6Month(){
   bads.slice(0,4).forEach(function(b){badHtml+='<li>'+b.i+' '+b.n+': '+b.p+'% → '+b.p6+'%</li>';});
   if(!badHtml) badHtml='<li>'+T('🎉 ไม่มีโรคที่น่ากังวล','🎉 No concerning diseases')+'</li>';
   document.getElementById('bad6m').innerHTML=badHtml;
-  document.getElementById('good6m').innerHTML=
-    '<li>'+T('💪 กล้ามเนื้อแข็งแรงขึ้น','💪 Stronger muscles')+'</li>'+
-    '<li>'+T('😴 นอนหลับดีขึ้น สมาธิดีขึ้น','😴 Better sleep, better focus')+'</li>'+
-    '<li>'+T('😊 เครียดน้อยลง อารมณ์ดีขึ้น','😊 Less stress, better mood')+'</li>'+
-    '<li>'+T('🏃 ร่างกายกระฉับกระเฉงขึ้น','🏃 More energetic body')+'</li>';
+
+  // ── สร้างผลลัพธ์ "ถ้าปรับพฤติกรรม" เฉพาะตัว ──
+  var goodMsgMap={
+    of:T('🦴 อาการปวดคอ บ่า ไหล่ลดลง กล้ามเนื้อแข็งแรงขึ้น','🦴 Less neck/shoulder pain, stronger muscles'),
+    ey:T('👁️ ดวงตาพักผ่อนมากขึ้น ลดความเสี่ยงสายตาเสื่อม','👁️ Better eye rest, reduced vision risk'),
+    sx:T('😊 ความเครียดลดลง อารมณ์ดีขึ้น มีสมาธิมากขึ้น','😊 Less stress, better mood & focus'),
+    im:T('🛡️ ภูมิคุ้มกันแข็งแรงขึ้น ป่วยน้อยลง','🛡️ Stronger immunity, less illness'),
+    ki:T('💧 ลดความเสี่ยงนิ่วในไต ไตทำงานดีขึ้น','💧 Reduced kidney stone risk, better kidney function'),
+    st:T('🫁 กระเพาะอาหารแข็งแรงขึ้น ปวดท้องน้อยลง','🫁 Better stomach health, less pain'),
+    to:T('🦷 ฟันแข็งแรงขึ้น ลดความเสี่ยงฟันผุ','🦷 Stronger teeth, fewer cavities'),
+    ea:T('👂 ลดความเสี่ยงการได้ยินเสื่อม หูดีขึ้น','👂 Reduced hearing loss risk, better hearing')
+  };
+  var goodHtml='';
+  diseaseBetter
+    .filter(function(b){return b.p>=30;})
+    .sort(function(a,b){return b.p-a.p;})
+    .slice(0,4)
+    .forEach(function(b){
+      var msg=goodMsgMap[b.k]||'';
+      if(msg) goodHtml+='<li>'+msg+'<br><span style="font-size:.7rem;color:#6b7280">'+T('ความเสี่ยง','Risk')+' '+b.p+'% → ~'+b.p6good+'%</span></li>';
+    });
+  if(!goodHtml){
+    goodHtml='<li>'+T('✅ พฤติกรรมของคุณดีอยู่แล้ว ร่างกายจะแข็งแรงยิ่งขึ้น','✅ Your behaviors are already good — body gets even stronger')+'</li>'+
+    '<li>'+T('🏃 พลังงานเพิ่มขึ้น กระฉับกระเฉงมากขึ้น','🏃 More energy and vitality')+'</li>'+
+    '<li>'+T('😊 สุขภาพจิตดีขึ้น มีความสุขมากขึ้น','😊 Better mental health and happiness')+'</li>';
+  }
+  document.getElementById('good6m').innerHTML=goodHtml;
 
   var wh='';
   bads.slice(0,3).forEach(function(b){
@@ -940,12 +1020,12 @@ function buildCatBars(){
   ];
   var h='';
   cats.forEach(function(c){
-    var raw=sc[c.k]||0;
+    var raw=scores[c.k]||0;
     var pct=Math.min(100,Math.round((raw/c.mx)*100));
     var lvCls=pct>=70?'cat-lv-good':pct>=45?'cat-lv-mid':'cat-lv-low';
     var lvTh=pct>=70?'ดีมาก':pct>=45?'ปานกลาง':'ควรปรับปรุง';
     var lvEn=pct>=70?'Good':pct>=45?'Fair':'Needs Work';
-    h+='<div class="cat-row"><div class="cat-top"><span class="cat-name">'+T(c.th_n,c.en_n)+'</span><div style="display:flex;align-items:center;gap:6px;"><span class="cat-score" style="color:'+c.col+'">'+pct+'%</span><span class="cat-lv '+lvCls+'">'+T(lvTh,lvEn)+'</span></div></div><div class="cat-bar"><div class="cat-fill" style="width:'+pct+'%;background:'+c.col+'"></div></div></div>';
+    h+='<div class="cat-row"><div class="cat-top"><span class="cat-name">'+T(c.th_n,c.en_n)+'</span><div style="display:flex;align-items:center;gap:6px;"><span class="cat-score" style="color:'+c.col+'">'+pct+'%</span><span class="cat-level '+lvCls+'">'+T(lvTh,lvEn)+'</span></div></div><div class="cat-bar"><div class="cat-fill" style="width:'+pct+'%;background:'+c.col+'"></div></div></div>';
   });
   document.getElementById('catbars').innerHTML=h;
 }
@@ -958,7 +1038,7 @@ function buildRadar(){
     {k:'sc',th:'หน้าจอ',en:'Screen',mx:9}
   ];
   var healthVals=cats.map(function(c){
-    return Math.min(100,Math.round(((sc[c.k]||0)/c.mx)*100));
+    return Math.min(100,Math.round(((scores[c.k]||0)/c.mx)*100));
   });
 
   if(radarChart) radarChart.destroy();
@@ -1099,7 +1179,18 @@ function saveAsImage(){
   });
 }
 
+// ── โหลดข้อมูลที่บันทึกไว้ก่อนหน้า (ถ้ามี) ──
+loadFromStorage();
 renderQ();
+if(quizDone){
+  // มีผลลัพธ์เก่าอยู่ → ไปหน้าผลลัพธ์ทันที
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('page-result').classList.add('active');
+  document.querySelectorAll('nav ul a').forEach(function(a){a.classList.remove('active');});
+  document.getElementById('nav-result').classList.add('active');
+  buildResult();resultBuilt=true;
+  window.scrollTo(0,0);
+}
 </script>
 </body>
 </html>
