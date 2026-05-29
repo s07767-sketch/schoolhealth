@@ -182,6 +182,25 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .know-text{font-size:.78rem;color:var(--mu);line-height:1.6;}
 .know-ref{font-size:.7rem;color:#9ca3af;margin-top:.5rem;font-style:italic;}
 .btn-action{display:block;width:100%;margin-top:1.2rem;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:12px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;}
+/* HISTORY */
+.hist-list{display:flex;flex-direction:column;gap:12px;}
+.hist-card{background:#fff;border-radius:14px;padding:1.2rem;border:1px solid var(--bo);box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.hist-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem;}
+.hist-date{font-size:.76rem;color:var(--mu);margin-bottom:2px;}
+.hist-no{font-size:.8rem;font-weight:700;color:var(--pri);}
+.hist-score{font-family:'Prompt',sans-serif;font-size:1.8rem;font-weight:700;line-height:1;}
+.hist-lbl{font-size:.73rem;color:var(--mu);margin-top:2px;}
+.hist-trend{display:inline-flex;align-items:center;gap:3px;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:100px;margin-bottom:4px;}
+.trend-up{background:rgba(16,185,129,.12);color:#065f46;}
+.trend-down{background:rgba(239,68,68,.12);color:#991b1b;}
+.trend-same{background:rgba(107,114,128,.1);color:#6b7280;}
+.hist-mini-bars{display:flex;flex-direction:column;gap:5px;}
+.hist-mini-row{display:flex;align-items:center;gap:8px;}
+.hist-mini-name{width:110px;flex-shrink:0;font-size:.73rem;color:var(--mu);}
+.hist-mini-bar{flex:1;height:5px;background:var(--bo);border-radius:100px;overflow:hidden;}
+.hist-mini-fill{height:100%;border-radius:100px;}
+.hist-mini-pct{width:34px;text-align:right;font-size:.71rem;font-weight:700;}
+.hist-empty{text-align:center;padding:3rem 1rem;color:var(--mu);font-size:.88rem;line-height:2;}
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
 @media print{nav,footer,.print-buttons,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
@@ -197,6 +216,7 @@ footer span{color:var(--pri);}
     <li><a onclick="go('result')" id="nav-result" data-th="ผลลัพธ์" data-en="Result">ผลลัพธ์</a></li>
     <li><a onclick="go('know')" id="nav-know" data-th="ความรู้โรค" data-en="Knowledge">ความรู้โรค</a></li>
     <li><a onclick="go('print')" id="nav-print" data-th="พิมพ์/แชร์" data-en="Print/Share">พิมพ์/แชร์</a></li>
+    <li><a onclick="go('history')" id="nav-history" data-th="ประวัติ" data-en="History">ประวัติ</a></li>
   </ul>
   <button class="lang-btn" onclick="toggleLang()">🌐 TH</button>
 </nav>
@@ -346,6 +366,15 @@ footer span{color:var(--pri);}
     <div class="stag" data-th="📚 ความรู้เกี่ยวกับโรค" data-en="📚 Disease Knowledge">📚 ความรู้เกี่ยวกับโรค</div>
     <div class="sti" data-th="รู้จักโรคที่เสี่ยงจากชีวิตในโรงเรียน" data-en="Learn About School Life Health Risks">รู้จักโรคที่เสี่ยงจากชีวิตในโรงเรียน</div>
     <div class="know-grid" id="knowgrid"></div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="page" id="page-history">
+  <div class="sec" style="margin-top:2rem;">
+    <div class="stag" data-th="📋 ประวัติการประเมิน" data-en="📋 Assessment History">📋 ประวัติการประเมิน</div>
+    <div class="sti" data-th="ผลลัพธ์ย้อนหลัง 5 ครั้งล่าสุด" data-en="Last 5 Assessment Results">ผลลัพธ์ย้อนหลัง 5 ครั้งล่าสุด</div>
+    <div id="histlist"></div>
   </div>
 </div>
 
@@ -725,6 +754,7 @@ function go(id){
   if(id==='result'){buildResult();resultBuilt=true;}
   if(id==='print') buildPrint();
   if(id==='know') buildKnow();
+  if(id==='history') buildHistory();
   window.scrollTo(0,0);
 }
 
@@ -786,7 +816,7 @@ function nextQ(){
   var s=Q[cur].o[chosen[cur]].s;
   Object.keys(s).forEach(function(k){if(scores[k]!==undefined)scores[k]+=s[k];});
   if(cur<Q.length-1){cur++;saveToStorage();renderQ();}
-  else{quizDone=true;quizCompletedAt=new Date().toISOString();saveToStorage();submitAnonymousData();go('result');}
+  else{quizDone=true;quizCompletedAt=new Date().toISOString();saveToStorage();submitAnonymousData();saveHistory();go('result');}
 }
 
 function prevQ(){
@@ -1233,6 +1263,62 @@ function showImageOverlay(dataUrl){
     +'<p style="color:rgba(255,255,255,.5);font-size:.72rem;text-align:center;margin-top:10px;font-family:\'Noto Sans Thai\',sans-serif;">'+T('หรือจับ Screenshot หน้าจอก็ได้เช่นกัน','Or take a screenshot of your screen')+'</p>'
     +'</div>';
   document.body.appendChild(ov);
+}
+
+function saveHistory(){
+  var totW=0,mxW=0;
+  D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
+  var hp=Math.round((1-Math.min(1,totW/mxW))*100);
+  var entry={time:quizCompletedAt||new Date().toISOString(),hp:hp,d:{}};
+  D.forEach(function(d){entry.d[d.k]=getDiseasePercent(d.k);});
+  var hist=getHistory();
+  if(hist.length>0&&hist[0].time===entry.time) return;
+  hist.unshift(entry);
+  if(hist.length>5) hist=hist.slice(0,5);
+  try{localStorage.setItem('sh_history',JSON.stringify(hist));}catch(e){}
+}
+
+function getHistory(){
+  try{var h=localStorage.getItem('sh_history');return h?JSON.parse(h):[];}catch(e){return [];}
+}
+
+function buildHistory(){
+  var hist=getHistory();
+  var el=document.getElementById('histlist');
+  if(!hist.length){
+    el.innerHTML='<div class="hist-empty">📭 '+T('ยังไม่มีประวัติการประเมิน<br>ทำแบบประเมินให้ครบแล้วผลจะบันทึกอัตโนมัติ 😊','No history yet.<br>Complete the assessment and results will be saved automatically 😊')+'</div>';
+    return;
+  }
+  var h='<div class="hist-list">';
+  hist.forEach(function(entry,idx){
+    var d=new Date(entry.time);
+    var dateStr=T(
+      d.toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'})+' เวลา '+d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})+' น.',
+      d.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})+' at '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+    );
+    var col=entry.hp>=70?'#10b981':entry.hp>=45?'#f59e0b':'#ef4444';
+    var lbl=entry.hp>=70?T('สุขภาพดี ✅','Good Health ✅'):entry.hp>=45?T('ปานกลาง ⚠️','Moderate ⚠️'):T('ต้องปรับปรุง 🚨','Needs Work 🚨');
+    var noLabel=idx===0?T('🕐 ล่าสุด','🕐 Latest'):T('ครั้งที่ '+(hist.length-idx),'Session #'+(hist.length-idx));
+    var trendHtml='';
+    if(idx<hist.length-1){
+      var diff=entry.hp-hist[idx+1].hp;
+      if(diff>0) trendHtml='<div class="hist-trend trend-up">▲ +'+diff+'% '+T('ดีขึ้น','improved')+'</div>';
+      else if(diff<0) trendHtml='<div class="hist-trend trend-down">▼ '+diff+'% '+T('ลดลง','declined')+'</div>';
+      else trendHtml='<div class="hist-trend trend-same">— '+T('เท่าเดิม','same')+'</div>';
+    }
+    var bars='';
+    D.forEach(function(dis){
+      var p=entry.d[dis.k]||0;
+      var bc=p>=60?'#ef4444':p>=30?'#f59e0b':'#10b981';
+      bars+='<div class="hist-mini-row"><span class="hist-mini-name">'+dis.i+' '+T(dis.th,dis.en)+'</span><div class="hist-mini-bar"><div class="hist-mini-fill" style="width:'+p+'%;background:'+bc+'"></div></div><span class="hist-mini-pct" style="color:'+bc+'">'+p+'%</span></div>';
+    });
+    h+='<div class="hist-card">';
+    h+='<div class="hist-card-top"><div><div class="hist-no">'+noLabel+'</div><div class="hist-date">'+dateStr+'</div></div>';
+    h+='<div style="text-align:right">'+trendHtml+'<div class="hist-score" style="color:'+col+'">'+entry.hp+'%</div><div class="hist-lbl">'+lbl+'</div></div></div>';
+    h+='<div class="hist-mini-bars">'+bars+'</div></div>';
+  });
+  h+='</div>';
+  el.innerHTML=h;
 }
 
 // ── โหลดข้อมูลที่บันทึกไว้ก่อนหน้า (ถ้ามี) ──
