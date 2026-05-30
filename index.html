@@ -212,7 +212,7 @@ footer span{color:var(--pri);}
   <div class="logo"><div class="lb">🏫</div><div class="logo-text"><span class="logo-school">School</span><span class="logo-health">Health</span></div></div>
   <ul>
     <li><a onclick="go('home')" id="nav-home" class="active" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a></li>
-    <li><a onclick="go('quiz')" id="nav-quiz" data-th="ตรวจสอบ" data-en="Check">ตรวจสอบ</a></li>
+    <li><a onclick="showNameModal()" id="nav-quiz" data-th="ตรวจสอบ" data-en="Check">ตรวจสอบ</a></li>
     <li><a onclick="go('result')" id="nav-result" data-th="ผลลัพธ์" data-en="Result">ผลลัพธ์</a></li>
     <li><a onclick="go('know')" id="nav-know" data-th="ความรู้โรค" data-en="Knowledge">ความรู้โรค</a></li>
     <li><a onclick="go('print')" id="nav-print" data-th="พิมพ์/แชร์" data-en="Print/Share">พิมพ์/แชร์</a></li>
@@ -232,7 +232,7 @@ footer span{color:var(--pri);}
       ⚠️ <b data-th="ข้อควรทราบก่อนใช้งาน" data-en="Important Notice">ข้อควรทราบก่อนใช้งาน</b><br>
       <span data-th="เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์" data-en="This website is a preliminary health behavior screening tool only. It cannot replace medical diagnosis or professional advice. If you have abnormal symptoms or health concerns, please consult a doctor.">เว็บไซต์นี้เป็นเครื่องมือคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยหรือคำแนะนำของแพทย์ผู้เชี่ยวชาญได้ หากมีอาการผิดปกติหรือกังวลเกี่ยวกับสุขภาพ ควรปรึกษาแพทย์</span>
     </div>
-    <button class="btn-start" onclick="go('quiz')" data-th="🔍 เริ่มตรวจสอบเลย" data-en="🔍 Start Assessment">🔍 เริ่มตรวจสอบเลย</button>
+    <button class="btn-start" onclick="showNameModal()" data-th="🔍 เริ่มตรวจสอบเลย" data-en="🔍 Start Assessment">🔍 เริ่มตรวจสอบเลย</button>
   </div>
   <div class="feature-grid">
     <div class="feature-card"><span class="feature-icon">📋</span><div class="feature-title" data-th="20 คำถามครอบคลุม" data-en="20 Comprehensive Questions">20 คำถามครอบคลุม</div><div class="feature-desc" data-th="ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ" data-en="Covering all school life behaviors with academic references">ครอบคลุมทุกพฤติกรรมในชีวิตโรงเรียน พร้อมแหล่งอ้างอิงทางวิชาการ</div></div>
@@ -273,7 +273,7 @@ footer span{color:var(--pri);}
 <!-- RESULT -->
 <div class="page" id="page-result">
   <div class="result-wrap">
-    <div class="result-header"><h2 data-th="🩺 ผลการประเมินความเสี่ยงของคุณ" data-en="🩺 Your Health Risk Assessment Results">🩺 ผลการประเมินความเสี่ยงของคุณ</h2><p id="rdate"></p></div>
+    <div class="result-header"><h2 data-th="🩺 ผลการประเมินความเสี่ยงของคุณ" data-en="🩺 Your Health Risk Assessment Results">🩺 ผลการประเมินความเสี่ยงของคุณ</h2><p id="rname" style="font-size:.88rem;font-weight:600;opacity:.95;margin-bottom:2px;"></p><p id="rdate"></p></div>
     <div class="tabs">
       <div class="tab active" onclick="showTab(0)" data-th="📊 ภาพรวม" data-en="📊 Overview">📊 ภาพรวม</div>
       <div class="tab" onclick="showTab(1)" data-th="🕸️ กราฟ 4 มิติ" data-en="🕸️ Radar Chart">🕸️ กราฟ 4 มิติ</div>
@@ -691,7 +691,8 @@ var KN=[
 var cur=0,chosen=[],scores={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
 var radarChart=null,resultBuilt=false,quizDone=false,quizCompletedAt=null;
 
-var SHEET_URL='https://script.google.com/macros/s/AKfycbxoH6dh30iWoii_L7kJtO9sukHQG2oogvSMDUHNKRKJtsWC_Lukl75No2LRKJhAISeq/exec';
+var SHEET_URL='https://script.google.com/macros/s/AKfycbxjHoVAL6d8yaujHq5xnjeLOx5K8UgtYqK9EF6avBZvQKyb6PbSE4-5iCibgOambRTe/exec';
+var userName='';
 
 function submitAnonymousData(){
   var p='of='+getDiseasePercent('of')
@@ -701,8 +702,83 @@ function submitAnonymousData(){
     +'&ki='+getDiseasePercent('ki')
     +'&st='+getDiseasePercent('st')
     +'&to='+getDiseasePercent('to')
-    +'&ea='+getDiseasePercent('ea');
+    +'&ea='+getDiseasePercent('ea')
+    +'&name='+encodeURIComponent(userName||T('ไม่ระบุ','Anonymous'));
   new Image().src=SHEET_URL+'?'+p;
+}
+
+function getNameHistory(){
+  try{var h=localStorage.getItem('sh_name_hist');return h?JSON.parse(h):[];}catch(e){return [];}
+}
+function saveNameToHistory(n){
+  if(!n) return;
+  try{
+    var h=getNameHistory().filter(function(x){return x!==n;});
+    h.unshift(n);
+    localStorage.setItem('sh_name_hist',JSON.stringify(h.slice(0,10)));
+  }catch(e){}
+}
+function showNameHist(){
+  var h=getNameHistory();
+  var dd=document.getElementById('name-hist-dd');
+  if(!dd) return;
+  if(!h.length){dd.style.display='none';return;}
+  window._nh=h;
+  dd.innerHTML=h.map(function(n,i){
+    return '<div onclick="pickHistName('+i+')" style="padding:9px 14px;cursor:pointer;font-size:.9rem;border-bottom:1px solid #f3f4f6;color:#374151;" onmouseover="this.style.background=\'#f0f7ff\'" onmouseout="this.style.background=\'\'">'+n+'</div>';
+  }).join('');
+  dd.style.display='block';
+}
+function hideNameHist(){var dd=document.getElementById('name-hist-dd');if(dd)dd.style.display='none';}
+function pickHistName(i){
+  var inp=document.getElementById('name-inp');
+  if(inp&&window._nh&&window._nh[i]!==undefined)inp.value=window._nh[i];
+  hideNameHist();
+}
+
+function showNameModal(){
+  if(userName){go('quiz');return;}
+  var old=document.getElementById('name-modal-ov');
+  if(old) old.remove();
+  var ov=document.createElement('div');
+  ov.id='name-modal-ov';
+  ov.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:999;display:flex;align-items:center;justify-content:center;padding:1.5rem;box-sizing:border-box;';
+  ov.innerHTML='<div style="background:#fff;border-radius:18px;padding:2rem;max-width:360px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);">'
+    +'<div style="text-align:center;margin-bottom:1.2rem;">'
+    +'<div style="font-size:2.5rem;margin-bottom:.5rem;">👤</div>'
+    +'<div style="font-family:\'Prompt\',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.4rem;">'+T('ก่อนเริ่มประเมิน','Before You Start')+'</div>'
+    +'<div style="font-size:.8rem;color:#6b7280;line-height:1.7;">'+T('ใส่ชื่อเล่นหรือชื่อสมมติ ไม่ต้องใช้ชื่อจริง<br>เพื่อความเป็นส่วนตัว','Enter a nickname or alias — no real name needed')+'</div>'
+    +'</div>'
+    +'<div style="position:relative;margin-bottom:.9rem;">'
+    +'<input id="name-inp" type="text" maxlength="20" placeholder="'+T('เช่น มิ้น, นักเรียนA, ไม่บอก','e.g. Mint, StudentA, Anonymous')+'" '
+    +'style="width:100%;border:2px solid #e5e7eb;border-radius:11px;padding:11px 14px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.95rem;outline:none;box-sizing:border-box;transition:border .2s;" '
+    +'onfocus="this.style.borderColor=\'#3b82f6\';showNameHist()" onblur="this.style.borderColor=\'#e5e7eb\';setTimeout(hideNameHist,180)" '
+    +'onkeydown="if(event.key===\'Enter\')confirmName()" />'
+    +'<div id="name-hist-dd" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e5e7eb;border-radius:9px;box-shadow:0 6px 20px rgba(0,0,0,.1);max-height:160px;overflow-y:auto;z-index:10;margin-top:3px;"></div>'
+    +'</div>'
+    +'<div id="name-err" style="display:none;color:#ef4444;font-size:.8rem;margin-top:-6px;margin-bottom:.7rem;">'+T('⚠️ กรุณาใส่ชื่อก่อนนะคะ','⚠️ Please enter a name first')+'</div>'
+    +'<button onclick="confirmName()" style="width:100%;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;padding:12px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;margin-bottom:.6rem;">'+T('🔍 เริ่มตรวจสอบเลย','🔍 Start Assessment')+'</button>'
+    +'<button onclick="document.getElementById(\'name-modal-ov\').remove()" style="width:100%;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;padding:10px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.86rem;cursor:pointer;">'+T('ยกเลิก','Cancel')+'</button>'
+    +'</div>';
+  document.body.appendChild(ov);
+  setTimeout(function(){var i=document.getElementById('name-inp');if(i)i.focus();},100);
+}
+
+function confirmName(){
+  var inp=document.getElementById('name-inp');
+  var val=inp?inp.value.trim():'';
+  if(!val){
+    if(inp) inp.style.borderColor='#ef4444';
+    var err=document.getElementById('name-err');
+    if(err) err.style.display='block';
+    return;
+  }
+  userName=val;
+  saveNameToHistory(userName);
+  try{localStorage.setItem('sh_name',userName);}catch(e){}
+  var ov=document.getElementById('name-modal-ov');
+  if(ov) ov.remove();
+  go('quiz');
 }
 
 // ═══ บันทึก/โหลดข้อมูลจาก localStorage ═══
@@ -745,7 +821,7 @@ function clearStorage(){
 function go(id){
   if((id==='result'||id==='print')&&!quizDone){
     alert(T('กรุณาทำแบบประเมินให้ครบทุกข้อก่อนนะคะ 😊','Please complete the assessment first 😊'));
-    id='quiz';
+    showNameModal();return;
   }
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.getElementById('page-'+id).classList.add('active');
@@ -843,12 +919,14 @@ function confirmReset(){
     '⚠️ Start a brand-new assessment?\n\nAll current answers will be permanently cleared.'
   ))) return;
   resetQ();
-  go('quiz');
+  go('home');
 }
 
 function resetQ(){
   cur=0;chosen=[];resultBuilt=false;quizDone=false;quizCompletedAt=null;
   scores={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
+  userName='';
+  try{localStorage.removeItem('sh_name');}catch(e){}
   clearStorage();
   renderQ();
 }
@@ -863,6 +941,8 @@ function buildResult(){
   // ใช้เวลาที่ทำเสร็จจริง ไม่ใช่เวลาที่เปิดหน้า
   var now=quizCompletedAt?new Date(quizCompletedAt):new Date();
   var timeStr=now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+  var rn=document.getElementById('rname');
+  if(rn) rn.textContent='👤 '+T('ผู้ประเมิน: ','Assessed by: ')+(userName||T('ไม่ระบุ','Anonymous'));
   document.getElementById('rdate').textContent=T(
     'วิเคราะห์เมื่อ '+now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'})+' เวลา '+timeStr+' น.',
     'Analyzed on '+now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})+' at '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
@@ -1269,7 +1349,7 @@ function saveHistory(){
   var totW=0,mxW=0;
   D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
   var hp=Math.round((1-Math.min(1,totW/mxW))*100);
-  var entry={time:quizCompletedAt||new Date().toISOString(),hp:hp,d:{}};
+  var entry={time:quizCompletedAt||new Date().toISOString(),hp:hp,d:{},name:userName||T('ไม่ระบุ','Anonymous')};
   D.forEach(function(d){entry.d[d.k]=getDiseasePercent(d.k);});
   var hist=getHistory();
   if(hist.length>0&&hist[0].time===entry.time) return;
@@ -1313,7 +1393,7 @@ function buildHistory(){
       bars+='<div class="hist-mini-row"><span class="hist-mini-name">'+dis.i+' '+T(dis.th,dis.en)+'</span><div class="hist-mini-bar"><div class="hist-mini-fill" style="width:'+p+'%;background:'+bc+'"></div></div><span class="hist-mini-pct" style="color:'+bc+'">'+p+'%</span></div>';
     });
     h+='<div class="hist-card">';
-    h+='<div class="hist-card-top"><div><div class="hist-no">'+noLabel+'</div><div class="hist-date">'+dateStr+'</div></div>';
+    h+='<div class="hist-card-top"><div><div class="hist-no">'+noLabel+'</div><div class="hist-date">'+dateStr+'</div>'+(entry.name?'<div style="font-size:.74rem;color:var(--mu);margin-top:2px;">👤 '+entry.name+'</div>':'')+'</div>';
     h+='<div style="text-align:right">'+trendHtml+'<div class="hist-score" style="color:'+col+'">'+entry.hp+'%</div><div class="hist-lbl">'+lbl+'</div></div></div>';
     h+='<div class="hist-mini-bars">'+bars+'</div></div>';
   });
@@ -1323,6 +1403,7 @@ function buildHistory(){
 
 // ── โหลดข้อมูลที่บันทึกไว้ก่อนหน้า (ถ้ามี) ──
 loadFromStorage();
+try{var _sn=localStorage.getItem('sh_name');if(_sn)userName=_sn;}catch(e){}
 renderQ();
 if(quizDone){
   // มีผลลัพธ์เก่าอยู่ → ไปหน้าผลลัพธ์ทันที
