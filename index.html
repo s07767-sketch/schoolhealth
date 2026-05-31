@@ -402,6 +402,7 @@ function toggleLang(){
   var activePage=document.querySelector('.page.active');
   if(activePage&&activePage.id==='page-print'&&quizDone) buildPrint();
   if(activePage&&activePage.id==='page-know') buildKnow();
+  if(activePage&&activePage.id==='page-history') buildHistory();
 }
 
 function T(th,en){return LANG==='th'?th:en;}
@@ -687,14 +688,20 @@ var KN=[
    ref:'WHO, 2022'}
 ];
 
-// scores = ตัวสะสมคะแนน  key โรค: of ey sx im ki st to ea  |  key หมวดสุขภาพ: ph sc(หน้าจอ) nu sl
-var cur=0,chosen=[],scores={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
+var cur=0,chosen=[];
 var radarChart=null,resultBuilt=false,quizDone=false,quizCompletedAt=null;
 
-var SHEET_URL='https://script.google.com/macros/s/AKfycbxjHoVAL6d8yaujHq5xnjeLOx5K8UgtYqK9EF6avBZvQKyb6PbSE4-5iCibgOambRTe/exec';
+var SHEET_URL='https://script.google.com/macros/s/AKfycbzv0qCoVxnHTso3L1l7y89T8nBEW5b7_vUr1EVfBrmlT-kQ3MPZkV3dv1bIhj1KkWBw/exec';
 var userName='';
 
 function submitAnonymousData(){
+  var totW=0,mxW=0;
+  D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
+  var hp=Math.round((1-Math.min(1,totW/mxW))*100);
+  var topD=D.reduce(function(best,d){
+    var pct=getDiseasePercent(d.k);
+    return pct>best.pct?{name:d.th,pct:pct}:best;
+  },{name:'',pct:-1});
   var p='of='+getDiseasePercent('of')
     +'&ey='+getDiseasePercent('ey')
     +'&sx='+getDiseasePercent('sx')
@@ -703,7 +710,9 @@ function submitAnonymousData(){
     +'&st='+getDiseasePercent('st')
     +'&to='+getDiseasePercent('to')
     +'&ea='+getDiseasePercent('ea')
-    +'&name='+encodeURIComponent(userName||T('ไม่ระบุ','Anonymous'));
+    +'&name='+encodeURIComponent(userName||T('ไม่ระบุ','Anonymous'))
+    +'&hp='+hp
+    +'&top='+encodeURIComponent(topD.name);
   new Image().src=SHEET_URL+'?'+p;
 }
 
@@ -756,9 +765,10 @@ function showNameModal(){
     +'onkeydown="if(event.key===\'Enter\')confirmName()" />'
     +'<div id="name-hist-dd" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e5e7eb;border-radius:9px;box-shadow:0 6px 20px rgba(0,0,0,.1);max-height:160px;overflow-y:auto;z-index:10;margin-top:3px;"></div>'
     +'</div>'
-    +'<div id="name-err" style="display:none;color:#ef4444;font-size:.8rem;margin-top:-6px;margin-bottom:.7rem;">'+T('⚠️ กรุณาใส่ชื่อก่อนนะคะ','⚠️ Please enter a name first')+'</div>'
-    +'<button onclick="confirmName()" style="width:100%;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;padding:12px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;margin-bottom:.6rem;">'+T('🔍 เริ่มตรวจสอบเลย','🔍 Start Assessment')+'</button>'
-    +'<button onclick="document.getElementById(\'name-modal-ov\').remove()" style="width:100%;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;padding:10px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.86rem;cursor:pointer;">'+T('ยกเลิก','Cancel')+'</button>'
+    +'<div id="name-err" style="display:none;color:#ef4444;font-size:.8rem;margin-top:-6px;margin-bottom:.7rem;">'+T('⚠️ กรุณาใส่ชื่อก่อนนะครับ','⚠️ Please enter a name first')+'</div>'
+    +'<button id="name-confirm-btn" onclick="confirmName()" style="width:100%;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;padding:12px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;margin-bottom:.6rem;">'+T('🔍 เริ่มตรวจสอบเลย','🔍 Start Assessment')+'</button>'
+    +'<button id="name-cancel-btn" onclick="document.getElementById(\'name-modal-ov\').remove()" style="width:100%;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;padding:10px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.86rem;cursor:pointer;">'+T('ยกเลิก','Cancel')+'</button>'
+    +'<p style="font-size:.68rem;color:#9ca3af;text-align:center;margin-top:.6rem;line-height:1.5;">📊 '+T('ข้อมูลเชิงสถิติ (ไม่ระบุตัวตน) จะถูกส่งเพื่อการวิจัยโครงงาน','Anonymous statistics will be submitted for project research')+'</p>'
     +'</div>';
   document.body.appendChild(ov);
   setTimeout(function(){var i=document.getElementById('name-inp');if(i)i.focus();},100);
@@ -785,7 +795,6 @@ function confirmName(){
 function saveToStorage(){
   try{
     localStorage.setItem('sh_chosen',JSON.stringify(chosen));
-    localStorage.setItem('sh_sc',JSON.stringify(scores));
     localStorage.setItem('sh_done',quizDone?'1':'0');
     localStorage.setItem('sh_cur',String(cur));
     if(quizCompletedAt) localStorage.setItem('sh_time',quizCompletedAt);
@@ -795,15 +804,12 @@ function saveToStorage(){
 function loadFromStorage(){
   try{
     var c=localStorage.getItem('sh_chosen');
-    var s=localStorage.getItem('sh_sc');
     var d=localStorage.getItem('sh_done');
     var cu=localStorage.getItem('sh_cur');
-    if(c&&s){
+    if(c){
       // แปลง null → undefined สำหรับคำถามที่ยังไม่ตอบ
       var pc=JSON.parse(c);
       chosen=Array.isArray(pc)?pc.map(function(v){return v===null?undefined:v;}):[];
-      var ps=JSON.parse(s);
-      Object.keys(scores).forEach(function(k){if(ps[k]!==undefined)scores[k]=ps[k];});
       quizDone=d==='1';
       cur=Math.max(0,Math.min(parseInt(cu)||0,Q.length-1));
       var tm=localStorage.getItem('sh_time');
@@ -815,12 +821,21 @@ function loadFromStorage(){
 }
 
 function clearStorage(){
-  try{['sh_chosen','sh_sc','sh_done','sh_cur','sh_time'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+  try{['sh_chosen','sh_done','sh_cur','sh_time'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+}
+
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;padding:.7rem 1.3rem;border-radius:12px;font-size:.85rem;font-family:\'Noto Sans Thai\',sans-serif;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center;';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';},10);
+  setTimeout(function(){t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);},3500);
 }
 
 function go(id){
   if((id==='result'||id==='print')&&!quizDone){
-    alert(T('กรุณาทำแบบประเมินให้ครบทุกข้อก่อนนะคะ 😊','Please complete the assessment first 😊'));
+    alert(T('กรุณาทำแบบประเมินให้ครบทุกข้อก่อนนะครับ 😊','Please complete the assessment first 😊'));
     showNameModal();return;
   }
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
@@ -888,19 +903,13 @@ function getWeightedMax(k){
 }
 
 function nextQ(){
-  if(chosen[cur]===undefined){alert(T('กรุณาเลือกคำตอบก่อนนะคะ 😊','Please select an answer first 😊'));return;}
-  var s=Q[cur].o[chosen[cur]].s;
-  Object.keys(s).forEach(function(k){if(scores[k]!==undefined)scores[k]+=s[k];});
+  if(chosen[cur]===undefined){alert(T('กรุณาเลือกคำตอบก่อนนะครับ 😊','Please select an answer first 😊'));return;}
   if(cur<Q.length-1){cur++;saveToStorage();renderQ();}
   else{quizDone=true;quizCompletedAt=new Date().toISOString();saveToStorage();submitAnonymousData();saveHistory();go('result');}
 }
 
 function prevQ(){
   if(cur>0){
-    if(chosen[cur-1]!==undefined){
-      var s=Q[cur-1].o[chosen[cur-1]].s;
-      Object.keys(s).forEach(function(k){if(scores[k]!==undefined)scores[k]-=s[k];});
-    }
     cur--;saveToStorage();renderQ();
   } else {
     var hasAny=chosen.some(function(v){return v!==undefined;});
@@ -924,7 +933,6 @@ function confirmReset(){
 
 function resetQ(){
   cur=0;chosen=[];resultBuilt=false;quizDone=false;quizCompletedAt=null;
-  scores={of:0,ey:0,sx:0,im:0,ki:0,st:0,to:0,ea:0,ph:0,sc:0,nu:0,sl:0};
   userName='';
   try{localStorage.removeItem('sh_name');}catch(e){}
   clearStorage();
@@ -960,7 +968,7 @@ function buildResult(){
   document.getElementById('osc').textContent=hp+'%';
 
   var lb,ds,col;
-  if(hp>=70){lb=T('✅ สุขภาพดี','✅ Good Health');ds=T('พฤติกรรมของคุณดีมาก รักษาไว้แบบนี้ต่อไปนะคะ 🎉','Your behavior is excellent, keep it up! 🎉');col='#10b981';}
+  if(hp>=70){lb=T('✅ สุขภาพดี','✅ Good Health');ds=T('พฤติกรรมของคุณดีมาก รักษาไว้แบบนี้ต่อไปนะครับ 🎉','Your behavior is excellent, keep it up! 🎉');col='#10b981';}
   else if(hp>=45){lb=T('⚠️ สุขภาพปานกลาง','⚠️ Moderate Health');ds=T('พฤติกรรมบางอย่างอาจส่งผลต่อสุขภาพในระยะยาว ควรปรับปรุง','Some behaviors may affect long-term health, please improve');col='#f59e0b';}
   else{lb=T('🚨 ต้องปรับปรุงโดยด่วน','🚨 Needs Urgent Improvement');ds=T('พฤติกรรมหลายอย่างเสี่ยงต่อโรค ควรปรับเปลี่ยนทันที','Multiple behaviors are risky, please change immediately');col='#ef4444';}
   document.getElementById('olb').textContent=lb;
@@ -988,7 +996,7 @@ function buildResult(){
     rh+='<div class="risk-row"><span class="risk-icon">'+d.i+'</span><div class="risk-info"><div class="risk-name">'+dn+'</div><div class="risk-bar"><div class="risk-bar-fill" style="width:'+p+'%"></div></div></div><div><div class="risk-pct '+cls+'">'+p+'%</div><div class="risk-level-label '+cls+'">'+lvl+'</div></div></div>';
     if(p>=30&&AV[d.k]) ah+='<li>'+T(AV[d.k].th,AV[d.k].en)+'</li>';
   });
-  if(!ah) ah='<li>'+T('คุณมีพฤติกรรมที่ดีมาก รักษาไว้แบบนี้ต่อไปนะคะ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
+  if(!ah) ah='<li>'+T('คุณมีพฤติกรรมที่ดีมาก รักษาไว้แบบนี้ต่อไปนะครับ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
   document.getElementById('rlist').innerHTML=rh;
   document.getElementById('alist').innerHTML=ah;
 
@@ -1071,7 +1079,7 @@ function build6Month(){
   bads.slice(0,3).forEach(function(b){
     wh+='<li>'+b.i+' <b>'+b.n+'</b> — '+T('ปัจจุบัน','Now')+' '+b.p+'% → '+T('6 เดือน','6 months')+' '+b.p6+'% (+'+( b.p6-b.p)+'%)</li>';
   });
-  if(!wh) wh='<li>'+T('✅ ไม่มีโรคที่น่ากังวลมาก รักษาพฤติกรรมดีๆ ไว้นะคะ','✅ No major concerns, keep up the good behaviors!')+'</li>';
+  if(!wh) wh='<li>'+T('✅ ไม่มีโรคที่น่ากังวลมาก รักษาพฤติกรรมดีๆ ไว้นะครับ','✅ No major concerns, keep up the good behaviors!')+'</li>';
   document.getElementById('warn6m').innerHTML=wh;
 }
 
@@ -1259,7 +1267,7 @@ function buildPrint(){
     var p=getDiseasePercent(d.k);
     if(p>=30&&AV[d.k]) ah+='<li>'+T(AV[d.k].th,AV[d.k].en)+'</li>';
   });
-  if(!ah) ah='<li>'+T('พฤติกรรมของคุณดีมาก รักษาไว้นะคะ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
+  if(!ah) ah='<li>'+T('พฤติกรรมของคุณดีมาก รักษาไว้นะครับ 🎉','Your behavior is excellent, keep it up! 🎉')+'</li>';
   document.getElementById('print-advice').innerHTML=ah;
 
   var mob=/android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent)||window.innerWidth<=768;
@@ -1289,9 +1297,22 @@ function copyResult(){
     txt+=d.i+' '+T(d.th,d.en)+': '+p+'% ('+lvl+')\n';
   });
   txt+='\n'+T('⚠️ ผลนี้เป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์','⚠️ This is a preliminary screening only, not medical diagnosis');
-  navigator.clipboard.writeText(txt).then(function(){
-    alert(T('คัดลอกสรุปผลลัพธ์แล้ว! 📋','Result summary copied! 📋'));
-  }).catch(function(){alert(T('ไม่สามารถคัดลอกได้ กรุณาลองใหม่','Copy failed, please try again'));});
+  function execCopy(t){
+    var ta=document.createElement('textarea');
+    ta.value=t;ta.style.cssText='position:fixed;top:-9999px;left:-9999px;opacity:0;';
+    document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,99999);
+    var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);return ok;
+  }
+  var ok_msg=T('คัดลอกสรุปผลลัพธ์แล้ว! 📋','Result summary copied! 📋');
+  var fail_msg=T('ไม่สามารถคัดลอกได้ กรุณาลองใหม่','Copy failed, please try again');
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(function(){alert(ok_msg);}).catch(function(){
+      alert(execCopy(txt)?ok_msg:fail_msg);
+    });
+  } else {
+    alert(execCopy(txt)?ok_msg:fail_msg);
+  }
 }
 
 function buildKnow(){
@@ -1401,10 +1422,39 @@ function buildHistory(){
   el.innerHTML=h;
 }
 
+// ── Keyboard Navigation ──
+document.addEventListener('keydown',function(e){
+  var modal=document.getElementById('name-modal-ov');
+  if(modal){
+    if(e.key==='Escape'){modal.remove();return;}
+    if(e.key==='Tab'){
+      e.preventDefault();
+      var fl=[document.getElementById('name-inp'),document.getElementById('name-confirm-btn'),document.getElementById('name-cancel-btn')].filter(Boolean);
+      var fi=fl.indexOf(document.activeElement);
+      fl[e.shiftKey?(fi<=0?fl.length-1:fi-1):(fi>=fl.length-1?0:fi+1)].focus();
+    }
+    return;
+  }
+  var qp=document.getElementById('page-quiz');
+  if(!qp||!qp.classList.contains('active')) return;
+  var optCount=Q[cur].o.length;
+  if(e.key>='1'&&e.key<='9'){var idx=parseInt(e.key)-1;if(idx<optCount){e.preventDefault();pick(idx);}return;}
+  if(e.key==='ArrowDown'){e.preventDefault();pick(chosen[cur]===undefined?0:Math.min(chosen[cur]+1,optCount-1));return;}
+  if(e.key==='ArrowUp'){e.preventDefault();pick(chosen[cur]===undefined?optCount-1:Math.max(chosen[cur]-1,0));return;}
+  if(e.key==='Enter'){e.preventDefault();nextQ();return;}
+  if(e.key==='Backspace'){e.preventDefault();prevQ();return;}
+});
+
 // ── โหลดข้อมูลที่บันทึกไว้ก่อนหน้า (ถ้ามี) ──
 loadFromStorage();
 try{var _sn=localStorage.getItem('sh_name');if(_sn)userName=_sn;}catch(e){}
 renderQ();
+var _hasProgress=chosen.some(function(v){return v!==undefined;});
+if(quizDone){
+  setTimeout(function(){showToast(T('💾 พบผลลัพธ์ที่บันทึกไว้','💾 Saved results loaded'));},600);
+} else if(_hasProgress){
+  setTimeout(function(){showToast(T('💾 ทำต่อได้เลย — บันทึกไว้ถึงข้อ '+(cur+1),'💾 Progress restored — continue from Q'+(cur+1)));},600);
+}
 if(quizDone){
   // มีผลลัพธ์เก่าอยู่ → ไปหน้าผลลัพธ์ทันที
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
