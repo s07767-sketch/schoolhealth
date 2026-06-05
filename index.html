@@ -180,7 +180,9 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .know-card{background:var(--bg);border-radius:13px;padding:1.1rem;border:1px solid var(--bo);}
 .know-title{font-size:.86rem;font-weight:700;margin-bottom:.5rem;}
 .know-text{font-size:.78rem;color:var(--mu);line-height:1.6;}
-.know-ref{font-size:.7rem;color:#9ca3af;margin-top:.5rem;font-style:italic;}
+.know-sub{font-size:.72rem;font-weight:700;margin-top:.65rem;margin-bottom:.2rem;color:var(--tx);}
+.know-list{font-size:.75rem;color:var(--mu);line-height:1.65;padding-left:1.1rem;margin:0;}
+.know-ref{font-size:.7rem;color:#9ca3af;margin-top:.6rem;font-style:italic;}
 .btn-action{display:block;width:100%;margin-top:1.2rem;background:linear-gradient(135deg,var(--pri),var(--p2));color:#fff;border:none;padding:12px;border-radius:11px;font-family:'Noto Sans Thai',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;}
 /* HISTORY */
 .hist-list{display:flex;flex-direction:column;gap:12px;}
@@ -284,11 +286,11 @@ footer span{color:var(--pri);}
     <div class="tab-panel active" id="tp0">
       <div class="res-disclaimer" id="res-disc">⚠️ <b>หมายเหตุ:</b> ผลการประเมินนี้คำนวณจากพฤติกรรมที่คุณตอบเท่านั้น ไม่ใช่การตรวจร่างกายหรือตรวจเลือด ควรใช้เป็นแนวทางเบื้องต้นเท่านั้น</div>
       <div class="criteria-box">
-        <div class="criteria-title" id="ct-title">📐 เกณฑ์การประเมินคะแนนสุขภาพ (อ้างอิง WHO & กรมอนามัย)</div>
-        <div class="criteria-row"><div class="criteria-dot" style="background:#10b981"></div><div class="criteria-text"><b>70-100%</b> = สุขภาพดี — พฤติกรรมส่วนใหญ่อยู่ในเกณฑ์ที่ WHO และกรมอนามัยแนะนำ</div></div>
+        <div class="criteria-title" id="ct-title">📐 เกณฑ์การประเมินคะแนนสุขภาพ (กำหนดโดยทีมพัฒนาโครงงาน)</div>
+        <div class="criteria-row"><div class="criteria-dot" style="background:#10b981"></div><div class="criteria-text"><b>70-100%</b> = สุขภาพดี — พฤติกรรมส่วนใหญ่อยู่ในเกณฑ์ที่ดี สอดคล้องกับแนวทางสุขภาพสากล</div></div>
         <div class="criteria-row"><div class="criteria-dot" style="background:#ef9905"></div><div class="criteria-text"><b>45-69%</b> = ปานกลาง — มีพฤติกรรมบางอย่างเบี่ยงเบนจากเกณฑ์มาตรฐาน ควรปรับปรุง</div></div>
-        <div class="criteria-row"><div class="criteria-dot" style="background:#ef4444"></div><div class="criteria-text"><b>0-44%</b> = ต้องปรับปรุงด่วน — พฤติกรรมหลายอย่างต่ำกว่าเกณฑ์ WHO อย่างมีนัยสำคัญ</div></div>
-        <div class="criteria-row"><div class="criteria-dot" style="background:#6366f1"></div><div class="criteria-text">ความเสี่ยงรายโรค: <b>สูง ≥60%</b> | <b>ปานกลาง 30-59%</b> | <b>ต่ำ &lt;30%</b> (คำนวณจากน้ำหนักคะแนนตาม WHO Risk Guidelines)</div></div>
+        <div class="criteria-row"><div class="criteria-dot" style="background:#ef4444"></div><div class="criteria-text"><b>0-44%</b> = ต้องปรับปรุงด่วน — พฤติกรรมหลายอย่างอยู่ในระดับที่ควรปรับปรุงอย่างเร่งด่วน</div></div>
+        <div class="criteria-row"><div class="criteria-dot" style="background:#6366f1"></div><div class="criteria-text">ความเสี่ยงรายโรค: <b>สูง ≥60%</b> | <b>ปานกลาง 30-59%</b> | <b>ต่ำ &lt;30%</b> (คำนวณจากน้ำหนักคะแนนของโครงงาน)</div></div>
       </div>
       <div class="score-overview">
         <div class="score-value" id="osc">-</div>
@@ -310,9 +312,9 @@ footer span{color:var(--pri);}
     <div class="tab-panel" id="tp2">
       <div class="result-title" data-th="🔮 จำลองอนาคตสุขภาพใน 6 เดือน" data-en="🔮 6-Month Health Forecast">🔮 จำลองอนาคตสุขภาพใน 6 เดือน</div>
       <div class="formula-box">
-        <div class="formula-title" data-th="📐 สูตรที่ใช้ในการคำนวณ (Compound Health Risk Model)" data-en="📐 Calculation Formula (Compound Health Risk Model)">📐 สูตรที่ใช้ในการคำนวณ (Compound Health Risk Model)</div>
+        <div class="formula-title" data-th="📐 สูตรจำลองพฤติกรรมสุขภาพ (เพื่อการศึกษาเท่านั้น ไม่ใช่การพยากรณ์ทางการแพทย์)" data-en="📐 Health Behavior Simulation Model (For educational purposes only, not medical prediction)">📐 สูตรจำลองพฤติกรรมสุขภาพ (เพื่อการศึกษาเท่านั้น ไม่ใช่การพยากรณ์ทางการแพทย์)</div>
         <span data-th="R = อัตราส่วนความเสี่ยงรวม (0-1) คำนวณจากคะแนนถ่วงน้ำหนัก" data-en="R = Weighted risk ratio (0-1) calculated from weighted scores">R = อัตราส่วนความเสี่ยงรวม (0-1) คำนวณจากคะแนนถ่วงน้ำหนัก</span><br>
-        <span data-th="k = 0.03 (อัตราการสะสมความเสี่ยง 3%/เดือน อ้างอิง WHO Chronic Disease Model)" data-en="k = 0.03 (3%/month risk accumulation rate, ref. WHO Chronic Disease Model)">k = 0.03 (อัตราการสะสมความเสี่ยง 3%/เดือน อ้างอิง WHO Chronic Disease Model)</span><br>
+        <span data-th="k = 0.03 (ค่าประมาณการสะสมความเสี่ยง 3%/เดือน กำหนดโดยทีมพัฒนาเพื่อการจำลอง)" data-en="k = 0.03 (estimated 3%/month risk accumulation, defined by development team for simulation)">k = 0.03 (ค่าประมาณการสะสมความเสี่ยง 3%/เดือน กำหนดโดยทีมพัฒนาเพื่อการจำลอง)</span><br>
         <span data-th="R₆ = R × (1 + k)⁶ → คะแนนสุขภาพ 6 เดือน = 100 − (R₆ × 100)" data-en="R₆ = R × (1 + k)⁶ → 6-month health score = 100 − (R₆ × 100)">R₆ = R × (1 + k)⁶ → คะแนนสุขภาพ 6 เดือน = 100 − (R₆ × 100)</span>
       </div>
       <div class="proj-grid" id="projgrid"></div>
@@ -413,7 +415,7 @@ var Q=[
    th_t:'ใน 1 วันเรียน คุณนั่งเรียนติดต่อกันนานแค่ไหนโดยไม่ลุกขึ้นเลย?',
    en_t:'How long do you sit continuously in class without getting up?',
    h_th:'นับรวมทุกคาบเรียนที่นั่งติดต่อกัน',h_en:'Count all consecutive class periods',
-   ref:'WHO (2020): นั่งนาน >4 ชม./วัน เพิ่มความเสี่ยงโรคกล้ามเนื้อ 2.5 เท่า',
+   ref:'WHO (2020): นั่งนาน >4 ชม./วัน เพิ่มความเสี่ยงโรคกล้ามเนื้อและกระดูกอย่างมีนัยสำคัญ',
    o:[{th:'น้อยกว่า 1 ชั่วโมง มีลุกขยับบ่อย',en:'Less than 1 hour, move frequently',s:{of:0,ph:3}},
       {th:'1-2 ชั่วโมง แล้วพักขยับตัว',en:'1-2 hours then take a break',s:{of:1,ph:2}},
       {th:'2-4 ชั่วโมง นานๆ ถึงจะลุก',en:'2-4 hours, rarely get up',s:{of:2,ph:1}},
@@ -421,7 +423,7 @@ var Q=[
   {e:'🧍',th_c:'กายภาพ',en_c:'Physical',w:1.0,
    th_t:'โดยปกติท่านั่งเรียนของคุณเป็นอย่างไร?',en_t:'How is your usual sitting posture in class?',
    h_th:'',h_en:'',
-   ref:'กรมการแพทย์ (2565): ท่านั่งผิดเป็นสาเหตุหลักของ Office Syndrome ในวัยเรียน',
+   ref:'กรมการแพทย์ (2565): ท่านั่งผิดเป็นปัจจัยสำคัญที่ก่อให้เกิด Office Syndrome ในวัยเรียน',
    o:[{th:'นั่งตัวตรง หลังพิงพนัก เท้าวางพื้น',en:'Straight back, feet flat on floor',s:{of:0,ph:3}},
       {th:'นั่งค่อมบ้างเล็กน้อย',en:'Slightly hunched sometimes',s:{of:1,ph:2}},
       {th:'นั่งค่อมหรือเอียงคอบ่อยๆ',en:'Often hunched or tilting neck',s:{of:2,ph:1}},
@@ -446,7 +448,7 @@ var Q=[
    th_t:'คุณใช้สายตาจ้องกระดาน จอคอม หรือโทรศัพท์รวมกันนานแค่ไหนต่อวัน?',
    en_t:'How long do you stare at boards, computers, or phones per day?',
    h_th:'รวมทั้งเวลาในโรงเรียนและที่บ้านด้วย',h_en:'Include both school and home time',
-   ref:'American Optometric Association (2023): จ้องหน้าจอ >4 ชม./วัน เพิ่มความเสี่ยงสายตาสั้นในวัยรุ่น',
+   ref:'American Optometric Association (2023): จ้องหน้าจอนานเกินไปต่อวันเพิ่มความเสี่ยงสายตาสั้นในวัยรุ่น',
    o:[{th:'น้อยกว่า 2 ชั่วโมง',en:'Less than 2 hours',s:{ey:0,sc:3}},
       {th:'2-4 ชั่วโมง',en:'2-4 hours',s:{ey:1,sc:2}},
       {th:'4-6 ชั่วโมง',en:'4-6 hours',s:{ey:2,sc:1}},
@@ -455,7 +457,7 @@ var Q=[
    th_t:'คุณใช้โทรศัพท์ช่วงพักกลางวันหรือหลังเลิกเรียนนานแค่ไหน?',
    en_t:'How long do you use your phone during lunch break or after school?',
    h_th:'',h_en:'',
-   ref:'กรมสุขภาพจิต (2565): วัยรุ่นที่ใช้โทรศัพท์ >2 ชม./วัน มีแนวโน้มนอนน้อยและเครียดกว่า',
+   ref:'กรมสุขภาพจิต (2565): รายงานสุขภาพจิตคนไทย ประจำปี 2565 — วัยรุ่นที่ใช้โทรศัพท์ >2 ชม./วัน มีแนวโน้มนอนน้อยและเครียดกว่า',
    o:[{th:'น้อยกว่า 30 นาที',en:'Less than 30 minutes',s:{ey:0,sc:3}},
       {th:'30 นาที - 1 ชั่วโมง',en:'30 min - 1 hour',s:{ey:1,sc:2}},
       {th:'1-2 ชั่วโมง',en:'1-2 hours',s:{ey:2,sc:1}},
@@ -491,7 +493,7 @@ var Q=[
    th_t:'คุณกินขนมหวานหรือของว่างในโรงเรียนบ่อยแค่ไหน?',
    en_t:'How often do you eat sweets or snacks at school?',
    h_th:'',h_en:'',
-   ref:'กรมอนามัย (2566): เด็กนักเรียนไทยบริโภคน้ำตาลเกินเกณฑ์ WHO เฉลี่ย 2 เท่า',
+   ref:'กรมอนามัย (2566): เด็กนักเรียนไทยมีแนวโน้มบริโภคน้ำตาลเกินเกณฑ์ WHO อย่างมีนัยสำคัญ',
    o:[{th:'แทบไม่กินเลย',en:'Rarely',s:{to:0,st:0,nu:3}},
       {th:'กินบ้างเป็นบางวัน',en:'Sometimes on some days',s:{to:1,st:0,nu:2}},
       {th:'กินเกือบทุกวัน',en:'Almost every day',s:{to:2,st:1,nu:1}},
@@ -509,7 +511,7 @@ var Q=[
    th_t:'คุณกลั้นปัสสาวะระหว่างเรียนบ่อยแค่ไหน?',
    en_t:'How often do you hold your urination during class?',
    h_th:'การกลั้นปัสสาวะนานๆ เพิ่มความเสี่ยงโรคไต',h_en:'Holding urination too long increases kidney disease risk',
-   ref:'สมาคมระบบทางเดินปัสสาวะแห่งประเทศไทย (2564): กลั้นปัสสาวะ >4 ชม. เป็นประจำเพิ่มความเสี่ยงกระเพาะปัสสาวะอักเสบ',
+   ref:'สมาคมระบบทางเดินปัสสาวะแห่งประเทศไทย (2564): การกลั้นปัสสาวะเป็นเวลานานอย่างสม่ำเสมอเพิ่มความเสี่ยงกระเพาะปัสสาวะอักเสบ',
    o:[{th:'ไม่กลั้นเลย ไปห้องน้ำเมื่อปวด',en:'Never hold, go when needed',s:{ki:0,nu:3}},
       {th:'กลั้นบ้างเป็นบางครั้ง',en:'Hold sometimes',s:{ki:1,nu:2}},
       {th:'กลั้นบ่อย เพราะไม่อยากออกจากห้องเรียน',en:'Hold often to avoid leaving class',s:{ki:2,nu:1}},
@@ -527,7 +529,7 @@ var Q=[
    th_t:'คุณรู้สึกเครียดจากการเรียน การบ้าน หรือการสอบบ่อยแค่ไหน?',
    en_t:'How often do you feel stressed from studying, homework, or exams?',
    h_th:'',h_en:'',
-   ref:'กรมสุขภาพจิต (2565): นักเรียนไทย 1 ใน 3 มีระดับความเครียดสูงกว่าเกณฑ์ปกติ',
+   ref:'กรมสุขภาพจิต (2565): นักเรียนไทยจำนวนมากมีระดับความเครียดสูงกว่าเกณฑ์ปกติ',
    o:[{th:'แทบไม่เครียดเลย จัดการได้ดี',en:'Rarely stressed, handle well',s:{sx:0,sl:3}},
       {th:'เครียดบ้างบางครั้ง แต่ผ่านได้',en:'Sometimes stressed but manageable',s:{sx:1,sl:2}},
       {th:'เครียดบ่อย รู้สึกกดดันมาก',en:'Often stressed, feel pressured',s:{sx:2,sl:1}},
@@ -536,7 +538,7 @@ var Q=[
    th_t:'คุณมีความขัดแย้งหรือปัญหากับเพื่อนหรือครูบ่อยแค่ไหน?',
    en_t:'How often do you have conflicts or problems with friends or teachers?',
    h_th:'ความสัมพันธ์ที่ดีช่วยลดความเครียดได้มาก',h_en:'Good relationships greatly reduce stress',
-   ref:'กรมสุขภาพจิต (2565): ปัญหาความสัมพันธ์เป็น 1 ใน 3 สาเหตุหลักของความเครียดในวัยรุ่นไทย',
+   ref:'กรมสุขภาพจิต (2565): ปัญหาความสัมพันธ์เป็นปัจจัยสำคัญที่ก่อให้เกิดความเครียดในวัยรุ่นไทย',
    o:[{th:'ไม่มีปัญหาเลย มีความสัมพันธ์ดี',en:'No problems, good relationships',s:{sx:0,sl:3}},
       {th:'มีบ้างเล็กน้อย แต่แก้ไขได้',en:'Minor issues, resolvable',s:{sx:1,sl:2}},
       {th:'มีบ่อย รู้สึกไม่สบายใจ',en:'Often, feel uncomfortable',s:{sx:2,sl:1}},
@@ -544,8 +546,8 @@ var Q=[
   {e:'🧴',th_c:'สุขอนามัย',en_c:'Hygiene',w:1.0,
    th_t:'คุณล้างมือก่อนกินอาหารทุกครั้งไหม?',
    en_t:'Do you wash your hands before eating every time?',
-   h_th:'การล้างมือช่วยป้องกันโรคติดเชื้อได้มากกว่า 70%',h_en:'Handwashing prevents over 70% of infections',
-   ref:'CDC (2023): ล้างมือด้วยสบู่ลดความเสี่ยงโรคทางเดินอาหาร 48% และโรคทางเดินหายใจ 21%',
+   h_th:'การล้างมือเป็นวิธีที่มีประสิทธิภาพสูงในการป้องกันโรคติดเชื้อ',h_en:'Handwashing is one of the most effective ways to prevent infections',
+   ref:'CDC (2023): ล้างมือด้วยสบู่ลดความเสี่ยงโรคติดเชื้อทางเดินอาหารและทางเดินหายใจได้อย่างมีนัยสำคัญ',
    o:[{th:'ล้างมือทุกครั้งก่อนกินอาหาร',en:'Always wash hands before eating',s:{im:0,nu:3}},
       {th:'ล้างบ้าง แต่ไม่ทุกครั้ง',en:'Sometimes but not always',s:{im:1,nu:2}},
       {th:'ไม่ค่อยล้าง ถ้าไม่เห็นว่าสกปรก',en:'Rarely, only if visibly dirty',s:{im:2,nu:1}},
@@ -554,7 +556,7 @@ var Q=[
    th_t:'ห้องเรียนของคุณอากาศถ่ายเทดีแค่ไหน?',
    en_t:'How well-ventilated is your classroom?',
    h_th:'ห้องอากาศไม่ถ่ายเททำให้เชื้อโรคสะสม',h_en:'Poor ventilation leads to germ accumulation',
-   ref:'WHO Indoor Air Quality Guidelines (2010): อากาศไม่ถ่ายเทเพิ่มการแพร่เชื้อทางอากาศ 2-3 เท่า',
+   ref:'WHO Indoor Air Quality Guidelines (2010): อากาศไม่ถ่ายเทเพิ่มความเสี่ยงการแพร่เชื้อโรคในพื้นที่ปิดอย่างมีนัยสำคัญ',
    o:[{th:'ถ่ายเทดีมาก มีหน้าต่างเปิดตลอด',en:'Very well-ventilated, windows always open',s:{im:0,sl:3}},
       {th:'พอใช้ได้ มีแอร์หรือพัดลม',en:'Adequate, has AC or fan',s:{im:0,sl:2}},
       {th:'อากาศไม่ค่อยดี ห้องอับ',en:'Poor air quality, stuffy room',s:{im:1,sl:1}},
@@ -657,34 +659,66 @@ var KN=[
   {i:'🦴',th_n:'ออฟฟิศซินโดรม',en_n:'Office Syndrome',
    th_t:'โรคปวดกล้ามเนื้อและกระดูกจากการนั่งนาน ท่านั่งผิด ทำให้ปวดคอ บ่า ไหล่ หลัง พบมากในนักเรียนยุคปัจจุบัน',
    en_t:'Muscle and bone pain from prolonged sitting and poor posture, causing neck, shoulder, and back pain common in modern students.',
+   sym_th:['ปวดคอ บ่า ไหล่เรื้อรัง ไม่ทุเลาแม้พักแล้ว','ชาหรือเสียวแปลบที่แขนหรือมือ','ปวดหลังส่วนล่าง นั่งนานไม่ได้','ปวดหัวตื้อบริเวณท้ายทอย'],
+   sym_en:['Chronic neck/shoulder pain that persists even after rest','Numbness or tingling in the arms or hands','Lower back pain, unable to sit for long','Dull headache at the back of the head'],
+   prev_th:['ลุกขึ้นยืดเส้นทุก 45 นาที เดินเบาๆ 2-3 นาที','ฝึกนั่งหลังตรง เท้าวางราบพื้น หน้าจออยู่ระดับสายตา','ลดน้ำหนักกระเป๋าให้น้อยกว่า 10% ของน้ำหนักตัว'],
+   prev_en:['Stand and stretch every 45 min, walk lightly 2-3 minutes','Practice straight posture, feet flat, screen at eye level','Keep bag weight under 10% of your body weight'],
    ref:'กรมการแพทย์, 2565'},
   {i:'👁️',th_n:'สายตาเสื่อม/ตาล้า',en_n:'Eye Strain/Vision Deterioration',
    th_t:'เกิดจากการจ้องหน้าจอนานเกินไป ทำให้ตาแห้ง ตาพร่า ปวดหัว ในระยะยาวอาจทำให้สายตาสั้นหรือเสื่อมได้',
    en_t:'Caused by excessive screen time, leading to dry eyes, blurred vision, and headaches. Long-term may cause myopia.',
+   sym_th:['ตาแห้ง แสบ หรือคันหลังใช้หน้าจอนาน','มองเห็นภาพพร่ามัวชั่วคราว','ปวดหัวรอบดวงตาหรือหน้าผาก','กะพริบตาน้อยลงโดยไม่รู้ตัว'],
+   sym_en:['Dry, burning, or itchy eyes after long screen use','Temporarily blurred vision','Headache around the eyes or forehead','Reduced blinking without noticing'],
+   prev_th:['ใช้กฎ 20-20-20: ทุก 20 นาที มองไกล 6 เมตร นาน 20 วินาที','ปรับความสว่างจอให้พอเหมาะ ไม่สว่างหรือมืดเกินไป','กะพริบตาบ่อยๆ เพื่อให้น้ำตาหล่อเลี้ยงดวงตา'],
+   prev_en:['Follow 20-20-20 rule: every 20 min, look 6m away for 20 sec','Adjust screen brightness to a comfortable level','Blink more often to keep eyes moist'],
    ref:'American Optometric Association, 2023'},
   {i:'😰',th_n:'ความเครียดสะสม',en_n:'Chronic Stress',
    th_t:'ความเครียดเรื้อรังจากการเรียน ส่งผลต่อระบบภูมิคุ้มกัน การนอน และสุขภาพจิต อาจนำไปสู่โรคซึมเศร้าได้',
    en_t:'Chronic stress from studying affects the immune system, sleep, and mental health, potentially leading to depression.',
+   sym_th:['นอนหลับยาก ตื่นกลางดึกบ่อย หรือนอนมากผิดปกติ','หงุดหงิดง่าย อารมณ์แปรปรวน สมาธิสั้น','ปวดหัวหรือปวดท้องโดยไม่มีสาเหตุชัดเจน','รู้สึกเหนื่อยล้าแม้ได้พักผ่อนเพียงพอ'],
+   sym_en:['Difficulty sleeping, frequent waking, or oversleeping','Irritability, mood swings, poor concentration','Headaches or stomachaches without clear cause','Feeling exhausted despite adequate rest'],
+   prev_th:['ออกกำลังกายอย่างน้อย 30 นาที 3-4 ครั้ง/สัปดาห์','แบ่งงานใหญ่เป็นงานย่อย วางแผนตารางล่วงหน้า','พูดคุยกับผู้ใหญ่หรือเพื่อนที่ไว้วางใจเมื่อรู้สึกกดดัน'],
+   prev_en:['Exercise at least 30 min, 3-4 times per week','Break large tasks into steps and plan ahead','Talk to a trusted adult or friend when feeling pressured'],
    ref:'กรมสุขภาพจิต, 2565'},
   {i:'🧠',th_n:'ภูมิคุ้มกันต่ำ',en_n:'Low Immunity',
    th_t:'เกิดจากการอดนอน ไม่ออกกำลังกาย ทำให้ร่างกายอ่อนแอ ติดเชื้อง่าย ป่วยบ่อยกว่าปกติ',
    en_t:'Caused by sleep deprivation and lack of exercise, making the body weak and susceptible to frequent illness.',
+   sym_th:['ป่วยบ่อยและหายช้ากว่าปกติ','อ่อนเพลีย เหนื่อยง่ายตลอดเวลา','แผลหายช้าหรือมีการติดเชื้อบ่อย','ต่อมน้ำเหลืองบวมโดยไม่ทราบสาเหตุชัดเจน'],
+   sym_en:['Frequent illness with unusually slow recovery','Constant fatigue and low energy','Slow-healing wounds or frequent infections','Swollen lymph nodes without obvious cause'],
+   prev_th:['นอนหลับให้ครบ 8-10 ชั่วโมงต่อคืนอย่างสม่ำเสมอ','กินผักผลไม้หลากหลายสีเพื่อรับวิตามินครบถ้วน','ล้างมือด้วยสบู่ก่อนกินอาหารทุกครั้ง'],
+   prev_en:['Sleep consistently 8-10 hours per night','Eat a variety of colorful vegetables and fruits','Wash hands with soap before every meal'],
    ref:'WHO, 2022'},
   {i:'💧',th_n:'นิ่วในไต',en_n:'Kidney Stones',
    th_t:'เกิดจากการดื่มน้ำน้อยและกลั้นปัสสาวะนาน ทำให้แร่ธาตุตกตะกอนในไต อาจปวดรุนแรงมาก',
    en_t:'Caused by low water intake and holding urination, causing mineral deposits in the kidneys with severe pain.',
+   sym_th:['ปวดหลังหรือสีข้างรุนแรงเป็นพักๆ','ปัสสาวะขุ่น มีสีชา หรือมีเลือดปน','แสบขัดหรือปวดขณะปัสสาวะ','คลื่นไส้หรืออาเจียนร่วมกับอาการปวด'],
+   sym_en:['Severe intermittent back or side pain','Cloudy, tea-colored, or bloody urine','Burning or pain during urination','Nausea or vomiting accompanying pain'],
+   prev_th:['ดื่มน้ำเปล่าอย่างน้อย 2 ลิตรต่อวัน','ไม่กลั้นปัสสาวะนานเกินความจำเป็น','ลดอาหารเค็มจัดและน้ำอัดลม'],
+   prev_en:['Drink at least 2 liters of water per day','Never hold urination longer than necessary','Reduce very salty foods and carbonated drinks'],
    ref:'กรมอนามัย, 2566'},
   {i:'🤢',th_n:'โรคกระเพาะ',en_n:'Gastric Disease',
    th_t:'เกิดจากกินข้าวไม่ตรงเวลา กินเร็ว อดมื้ออาหาร ทำให้กรดในกระเพาะกัดเยื่อบุ ปวดท้องเรื้อรัง',
    en_t:'Caused by irregular eating, eating fast, and skipping meals. Stomach acid erodes the lining causing chronic pain.',
+   sym_th:['ปวดแสบหรือจุกบริเวณลิ้นปี่ โดยเฉพาะตอนท้องว่าง','คลื่นไส้ เรอบ่อย มีกลิ่นปาก','ท้องอืดหลังกินอาหาร รู้สึกอิ่มเร็วผิดปกติ','ปวดท้องดีขึ้นชั่วคราวทันทีหลังกินอาหาร'],
+   sym_en:['Burning or aching in upper abdomen, especially when empty','Nausea, frequent belching, bad breath','Bloating after meals, feeling full too quickly','Temporary pain relief right after eating'],
+   prev_th:['กินอาหารให้ตรงเวลาทุกวัน ไม่อดมื้อ','เคี้ยวช้าๆ ไม่รีบกิน ลดอาหารเผ็ดและเปรี้ยวจัด','ลดความเครียด เพราะความเครียดกระตุ้นการหลั่งกรดในกระเพาะ'],
+   prev_en:['Eat at regular times every day, never skip meals','Chew slowly, reduce spicy and sour foods','Manage stress — stress stimulates stomach acid secretion'],
    ref:'กรมอนามัย, 2566'},
   {i:'🦷',th_n:'ฟันผุ',en_n:'Tooth Decay',
    th_t:'เกิดจากน้ำตาลในขนมและเครื่องดื่มหวาน เชื้อแบคทีเรียย่อยน้ำตาลเป็นกรดกัดฟัน ป้องกันได้ด้วยการแปรงฟันและลดหวาน',
    en_t:'Sugar from sweets and drinks is converted to acid by bacteria that erodes teeth. Preventable by brushing and reducing sugar.',
+   sym_th:['ปวดฟัน หรือฟันไวต่ออาหารร้อน เย็น หวาน','เห็นรูหรือรอยดำบนผิวฟัน','เหงือกบวม แดง หรือเลือดออกเวลาแปรงฟัน','มีกลิ่นปากแม้แปรงฟันสม่ำเสมอแล้ว'],
+   sym_en:['Toothache or sensitivity to hot, cold, or sweet food','Visible holes or dark spots on teeth','Swollen, red gums or bleeding when brushing','Persistent bad breath despite regular brushing'],
+   prev_th:['แปรงฟันอย่างน้อย 2 ครั้ง/วัน หลังตื่นนอนและก่อนนอน','ลดเครื่องดื่มหวานและน้ำอัดลม ดื่มน้ำเปล่าแทน','บ้วนปากหรือดื่มน้ำทันทีหลังกินขนมหวาน'],
+   prev_en:['Brush teeth at least twice daily, after waking and before bed','Reduce sugary drinks and soda, drink plain water instead','Rinse mouth or drink water immediately after eating sweets'],
    ref:'WHO Sugar Guidelines, 2015'},
   {i:'👂',th_n:'การได้ยินเสื่อม',en_n:'Hearing Loss',
    th_t:'เกิดจากการฟังเสียงดังเป็นเวลานาน เซลล์ประสาทหูเสียหายถาวร ป้องกันได้ด้วยการลดเสียงหูฟังและพักหู',
    en_t:'Caused by prolonged loud sound exposure causing permanent nerve cell damage in the ears. Preventable by lowering volume.',
+   sym_th:['ได้ยินเสียงหึ่งหรือหวีดในหูอย่างต่อเนื่อง (tinnitus)','ต้องขอให้คนอื่นพูดซ้ำบ่อยๆ หรือต้องเปิดเสียงดังขึ้น','ได้ยินเสียงในที่เสียงดังได้ยากขึ้น','ความสามารถในการได้ยินลดลงอย่างค่อยเป็นค่อยไป'],
+   sym_en:['Persistent ringing or buzzing in the ears (tinnitus)','Frequently asking others to repeat, or turning up volume','Difficulty hearing in noisy environments','Gradual decline in hearing ability'],
+   prev_th:['ใช้กฎ 60/60: เสียงหูฟังไม่เกิน 60% ระดับสูงสุด และใช้ไม่เกิน 60 นาที/ครั้ง','พักหูอย่างน้อย 10 นาทีทุกชั่วโมงที่ใช้หูฟัง','หลีกเลี่ยงใช้หูฟังในที่เสียงดัง เพราะจะเพิ่มระดับเสียงโดยไม่รู้ตัว'],
+   prev_en:['Follow 60/60 rule: volume under 60% and use under 60 min/session','Rest ears at least 10 minutes every hour of headphone use','Avoid headphones in noisy places — you will unknowingly raise the volume'],
    ref:'WHO, 2022'}
 ];
 
@@ -983,8 +1017,8 @@ function buildResult(){
 
   // criteria
   document.getElementById('ct-title').textContent=T(
-    '📐 เกณฑ์การประเมินคะแนนสุขภาพ (อ้างอิง WHO & กรมอนามัย)',
-    '📐 Health Score Criteria (Reference: WHO & Department of Health)'
+    '📐 เกณฑ์การประเมินคะแนนสุขภาพ (กำหนดโดยทีมพัฒนาโครงงาน)',
+    '📐 Health Score Criteria (Defined by Project Development Team)'
   );
 
   var rh='',ah='';
@@ -1015,11 +1049,11 @@ function build6Month(){
   var hp_6m_bad=Math.max(0,Math.round((1-R6)*100));
 
   // ── คำนวณการปรับปรุงเฉพาะบุคคล ──
-  // อ้างอิง: WHO Health Behavior Change Framework (2020)
-  // ความเสี่ยงสูง   (≥60%) → ลดได้ ~35% ใน 6 เดือนถ้าเปลี่ยนพฤติกรรมจริงจัง
-  // ความเสี่ยง ปกลาง-สูง (45-59%) → ลดได้ ~25%
-  // ความเสี่ยงปานกลาง (30-44%) → ลดได้ ~15%
-  // ความเสี่ยงต่ำ   (<30%)  → ปรับได้เล็กน้อย ~5% (ดีอยู่แล้ว)
+  // ค่า reduction factor กำหนดโดยทีมพัฒนาเพื่อการจำลองเท่านั้น
+  // ความเสี่ยงสูง   (≥60%) → rf=0.35
+  // ความเสี่ยงปานกลาง-สูง (45-59%) → rf=0.25
+  // ความเสี่ยงปานกลาง (30-44%) → rf=0.15
+  // ความเสี่ยงต่ำ   (<30%)  → rf=0.05
   var improvedTotW=0;
   var diseaseBetter=D.map(function(d){
     var p=getDiseasePercent(d.k);
@@ -1318,7 +1352,17 @@ function copyResult(){
 function buildKnow(){
   var h='';
   KN.forEach(function(k){
-    h+='<div class="know-card"><div class="know-title">'+k.i+' '+T(k.th_n,k.en_n)+'</div><div class="know-text">'+T(k.th_t,k.en_t)+'</div><div class="know-ref">📖 '+k.ref+'</div></div>';
+    var symHtml=T(k.sym_th,k.sym_en).map(function(s){return '<li>'+s+'</li>';}).join('');
+    var prevHtml=T(k.prev_th,k.prev_en).map(function(s){return '<li>'+s+'</li>';}).join('');
+    h+='<div class="know-card">'
+      +'<div class="know-title">'+k.i+' '+T(k.th_n,k.en_n)+'</div>'
+      +'<div class="know-text">'+T(k.th_t,k.en_t)+'</div>'
+      +'<div class="know-sub">'+T('⚠️ อาการเตือน','⚠️ Warning Signs')+'</div>'
+      +'<ul class="know-list">'+symHtml+'</ul>'
+      +'<div class="know-sub">'+T('✅ วิธีป้องกัน','✅ Prevention')+'</div>'
+      +'<ul class="know-list">'+prevHtml+'</ul>'
+      +'<div class="know-ref">📖 '+k.ref+'</div>'
+      +'</div>';
   });
   document.getElementById('knowgrid').innerHTML=h;
 }
