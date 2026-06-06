@@ -203,6 +203,9 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .hist-mini-fill{height:100%;border-radius:100px;}
 .hist-mini-pct{width:34px;text-align:right;font-size:.71rem;font-weight:700;}
 .hist-empty{text-align:center;padding:3rem 1rem;color:var(--mu);font-size:.88rem;line-height:2;}
+.hist-io{display:flex;gap:.6rem;margin-bottom:1rem;}
+.btn-io{flex:1;padding:.6rem .8rem;border-radius:10px;border:1px solid var(--bo);background:var(--bg);color:var(--tx);font-size:.82rem;font-family:'Noto Sans Thai',sans-serif;cursor:pointer;font-weight:600;transition:background .15s;}
+.btn-io:hover{background:var(--bo);}
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
 @media print{nav,footer,.print-buttons,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
@@ -376,6 +379,11 @@ footer span{color:var(--pri);}
   <div class="sec" style="margin-top:2rem;">
     <div class="stag" data-th="📋 ประวัติการประเมิน" data-en="📋 Assessment History">📋 ประวัติการประเมิน</div>
     <div class="sti" data-th="ผลลัพธ์ย้อนหลัง 5 ครั้งล่าสุด" data-en="Last 5 Assessment Results">ผลลัพธ์ย้อนหลัง 5 ครั้งล่าสุด</div>
+    <div class="hist-io">
+      <button class="btn-io" onclick="exportData()" data-th="📤 Export JSON" data-en="📤 Export JSON">📤 Export JSON</button>
+      <button class="btn-io" onclick="importData()" data-th="📥 Import JSON" data-en="📥 Import JSON">📥 Import JSON</button>
+    </div>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(this)">
     <div id="histlist"></div>
   </div>
 </div>
@@ -387,9 +395,10 @@ footer span{color:var(--pri);}
 </footer>
 
 <script>
-var LANG='th';
+var LANG=localStorage.getItem('sh_lang')||'th';
 function toggleLang(){
   LANG=LANG==='th'?'en':'th';
+  localStorage.setItem('sh_lang',LANG);
   document.querySelector('.lang-btn').textContent=LANG==='th'?'🌐 TH':'🌐 EN';
   // แปลข้อความที่ใช้ data-th / data-en attribute (static HTML)
   document.querySelectorAll('[data-th]').forEach(function(el){
@@ -408,6 +417,7 @@ function toggleLang(){
 }
 
 function T(th,en){return LANG==='th'?th:en;}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
 // คำถาม 20 ข้อ พร้อม weight
 var Q=[
@@ -768,7 +778,7 @@ function showNameHist(){
   if(!h.length){dd.style.display='none';return;}
   window._nh=h;
   dd.innerHTML=h.map(function(n,i){
-    return '<div onclick="pickHistName('+i+')" style="padding:9px 14px;cursor:pointer;font-size:.9rem;border-bottom:1px solid #f3f4f6;color:#374151;" onmouseover="this.style.background=\'#f0f7ff\'" onmouseout="this.style.background=\'\'">'+n+'</div>';
+    return '<div onclick="pickHistName('+i+')" style="padding:9px 14px;cursor:pointer;font-size:.9rem;border-bottom:1px solid #f3f4f6;color:#374151;" onmouseover="this.style.background=\'#f0f7ff\'" onmouseout="this.style.background=\'\'">'+escapeHtml(n)+'</div>';
   }).join('');
   dd.style.display='block';
 }
@@ -880,6 +890,7 @@ function go(id){
   if(id==='print') buildPrint();
   if(id==='know') buildKnow();
   if(id==='history') buildHistory();
+  history.pushState({page:id},'','#'+id);
   window.scrollTo(0,0);
 }
 
@@ -1111,7 +1122,7 @@ function build6Month(){
 
   var wh='';
   bads.slice(0,3).forEach(function(b){
-    wh+='<li>'+b.i+' <b>'+b.n+'</b> — '+T('ปัจจุบัน','Now')+' '+b.p+'% → '+T('6 เดือน','6 months')+' '+b.p6+'% (+'+( b.p6-b.p)+'%)</li>';
+    wh+='<li>'+b.i+' <b>'+b.n+'</b> — '+T('ปัจจุบัน','Now')+' '+b.p+'% → '+T('6 เดือน','6 months')+' '+b.p6+'% '+T('(↑ ความเสี่ยงเพิ่ม ','(↑ risk up ')+(b.p6-b.p)+'%)</li>';
   });
   if(!wh) wh='<li>'+T('✅ ไม่มีโรคที่น่ากังวลมาก รักษาพฤติกรรมดีๆ ไว้นะครับ','✅ No major concerns, keep up the good behaviors!')+'</li>';
   document.getElementById('warn6m').innerHTML=wh;
@@ -1427,6 +1438,41 @@ function getHistory(){
   try{var h=localStorage.getItem('sh_history');return h?JSON.parse(h):[];}catch(e){return [];}
 }
 
+function exportData(){
+  var keys=['sh_history','sh_chosen','sh_done','sh_cur','sh_time','sh_name','sh_lang','sh_namehist'];
+  var data={exportedAt:new Date().toISOString(),version:1};
+  keys.forEach(function(k){var v=localStorage.getItem(k);if(v!==null)data[k]=v;});
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='schoolhealth_backup_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(url);
+  showToast(T('📤 Export สำเร็จ','📤 Export successful'));
+}
+
+function importData(){
+  document.getElementById('import-file').value='';
+  document.getElementById('import-file').click();
+}
+
+function handleImport(input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(!data.sh_history) throw new Error('invalid');
+      var keys=['sh_history','sh_chosen','sh_done','sh_cur','sh_time','sh_name','sh_lang','sh_namehist'];
+      keys.forEach(function(k){if(data[k]!=null)localStorage.setItem(k,data[k]);});
+      showToast(T('📥 Import สำเร็จ — กำลังโหลดข้อมูล...','📥 Import successful — reloading...'));
+      setTimeout(function(){location.reload();},1500);
+    }catch(ex){
+      showToast(T('❌ ไฟล์ไม่ถูกต้อง กรุณาใช้ไฟล์ที่ Export จาก SchoolHealth เท่านั้น','❌ Invalid file. Use only files exported from SchoolHealth.'));
+    }
+  };
+  reader.readAsText(file);
+}
+
 function buildHistory(){
   var hist=getHistory();
   var el=document.getElementById('histlist');
@@ -1458,7 +1504,7 @@ function buildHistory(){
       bars+='<div class="hist-mini-row"><span class="hist-mini-name">'+dis.i+' '+T(dis.th,dis.en)+'</span><div class="hist-mini-bar"><div class="hist-mini-fill" style="width:'+p+'%;background:'+bc+'"></div></div><span class="hist-mini-pct" style="color:'+bc+'">'+p+'%</span></div>';
     });
     h+='<div class="hist-card">';
-    h+='<div class="hist-card-top"><div><div class="hist-no">'+noLabel+'</div><div class="hist-date">'+dateStr+'</div>'+(entry.name?'<div style="font-size:.74rem;color:var(--mu);margin-top:2px;">👤 '+entry.name+'</div>':'')+'</div>';
+    h+='<div class="hist-card-top"><div><div class="hist-no">'+noLabel+'</div><div class="hist-date">'+dateStr+'</div>'+(entry.name?'<div style="font-size:.74rem;color:var(--mu);margin-top:2px;">👤 '+escapeHtml(entry.name)+'</div>':'')+'</div>';
     h+='<div style="text-align:right">'+trendHtml+'<div class="hist-score" style="color:'+col+'">'+entry.hp+'%</div><div class="hist-lbl">'+lbl+'</div></div></div>';
     h+='<div class="hist-mini-bars">'+bars+'</div></div>';
   });
@@ -1492,6 +1538,15 @@ document.addEventListener('keydown',function(e){
 // ── โหลดข้อมูลที่บันทึกไว้ก่อนหน้า (ถ้ามี) ──
 loadFromStorage();
 try{var _sn=localStorage.getItem('sh_name');if(_sn)userName=_sn;}catch(e){}
+if(LANG==='en'){
+  document.querySelector('.lang-btn').textContent='🌐 EN';
+  document.querySelectorAll('[data-th]').forEach(function(el){
+    var val=el.getAttribute('data-en');
+    if(!val) return;
+    if(el.tagName==='INPUT'||el.tagName==='BUTTON') el.textContent=val;
+    else el.innerHTML=val;
+  });
+}
 renderQ();
 var _hasProgress=chosen.some(function(v){return v!==undefined;});
 if(quizDone){
@@ -1508,6 +1563,24 @@ if(quizDone){
   buildResult();resultBuilt=true;
   window.scrollTo(0,0);
 }
+// ── Hash routing: กำหนด history entry เริ่มต้น และรับปุ่ม Back/Forward ──
+var _ap=document.querySelector('.page.active');
+var _apId=_ap?_ap.id.replace('page-',''):'home';
+history.replaceState({page:_apId},'','#'+_apId);
+window.addEventListener('popstate',function(e){
+  var pg=(e.state&&e.state.page)||location.hash.slice(1)||'home';
+  if(['home','quiz','result','know','print','history'].indexOf(pg)===-1) pg='home';
+  if((pg==='result'||pg==='print')&&!quizDone) pg='home';
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('page-'+pg).classList.add('active');
+  document.querySelectorAll('nav ul a').forEach(function(a){a.classList.remove('active');});
+  document.getElementById('nav-'+pg).classList.add('active');
+  if(pg==='result'){buildResult();resultBuilt=true;}
+  if(pg==='print') buildPrint();
+  if(pg==='know') buildKnow();
+  if(pg==='history') buildHistory();
+  window.scrollTo(0,0);
+});
 </script>
 </body>
 </html>
