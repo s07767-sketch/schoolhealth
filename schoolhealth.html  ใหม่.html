@@ -214,9 +214,9 @@ footer span{color:var(--pri);}
   <div class="logo"><div class="lb">🏫</div><div class="logo-text"><span class="logo-school">School</span><span class="logo-health">Care</span></div></div>
   <ul>
     <li><a onclick="go('home')" id="nav-home" class="active" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a></li>
-    <li><a onclick="showNameModal()" id="nav-quiz" data-th="ตรวจสอบ" data-en="Check">ตรวจสอบ</a></li>
+    <li><a onclick="showNameModal()" id="nav-quiz" data-th="แบบประเมิน" data-en="Check">แบบประเมิน</a></li>
     <li><a onclick="go('result')" id="nav-result" data-th="ผลลัพธ์" data-en="Result">ผลลัพธ์</a></li>
-    <li><a onclick="go('know')" id="nav-know" data-th="ความรู้โรค" data-en="Knowledge">ความรู้โรค</a></li>
+    <li><a onclick="go('know')" id="nav-know" data-th="ความรู้เรื่องโรค" data-en="Knowledge">ความรู้เรื่องโรค</a></li>
     <li><a onclick="go('print')" id="nav-print" data-th="พิมพ์/แชร์" data-en="Print/Share">พิมพ์/แชร์</a></li>
     <li><a onclick="go('history')" id="nav-history" data-th="ประวัติ" data-en="History">ประวัติ</a></li>
   </ul>
@@ -296,6 +296,7 @@ footer span{color:var(--pri);}
         <div class="score-value" id="osc">-</div>
         <div><div class="score-label" id="olb">-</div><div class="score-desc" id="ods"></div></div>
       </div>
+      <div id="bmi-box"></div>
       <div class="result-title" data-th="📊 ความเสี่ยงแต่ละโรค" data-en="📊 Risk by Disease">📊 ความเสี่ยงแต่ละโรค</div>
       <div class="risk-list" id="rlist"></div>
       <div class="advice-box"><div class="advice-title" data-th="💡 คำแนะนำสำหรับคุณโดยเฉพาะ" data-en="💡 Personalized Recommendations">💡 คำแนะนำสำหรับคุณโดยเฉพาะ</div><ul class="advice-list" id="alist"></ul></div>
@@ -341,6 +342,7 @@ footer span{color:var(--pri);}
         <div class="print-score"><div class="print-score-value" id="ps-health" style="color:#3b82f6">-</div><div class="print-score-label" data-th="คะแนนสุขภาพรวม" data-en="Overall Health Score">คะแนนสุขภาพรวม</div></div>
         <div class="print-score"><div class="print-score-value" id="ps-level" style="font-size:1.2rem">-</div><div class="print-score-label" data-th="ระดับสุขภาพ" data-en="Health Level">ระดับสุขภาพ</div></div>
       </div>
+      <div id="print-bmi"></div>
       <div class="result-title" data-th="ความเสี่ยงแต่ละโรค" data-en="Risk by Disease">ความเสี่ยงแต่ละโรค</div>
       <div class="print-diseases" id="print-diseases"></div>
       <div class="print-advice">
@@ -409,32 +411,32 @@ function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;
 // คำถาม 20 ข้อ พร้อม weight
 var Q=[
   {e:'🪑',th_c:'กายภาพ',en_c:'Physical',w:1.0,
-   th_t:'ใน 1 วันเรียน คุณนั่งเรียนติดต่อกันนานแค่ไหนโดยไม่ลุกขึ้นเลย?',
+   th_t:'ใน 1 วันที่เรียน คุณนั่งเรียนติดต่อกันนานเพียงใดโดยไม่ลุกขึ้นเลย?',
    en_t:'How long do you sit continuously in class without getting up?',
-   h_th:'นับรวมทุกคาบเรียนที่นั่งติดต่อกัน',h_en:'Count all consecutive class periods',
+   h_th:'นับช่วงที่นั่งติดต่อกันยาวที่สุดในหนึ่งวัน',h_en:'Count all consecutive class periods',
    ref:'WHO (2020): นั่งนาน >4 ชม./วัน เพิ่มความเสี่ยงโรคกล้ามเนื้อและกระดูกอย่างมีนัยสำคัญ',
-   o:[{th:'น้อยกว่า 1 ชั่วโมง มีลุกขยับบ่อย',en:'Less than 1 hour, move frequently',s:{of:0,ph:3}},
-      {th:'1-2 ชั่วโมง แล้วพักขยับตัว',en:'1-2 hours then take a break',s:{of:1,ph:2}},
-      {th:'2-4 ชั่วโมง นานๆ ถึงจะลุก',en:'2-4 hours, rarely get up',s:{of:2,ph:1}},
-      {th:'มากกว่า 4 ชั่วโมง แทบไม่ขยับเลย',en:'More than 4 hours, almost never move',s:{of:3,ph:0}}]},
+   o:[{th:'น้อยกว่า 1 ชั่วโมง ลุกขึ้นเปลี่ยนท่าทางบ่อยครั้ง',en:'Less than 1 hour, move frequently',s:{of:0,ph:3}},
+      {th:'1-2 ชั่วโมง แล้วลุกขึ้นพักบ้าง',en:'1-2 hours then take a break',s:{of:1,ph:2}},
+      {th:'2-4 ชั่วโมง ลุกขึ้นเป็นครั้งคราว',en:'2-4 hours, rarely get up',s:{of:2,ph:1}},
+      {th:'มากกว่า 4 ชั่วโมง แทบไม่เคลื่อนไหวเลย',en:'More than 4 hours, almost never move',s:{of:3,ph:0}}]},
   {e:'🧍',th_c:'กายภาพ',en_c:'Physical',w:1.0,
    th_t:'โดยปกติท่านั่งเรียนของคุณเป็นอย่างไร?',en_t:'How is your usual sitting posture in class?',
    h_th:'',h_en:'',
    ref:'กรมการแพทย์ (2565): ท่านั่งผิดเป็นปัจจัยสำคัญที่ก่อให้เกิด Office Syndrome ในวัยเรียน',
    o:[{th:'นั่งตัวตรง หลังพิงพนัก เท้าวางพื้น',en:'Straight back, feet flat on floor',s:{of:0,ph:3}},
       {th:'นั่งค่อมบ้างเล็กน้อย',en:'Slightly hunched sometimes',s:{of:1,ph:2}},
-      {th:'นั่งค่อมหรือเอียงคอบ่อยๆ',en:'Often hunched or tilting neck',s:{of:2,ph:1}},
+      {th:'นั่งค่อมหรือเอียงคอบ่อยครั้ง',en:'Often hunched or tilting neck',s:{of:2,ph:1}},
       {th:'นั่งผิดท่าเกือบตลอดเวลา คอยื่น หลังงอ',en:'Almost always wrong posture, neck forward, back bent',s:{of:3,ph:0}}]},
   {e:'🎒',th_c:'กายภาพ',en_c:'Physical',w:0.8,
-   th_t:'กระเป๋านักเรียนของคุณหนักแค่ไหนโดยเฉลี่ย?',en_t:'How heavy is your school bag on average?',
+   th_t:'กระเป๋านักเรียนของคุณหนักเพียงใดโดยเฉลี่ย?',en_t:'How heavy is your school bag on average?',
    h_th:'น้ำหนักกระเป๋าไม่ควรเกิน 10% ของน้ำหนักตัว',h_en:'Bag weight should not exceed 10% of body weight',
    ref:'American Chiropractic Association (2021): กระเป๋า >10% น้ำหนักตัวเพิ่มความเสี่ยงปวดหลังในเด็ก',
    o:[{th:'เบามาก ไม่รู้สึกหนักเลย',en:'Very light, no strain',s:{of:0,ph:3}},
-      {th:'หนักนิดหน่อย พอรับได้',en:'Slightly heavy, manageable',s:{of:1,ph:2}},
+      {th:'หนักเล็กน้อย พอรับได้',en:'Slightly heavy, manageable',s:{of:1,ph:2}},
       {th:'หนักมาก รู้สึกปวดไหล่บ่อย',en:'Heavy, frequent shoulder pain',s:{of:2,ph:1}},
-      {th:'หนักมากทุกวัน บางทีปวดหลังด้วย',en:'Heavy every day, sometimes back pain too',s:{of:3,ph:0}}]},
+      {th:'หนักมากทุกวัน บางครั้งมีอาการปวดหลังด้วย',en:'Heavy every day, sometimes back pain too',s:{of:3,ph:0}}]},
   {e:'🏃',th_c:'กายภาพ',en_c:'Physical',w:1.0,
-   th_t:'คุณออกกำลังกายหรือเคลื่อนไหวร่างกายบ่อยแค่ไหน?',en_t:'How often do you exercise or move your body?',
+   th_t:'คุณออกกำลังกายหรือเคลื่อนไหวร่างกายบ่อยเพียงใด?',en_t:'How often do you exercise or move your body?',
    h_th:'นับรวมวิชาพลศึกษาและกิจกรรมนอกเวลาเรียน',h_en:'Include PE class and extracurricular activities',
    ref:'WHO Physical Activity Guidelines (2020): วัยรุ่นควรออกกำลังกายอย่างน้อย 60 นาที/วัน',
    o:[{th:'ทุกวัน หรือ 5-6 วัน/สัปดาห์',en:'Daily or 5-6 days/week',s:{of:0,ph:3,sx:0}},
@@ -442,16 +444,16 @@ var Q=[
       {th:'1-2 วัน/สัปดาห์',en:'1-2 days/week',s:{of:2,ph:1,sx:2}},
       {th:'แทบไม่ได้ออกกำลังกายเลย',en:'Rarely exercise',s:{of:3,ph:0,sx:3}}]},
   {e:'👁️',th_c:'หน้าจอ',en_c:'Screen',w:1.3,
-   th_t:'คุณใช้สายตาจ้องกระดาน จอคอม หรือโทรศัพท์รวมกันนานแค่ไหนต่อวัน?',
+   th_t:'คุณใช้สายตาจ้องกระดาน จอคอมพิวเตอร์ หรือโทรศัพท์รวมกันนานเพียงใดต่อวัน?',
    en_t:'How long do you stare at boards, computers, or phones per day?',
    h_th:'รวมทั้งเวลาในโรงเรียนและที่บ้านด้วย',h_en:'Include both school and home time',
    ref:'American Optometric Association (2023): จ้องหน้าจอนานเกินไปต่อวันเพิ่มความเสี่ยงสายตาสั้นในวัยรุ่น',
    o:[{th:'น้อยกว่า 2 ชั่วโมง',en:'Less than 2 hours',s:{ey:0,sc:3}},
       {th:'2-4 ชั่วโมง',en:'2-4 hours',s:{ey:1,sc:2}},
       {th:'4-6 ชั่วโมง',en:'4-6 hours',s:{ey:2,sc:1}},
-      {th:'มากกว่า 6 ชั่วโมงขึ้นไป',en:'More than 6 hours',s:{ey:3,sc:0}}]},
+      {th:'6 ชั่วโมงขึ้นไป',en:'More than 6 hours',s:{ey:3,sc:0}}]},
   {e:'📱',th_c:'หน้าจอ',en_c:'Screen',w:1.0,
-   th_t:'คุณใช้โทรศัพท์ช่วงพักกลางวันหรือหลังเลิกเรียนนานแค่ไหน?',
+   th_t:'คุณใช้โทรศัพท์ในช่วงพักกลางวันและหลังเลิกเรียนรวมกันนานเพียงใด?',
    en_t:'How long do you use your phone during lunch break or after school?',
    h_th:'',h_en:'',
    ref:'กรมสุขภาพจิต (2565): รายงานสุขภาพจิตคนไทย ประจำปี 2565 — วัยรุ่นที่ใช้โทรศัพท์ >2 ชม./วัน มีแนวโน้มนอนน้อยและเครียดกว่า',
@@ -460,7 +462,7 @@ var Q=[
       {th:'1-2 ชั่วโมง',en:'1-2 hours',s:{ey:2,sc:1}},
       {th:'มากกว่า 2 ชั่วโมง',en:'More than 2 hours',s:{ey:3,sc:0}}]},
   {e:'🎧',th_c:'หน้าจอ',en_c:'Screen',w:1.0,
-   th_t:'คุณใช้หูฟังฟังเพลงหรือดูวิดีโอด้วยเสียงดังบ่อยแค่ไหน?',
+   th_t:'คุณฟังเพลงหรือดูวิดีโอผ่านหูฟังด้วยระดับเสียงดังบ่อยเพียงใด?',
    en_t:'How often do you use headphones at loud volumes?',
    h_th:'เสียงดังเกินไปอาจทำให้สูญเสียการได้ยิน',h_en:'Loud volumes may cause permanent hearing loss',
    ref:'WHO (2022): วัยรุ่น 1.1 พันล้านคนทั่วโลกเสี่ยงสูญเสียการได้ยินจากหูฟัง',
@@ -469,16 +471,16 @@ var Q=[
       {th:'ใช้บ่อย เสียงค่อนข้างดัง',en:'Often, fairly loud',s:{ea:2,sc:1}},
       {th:'ใช้ทุกวัน เสียงดังมาก',en:'Daily, very loud',s:{ea:3,sc:0}}]},
   {e:'🍱',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,
-   th_t:'ในวันเรียน คุณกินข้าวมื้อกลางวันแบบไหนบ่อยที่สุด?',
+   th_t:'ในวันเรียน คุณรับประทานอาหารมื้อกลางวันแบบใดบ่อยที่สุด?',
    en_t:'How do you usually eat lunch on school days?',
    h_th:'',h_en:'',
    ref:'กรมอนามัย (2566): การอดมื้ออาหารเพิ่มความเสี่ยงโรคกระเพาะและขาดสารอาหารในวัยรุ่น',
-   o:[{th:'กินข้าวครบมื้อ ไม่รีบ ครบ 5 หมู่',en:'Full meal, not rushed, all 5 food groups',s:{st:0,nu:3}},
-      {th:'กินข้าวเร็วๆ เพราะเวลาน้อย',en:'Eat fast due to limited time',s:{st:1,nu:2}},
-      {th:'กินขนมหรือของว่างแทนข้าว',en:'Eat snacks instead of a proper meal',s:{st:2,nu:1}},
-      {th:'อดข้าวกลางวันบ่อยๆ',en:'Often skip lunch',s:{st:3,nu:0}}]},
+   o:[{th:'รับประทานอาหารครบ 5 หมู่ ไม่รีบ',en:'Full meal, not rushed, all 5 food groups',s:{st:0,nu:3}},
+      {th:'รับประทานอาหารอย่างรวดเร็ว เนื่องจากเวลาไม่เพียงพอ',en:'Eat fast due to limited time',s:{st:1,nu:2}},
+      {th:'รับประทานขนมหรือของว่างแทนมื้ออาหาร',en:'Eat snacks instead of a proper meal',s:{st:2,nu:1}},
+      {th:'งดมื้ออาหารกลางวันบ่อยครั้ง',en:'Often skip lunch',s:{st:3,nu:0}}]},
   {e:'🥤',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,
-   th_t:'คุณดื่มน้ำอัดลม ชานม หรือเครื่องดื่มหวานบ่อยแค่ไหน?',
+   th_t:'คุณดื่มน้ำอัดลม ชานม หรือเครื่องดื่มหวานบ่อยเพียงใด?',
    en_t:'How often do you drink soda, milk tea, or sugary drinks?',
    h_th:'เครื่องดื่มหวานมีน้ำตาลสูง ส่งผลต่อฟันและสุขภาพ',h_en:'Sugary drinks are high in sugar, affecting teeth and health',
    ref:'WHO Sugar Guidelines (2015): น้ำตาลไม่ควรเกิน 10% ของพลังงานทั้งวัน ดื่มหวานทุกวันเพิ่มความเสี่ยงฟันผุ',
@@ -487,79 +489,79 @@ var Q=[
       {th:'ดื่มบ่อย 3-5 ครั้ง/สัปดาห์',en:'Often, 3-5 times/week',s:{to:2,nu:1}},
       {th:'ดื่มทุกวัน หรือมากกว่า 1 แก้ว/วัน',en:'Daily or more than 1 glass/day',s:{to:3,nu:0}}]},
   {e:'🍫',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,
-   th_t:'คุณกินขนมหวานหรือของว่างในโรงเรียนบ่อยแค่ไหน?',
+   th_t:'คุณรับประทานขนมหวานหรือของว่างในโรงเรียนบ่อยเพียงใด?',
    en_t:'How often do you eat sweets or snacks at school?',
    h_th:'',h_en:'',
    ref:'กรมอนามัย (2566): เด็กนักเรียนไทยมีแนวโน้มบริโภคน้ำตาลเกินเกณฑ์ WHO อย่างมีนัยสำคัญ',
-   o:[{th:'แทบไม่กินเลย',en:'Rarely',s:{to:0,st:0,nu:3}},
-      {th:'กินบ้างเป็นบางวัน',en:'Sometimes on some days',s:{to:1,st:0,nu:2}},
-      {th:'กินเกือบทุกวัน',en:'Almost every day',s:{to:2,st:1,nu:1}},
-      {th:'กินทุกวัน หลายครั้งต่อวัน',en:'Every day, multiple times',s:{to:3,st:2,nu:0}}]},
+   o:[{th:'แทบไม่รับประทานเลย',en:'Rarely',s:{to:0,st:0,nu:3}},
+      {th:'รับประทานเป็นบางวัน',en:'Sometimes on some days',s:{to:1,st:0,nu:2}},
+      {th:'รับประทานเกือบทุกวัน',en:'Almost every day',s:{to:2,st:1,nu:1}},
+      {th:'รับประทานทุกวัน หลายครั้งต่อวัน',en:'Every day, multiple times',s:{to:3,st:2,nu:0}}]},
   {e:'💧',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,
-   th_t:'ในวันเรียน คุณดื่มน้ำเปล่ามากแค่ไหน?',
+   th_t:'ในวันเรียน คุณดื่มน้ำเปล่ามากเพียงใด?',
    en_t:'How much plain water do you drink on school days?',
    h_th:'ควรดื่มน้ำอย่างน้อย 8 แก้ว (2 ลิตร) ต่อวัน',h_en:'Should drink at least 8 glasses (2L) per day',
    ref:'กรมอนามัย (2566): ร่างกายต้องการน้ำ 2-2.5 ลิตร/วัน ดื่มน้ำน้อยเพิ่มความเสี่ยงนิ่วในไต',
    o:[{th:'มากกว่า 8 แก้ว ดื่มน้ำสม่ำเสมอ',en:'More than 8 glasses, drink regularly',s:{ki:0,nu:3}},
-      {th:'5-7 แก้ว พอได้',en:'5-7 glasses, manageable',s:{ki:1,nu:2}},
+      {th:'5-7 แก้ว พอเพียง',en:'5-7 glasses, manageable',s:{ki:1,nu:2}},
       {th:'3-4 แก้ว ดื่มน้อย',en:'3-4 glasses, drink little',s:{ki:2,nu:1}},
       {th:'น้อยกว่า 3 แก้ว หรือดื่มน้ำอัดลมแทน',en:'Less than 3 glasses or drink soda instead',s:{ki:3,nu:0}}]},
   {e:'🚽',th_c:'โภชนาการ',en_c:'Nutrition',w:0.8,
-   th_t:'คุณกลั้นปัสสาวะระหว่างเรียนบ่อยแค่ไหน?',
+   th_t:'คุณกลั้นปัสสาวะระหว่างเรียนบ่อยเพียงใด?',
    en_t:'How often do you hold your urination during class?',
-   h_th:'การกลั้นปัสสาวะนานๆ เพิ่มความเสี่ยงโรคไต',h_en:'Holding urination too long increases kidney disease risk',
+   h_th:'การกลั้นปัสสาวะเป็นเวลานานเพิ่มความเสี่ยงต่อโรคไต',h_en:'Holding urination too long increases kidney disease risk',
    ref:'สมาคมระบบทางเดินปัสสาวะแห่งประเทศไทย (2564): การกลั้นปัสสาวะเป็นเวลานานอย่างสม่ำเสมอเพิ่มความเสี่ยงกระเพาะปัสสาวะอักเสบ',
    o:[{th:'ไม่กลั้นเลย ไปห้องน้ำเมื่อปวด',en:'Never hold, go when needed',s:{ki:0,nu:3}},
-      {th:'กลั้นบ้างเป็นบางครั้ง',en:'Hold sometimes',s:{ki:1,nu:2}},
-      {th:'กลั้นบ่อย เพราะไม่อยากออกจากห้องเรียน',en:'Hold often to avoid leaving class',s:{ki:2,nu:1}},
-      {th:'กลั้นตลอด แทบไม่ไปห้องน้ำตอนเรียน',en:'Almost never go during class',s:{ki:3,nu:0}}]},
+      {th:'กลั้นบ้างเป็นครั้งคราว',en:'Hold sometimes',s:{ki:1,nu:2}},
+      {th:'กลั้นบ่อยครั้ง เนื่องจากไม่ต้องการออกจากห้องเรียน',en:'Hold often to avoid leaving class',s:{ki:2,nu:1}},
+      {th:'กลั้นตลอดเวลา แทบไม่ใช้ห้องน้ำระหว่างเรียน',en:'Almost never go during class',s:{ki:3,nu:0}}]},
   {e:'🌙',th_c:'การนอน',en_c:'Sleep',w:1.5,
    th_t:'ในคืนวันเรียน คุณนอนกี่ชั่วโมงโดยเฉลี่ย?',
    en_t:'How many hours do you sleep on school nights on average?',
    h_th:'วัยรุ่นควรนอน 8-10 ชั่วโมงต่อคืน',h_en:'Teenagers need 8-10 hours of sleep per night',
    ref:'American Academy of Pediatrics (2016): วัยรุ่น 13-18 ปีควรนอน 8-10 ชม./คืน นอนน้อยเพิ่มความเสี่ยงโรคอ้วนและซึมเศร้า',
-   o:[{th:'8 ชั่วโมงขึ้นไป นอนหลับสบาย',en:'8+ hours, sleep well',s:{im:0,sl:3}},
-      {th:'6-7 ชั่วโมง พอได้',en:'6-7 hours, manageable',s:{im:1,sl:2}},
-      {th:'4-5 ชั่วโมง เพราะทำการบ้าน',en:'4-5 hours due to homework',s:{im:2,sl:1}},
-      {th:'น้อยกว่า 4 ชั่วโมง อดนอนบ่อยมาก',en:'Less than 4 hours, frequently sleep-deprived',s:{im:3,sl:0}}]},
+   o:[{th:'8 ชั่วโมงขึ้นไป นอนหลับได้อย่างเพียงพอ',en:'8+ hours, sleep well',s:{im:0,sl:3}},
+      {th:'6-7 ชั่วโมง พอเพียง',en:'6-7 hours, manageable',s:{im:1,sl:2}},
+      {th:'4-5 ชั่วโมง นอนดึกทุกคืน',en:'4-5 hours due to homework',s:{im:2,sl:1}},
+      {th:'น้อยกว่า 4 ชั่วโมง อดนอนบ่อยครั้ง',en:'Less than 4 hours, frequently sleep-deprived',s:{im:3,sl:0}}]},
   {e:'📚',th_c:'การนอน',en_c:'Sleep',w:1.5,
-   th_t:'คุณรู้สึกเครียดจากการเรียน การบ้าน หรือการสอบบ่อยแค่ไหน?',
+   th_t:'คุณรู้สึกเครียดจากการเรียน การบ้าน หรือการสอบบ่อยเพียงใด?',
    en_t:'How often do you feel stressed from studying, homework, or exams?',
    h_th:'',h_en:'',
    ref:'กรมสุขภาพจิต (2565): นักเรียนไทยจำนวนมากมีระดับความเครียดสูงกว่าเกณฑ์ปกติ',
-   o:[{th:'แทบไม่เครียดเลย จัดการได้ดี',en:'Rarely stressed, handle well',s:{sx:0,sl:3}},
-      {th:'เครียดบ้างบางครั้ง แต่ผ่านได้',en:'Sometimes stressed but manageable',s:{sx:1,sl:2}},
-      {th:'เครียดบ่อย รู้สึกกดดันมาก',en:'Often stressed, feel pressured',s:{sx:2,sl:1}},
-      {th:'เครียดมากเกือบทุกวัน นอนไม่หลับ',en:'Very stressed almost daily, insomnia',s:{sx:3,sl:0}}]},
+   o:[{th:'แทบไม่รู้สึกเครียด สามารถจัดการได้ดี',en:'Rarely stressed, handle well',s:{sx:0,sl:3}},
+      {th:'มีความเครียดบ้างบางครั้ง แต่รับมือได้',en:'Sometimes stressed but manageable',s:{sx:1,sl:2}},
+      {th:'มีความเครียดบ่อยครั้ง รู้สึกกดดันมาก',en:'Often stressed, feel pressured',s:{sx:2,sl:1}},
+      {th:'มีความเครียดสูงเกือบทุกวัน จนนอนไม่หลับ',en:'Very stressed almost daily, insomnia',s:{sx:3,sl:0}}]},
   {e:'😤',th_c:'การนอน',en_c:'Sleep',w:1.0,
-   th_t:'คุณมีความขัดแย้งหรือปัญหากับเพื่อนหรือครูบ่อยแค่ไหน?',
+   th_t:'คุณมีความขัดแย้งหรือปัญหากับเพื่อนหรือครูบ่อยเพียงใด?',
    en_t:'How often do you have conflicts or problems with friends or teachers?',
    h_th:'ความสัมพันธ์ที่ดีช่วยลดความเครียดได้มาก',h_en:'Good relationships greatly reduce stress',
    ref:'กรมสุขภาพจิต (2565): ปัญหาความสัมพันธ์เป็นปัจจัยสำคัญที่ก่อให้เกิดความเครียดในวัยรุ่นไทย',
    o:[{th:'ไม่มีปัญหาเลย มีความสัมพันธ์ดี',en:'No problems, good relationships',s:{sx:0,sl:3}},
       {th:'มีบ้างเล็กน้อย แต่แก้ไขได้',en:'Minor issues, resolvable',s:{sx:1,sl:2}},
-      {th:'มีบ่อย รู้สึกไม่สบายใจ',en:'Often, feel uncomfortable',s:{sx:2,sl:1}},
-      {th:'มีปัญหาหนักมาก ส่งผลต่อการเรียน',en:'Serious problems affecting studies',s:{sx:3,sl:0}}]},
+      {th:'มีบ่อย รู้สึกกังวลหรือหนักใจ',en:'Often, feel uncomfortable',s:{sx:2,sl:1}},
+      {th:'มีปัญหาอย่างมาก ส่งผลกระทบต่อการเรียน',en:'Serious problems affecting studies',s:{sx:3,sl:0}}]},
   {e:'🧴',th_c:'สุขอนามัย',en_c:'Hygiene',w:1.0,
-   th_t:'คุณล้างมือก่อนกินอาหารทุกครั้งไหม?',
+   th_t:'คุณล้างมือก่อนรับประทานอาหารทุกครั้งหรือไม่?',
    en_t:'Do you wash your hands before eating every time?',
    h_th:'การล้างมือเป็นวิธีที่มีประสิทธิภาพสูงในการป้องกันโรคติดเชื้อ',h_en:'Handwashing is one of the most effective ways to prevent infections',
    ref:'CDC (2023): ล้างมือด้วยสบู่ลดความเสี่ยงโรคติดเชื้อทางเดินอาหารและทางเดินหายใจได้อย่างมีนัยสำคัญ',
-   o:[{th:'ล้างมือทุกครั้งก่อนกินอาหาร',en:'Always wash hands before eating',s:{im:0,nu:3}},
-      {th:'ล้างบ้าง แต่ไม่ทุกครั้ง',en:'Sometimes but not always',s:{im:1,nu:2}},
-      {th:'ไม่ค่อยล้าง ถ้าไม่เห็นว่าสกปรก',en:'Rarely, only if visibly dirty',s:{im:2,nu:1}},
-      {th:'แทบไม่ล้างเลย',en:'Almost never wash',s:{im:3,nu:0}}]},
+   o:[{th:'ล้างมือทุกครั้งก่อนรับประทานอาหาร',en:'Always wash hands before eating',s:{im:0,nu:3}},
+      {th:'ล้างมือบ้าง แต่ไม่ทุกครั้ง',en:'Sometimes but not always',s:{im:1,nu:2}},
+      {th:'ไม่ค่อยล้างมือ หากไม่มองเห็นว่าสกปรก',en:'Rarely, only if visibly dirty',s:{im:2,nu:1}},
+      {th:'แทบไม่ล้างมือเลย',en:'Almost never wash',s:{im:3,nu:0}}]},
   {e:'🌬️',th_c:'สิ่งแวดล้อม',en_c:'Environment',w:0.8,
-   th_t:'ห้องเรียนของคุณอากาศถ่ายเทดีแค่ไหน?',
+   th_t:'ห้องเรียนของคุณอากาศถ่ายเทดีเพียงใด?',
    en_t:'How well-ventilated is your classroom?',
    h_th:'ห้องอากาศไม่ถ่ายเททำให้เชื้อโรคสะสม',h_en:'Poor ventilation leads to germ accumulation',
    ref:'WHO Indoor Air Quality Guidelines (2010): อากาศไม่ถ่ายเทเพิ่มความเสี่ยงการแพร่เชื้อโรคในพื้นที่ปิดอย่างมีนัยสำคัญ',
    o:[{th:'ถ่ายเทดีมาก มีหน้าต่างเปิดตลอด',en:'Very well-ventilated, windows always open',s:{im:0,sl:3}},
-      {th:'พอใช้ได้ มีแอร์หรือพัดลม',en:'Adequate, has AC or fan',s:{im:0,sl:2}},
-      {th:'อากาศไม่ค่อยดี ห้องอับ',en:'Poor air quality, stuffy room',s:{im:1,sl:1}},
-      {th:'ห้องอับมาก ร้อนและแน่น',en:'Very stuffy, hot and crowded',s:{im:2,sl:0}}]},
+      {th:'พอใช้ได้ มีเครื่องปรับอากาศหรือพัดลม',en:'Adequate, has AC or fan',s:{im:0,sl:2}},
+      {th:'การระบายอากาศไม่ดี ห้องอับ',en:'Poor air quality, stuffy room',s:{im:1,sl:1}},
+      {th:'ห้องอับมาก ร้อนและแออัด',en:'Very stuffy, hot and crowded',s:{im:2,sl:0}}]},
   {e:'☀️',th_c:'สิ่งแวดล้อม',en_c:'Environment',w:0.8,
-   th_t:'คุณได้รับแสงแดดหรืออยู่กลางแจ้งบ้างไหมในแต่ละวัน?',
+   th_t:'คุณได้รับแสงแดดหรืออยู่กลางแจ้งบ่อยเพียงใดในแต่ละวัน?',
    en_t:'Do you get sunlight or go outdoors each day?',
    h_th:'แสงแดดช่วยสร้างวิตามิน D และส่งเสริมอารมณ์ดี',h_en:'Sunlight helps produce Vitamin D and improves mood',
    ref:'Endocrine Society (2019): แสงแดด 15-30 นาที/วัน ช่วยสังเคราะห์วิตามิน D ลดความเสี่ยงซึมเศร้า',
@@ -568,7 +570,7 @@ var Q=[
       {th:'แทบไม่ได้รับแสงแดดเลย',en:'Rarely get sunlight',s:{sx:1,ph:1}},
       {th:'ไม่ได้รับเลย หลีกเลี่ยงแสงแดดตลอด',en:'Never, always avoid sunlight',s:{sx:2,ph:0}}]},
   {e:'😴',th_c:'อาการทางร่างกาย',en_c:'Symptoms',w:1.0,
-   th_t:'คุณมีอาการเหล่านี้บ่อยแค่ไหน? (ปวดคอ บ่า ไหล่ ปวดหัว ตาล้า)',
+   th_t:'คุณมีอาการเหล่านี้บ่อยเพียงใด? (ปวดคอ บ่า ไหล่ ปวดศีรษะ ตาล้า)',
    en_t:'How often do you experience these symptoms? (neck, shoulder pain, headache, eye fatigue)',
    h_th:'',h_en:'',
    ref:'กรมการแพทย์ (2565): อาการปวดคอ บ่า ไหล่ เป็นสัญญาณเตือน Office Syndrome ที่พบบ่อยในนักเรียนมัธยม',
@@ -581,10 +583,10 @@ var Q=[
    en_t:'When you are sick, how do you take care of yourself?',
    h_th:'',h_en:'',
    ref:'กรมอนามัย (2566): การฝืนไปโรงเรียนขณะป่วยเพิ่มการแพร่เชื้อและทำให้ฟื้นตัวช้าลง',
-   o:[{th:'พักผ่อน ดื่มน้ำ และไปพบแพทย์ทันที',en:'Rest, hydrate, and see a doctor immediately',s:{im:0,sl:3}},
-      {th:'พักผ่อนอยู่บ้าน รอให้หายเอง',en:'Rest at home, wait to recover',s:{im:0,sl:2}},
-      {th:'ฝืนไปโรงเรียนทั้งที่ไม่สบาย',en:'Force myself to go to school despite being sick',s:{im:2,sl:1}},
-      {th:'ไม่ดูแลเลย ปล่อยผ่านไป',en:'No self-care, ignore it',s:{im:3,sl:0}}]}
+   o:[{th:'พักผ่อน ดื่มน้ำ และพบแพทย์เมื่อจำเป็น',en:'Rest, hydrate, and see a doctor when necessary',s:{im:0,sl:3}},
+      {th:'พักผ่อนอยู่บ้าน รอให้หายเองตามธรรมชาติ',en:'Rest at home, wait to recover',s:{im:0,sl:2}},
+      {th:'ฝืนไปโรงเรียนแม้มีอาการเจ็บป่วย',en:'Force myself to go to school despite being sick',s:{im:2,sl:1}},
+      {th:'ไม่ดูแลรักษา ปล่อยให้ผ่านไปเอง',en:'No self-care, ignore it',s:{im:3,sl:0}}]}
 ];
 
 var D=[
@@ -724,6 +726,7 @@ var radarChart=null,resultBuilt=false,quizDone=false,quizCompletedAt=null;
 
 var SHEET_URL='https://script.google.com/macros/s/AKfycbzv0qCoVxnHTso3L1l7y89T8nBEW5b7_vUr1EVfBrmlT-kQ3MPZkV3dv1bIhj1KkWBw/exec';
 var userName='';
+var userAge='',userHeight='',userWeight='';
 
 function submitAnonymousData(){
   var totW=0,mxW=0;
@@ -796,6 +799,12 @@ function showNameModal(){
     +'onkeydown="if(event.key===\'Enter\')confirmName()" />'
     +'<div id="name-hist-dd" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e5e7eb;border-radius:9px;box-shadow:0 6px 20px rgba(0,0,0,.1);max-height:160px;overflow-y:auto;z-index:10;margin-top:3px;"></div>'
     +'</div>'
+    +'<div style="display:flex;gap:8px;margin-bottom:.5rem;">'
+    +'<div style="flex:1;"><label style="font-size:.72rem;color:#6b7280;display:block;margin-bottom:3px;">'+T('อายุ (ปี)','Age (yr)')+'</label><input id="age-inp" type="number" min="5" max="25" inputmode="numeric" value="'+escapeHtml(userAge)+'" placeholder="'+T('เช่น 16','16')+'" style="width:100%;border:2px solid #e5e7eb;border-radius:9px;padding:8px 9px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.88rem;outline:none;box-sizing:border-box;" onkeydown="if(event.key===\'Enter\')confirmName()" /></div>'
+    +'<div style="flex:1;"><label style="font-size:.72rem;color:#6b7280;display:block;margin-bottom:3px;">'+T('ส่วนสูง (ซม.)','Height (cm)')+'</label><input id="height-inp" type="number" min="100" max="250" inputmode="numeric" value="'+escapeHtml(userHeight)+'" placeholder="'+T('เช่น 165','165')+'" style="width:100%;border:2px solid #e5e7eb;border-radius:9px;padding:8px 9px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.88rem;outline:none;box-sizing:border-box;" onkeydown="if(event.key===\'Enter\')confirmName()" /></div>'
+    +'<div style="flex:1;"><label style="font-size:.72rem;color:#6b7280;display:block;margin-bottom:3px;">'+T('น้ำหนัก (กก.)','Weight (kg)')+'</label><input id="weight-inp" type="number" min="20" max="300" inputmode="numeric" value="'+escapeHtml(userWeight)+'" placeholder="'+T('เช่น 55','55')+'" style="width:100%;border:2px solid #e5e7eb;border-radius:9px;padding:8px 9px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.88rem;outline:none;box-sizing:border-box;" onkeydown="if(event.key===\'Enter\')confirmName()" /></div>'
+    +'</div>'
+    +'<p style="font-size:.68rem;color:#9ca3af;margin-bottom:.8rem;line-height:1.5;">'+T('* ไม่บังคับ — เว้นว่างได้ ใช้แสดงค่า BMI เพิ่มเติมเท่านั้น ไม่นำไปคิดคะแนน','* Optional — used only to show your BMI, not counted in the score')+'</p>'
     +'<div id="name-err" style="display:none;color:#ef4444;font-size:.8rem;margin-top:-6px;margin-bottom:.7rem;">'+T('⚠️ กรุณาใส่ชื่อก่อนนะครับ','⚠️ Please enter a name first')+'</div>'
     +'<button id="name-confirm-btn" onclick="confirmName()" style="width:100%;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;padding:12px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;margin-bottom:.6rem;">'+T('🔍 เริ่มตรวจสอบเลย','🔍 Start Assessment')+'</button>'
     +'<button id="name-cancel-btn" onclick="document.getElementById(\'name-modal-ov\').remove()" style="width:100%;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;padding:10px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.86rem;cursor:pointer;">'+T('ยกเลิก','Cancel')+'</button>'
@@ -816,7 +825,19 @@ function confirmName(){
   }
   userName=val;
   saveNameToHistory(userName);
-  try{localStorage.setItem('sh_name',userName);}catch(e){}
+  // เก็บค่า อายุ/ส่วนสูง/น้ำหนัก (ไม่บังคับ) สำหรับแสดงค่า BMI เพิ่มเติม
+  var ageEl=document.getElementById('age-inp');
+  var hEl=document.getElementById('height-inp');
+  var wEl=document.getElementById('weight-inp');
+  userAge=ageEl?ageEl.value.trim():'';
+  userHeight=hEl?hEl.value.trim():'';
+  userWeight=wEl?wEl.value.trim():'';
+  try{
+    localStorage.setItem('sh_name',userName);
+    localStorage.setItem('sh_age',userAge);
+    localStorage.setItem('sh_height',userHeight);
+    localStorage.setItem('sh_weight',userWeight);
+  }catch(e){}
   var ov=document.getElementById('name-modal-ov');
   if(ov) ov.remove();
   go('quiz');
@@ -965,8 +986,8 @@ function confirmReset(){
 
 function resetQ(){
   cur=0;chosen=[];resultBuilt=false;quizDone=false;quizCompletedAt=null;
-  userName='';
-  try{localStorage.removeItem('sh_name');}catch(e){}
+  userName='';userAge='';userHeight='';userWeight='';
+  try{['sh_name','sh_age','sh_height','sh_weight'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
   clearStorage();
   renderQ();
 }
@@ -975,6 +996,50 @@ function getDiseasePercent(k){
   var ws=getWeightedScore(k);
   var wm=getWeightedMax(k);
   return Math.min(100,Math.round((ws/wm)*100));
+}
+
+// ═══ ทางเลือก B: แสดงค่า BMI/อายุ แยกต่างหาก (ไม่นำไปคำนวณคะแนนหรือความเสี่ยง) ═══
+// เกณฑ์ BMI ใช้เกณฑ์สำหรับคนเอเชีย อ้างอิง: WHO Asia-Pacific (2000), กรมอนามัย (2566)
+function getBMI(){
+  var h=parseFloat(userHeight),w=parseFloat(userWeight);
+  if(!h||!w||h<100||h>250||w<20||w>300) return null;
+  return w/Math.pow(h/100,2);
+}
+function getBMICategory(bmi){
+  if(bmi<18.5) return {key:'under',th:'ผอมเกินเกณฑ์',en:'Underweight',col:'#3b82f6'};
+  if(bmi<23)   return {key:'normal',th:'สมส่วน (ปกติ)',en:'Healthy',col:'#10b981'};
+  if(bmi<25)   return {key:'over',th:'น้ำหนักเกิน',en:'Overweight',col:'#f59e0b'};
+  if(bmi<30)   return {key:'obese1',th:'อ้วนระดับ 1',en:'Obese I',col:'#f97316'};
+  return {key:'obese2',th:'อ้วนระดับ 2',en:'Obese II',col:'#ef4444'};
+}
+var BMI_NOTE={
+  under:{th:'น้ำหนักต่ำกว่าเกณฑ์ อาจสัมพันธ์กับภาวะขาดสารอาหารและภูมิคุ้มกันที่ลดลง ควรรับประทานอาหารให้ครบ 5 หมู่และเพียงพอ',en:'Underweight may relate to malnutrition and lower immunity. Eat balanced, sufficient meals.'},
+  normal:{th:'น้ำหนักอยู่ในเกณฑ์สมส่วน เยี่ยมมาก รักษาพฤติกรรมการกินและการออกกำลังกายแบบนี้ต่อไป',en:'Your weight is in the healthy range. Keep up your current eating and exercise habits.'},
+  over:{th:'น้ำหนักเกินเกณฑ์เล็กน้อย ควรเพิ่มการเคลื่อนไหวและลดเครื่องดื่มหวาน เพื่อลดความเสี่ยงโรคเรื้อรังในระยะยาว',en:'Slightly overweight. Add movement and cut sugary drinks to lower long-term chronic disease risk.'},
+  obese1:{th:'อยู่ในเกณฑ์อ้วน ควรปรับพฤติกรรมการกินและออกกำลังกายสม่ำเสมอ หากกังวลควรปรึกษาแพทย์หรือนักโภชนาการ',en:'In the obese range. Adjust diet and exercise regularly; consult a doctor or dietitian if concerned.'},
+  obese2:{th:'อยู่ในเกณฑ์อ้วนระดับสูง แนะนำให้ปรึกษาแพทย์หรือนักโภชนาการเพื่อวางแผนดูแลสุขภาพอย่างเหมาะสม',en:'In the higher obese range. Consulting a doctor or dietitian for a proper health plan is recommended.'}
+};
+function buildBMIBox(){
+  var el=document.getElementById('bmi-box');
+  if(!el) return;
+  var bmi=getBMI();
+  var ageNum=parseInt(userAge);
+  if(bmi===null&&!ageNum){el.innerHTML='';return;}
+  var h='<div style="background:#f8fafc;border:1px solid var(--bo);border-radius:13px;padding:1rem 1.1rem;margin-bottom:1.2rem;">';
+  h+='<div style="font-size:.86rem;font-weight:700;margin-bottom:.7rem;">📏 '+T('ข้อมูลร่างกายเพิ่มเติม','Additional Body Metrics')+'</div>';
+  if(ageNum){
+    h+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem;padding:5px 0;border-bottom:1px dashed var(--bo);"><span style="color:var(--mu)">'+T('อายุ','Age')+'</span><span style="font-weight:700">'+ageNum+' '+T('ปี','yrs')+'</span></div>';
+  }
+  if(bmi!==null){
+    var cat=getBMICategory(bmi);
+    h+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem;padding:7px 0;"><span style="color:var(--mu)">'+T('ดัชนีมวลกาย (BMI)','Body Mass Index (BMI)')+'</span><span style="display:flex;align-items:center;gap:8px;"><b style="font-size:1rem;color:'+cat.col+'">'+bmi.toFixed(1)+'</b><span style="background:'+cat.col+'20;color:'+cat.col+';padding:2px 10px;border-radius:100px;font-size:.74rem;font-weight:700;">'+T(cat.th,cat.en)+'</span></span></div>';
+    var note=BMI_NOTE[cat.key];
+    h+='<div style="font-size:.78rem;color:var(--mu);line-height:1.6;background:#fff;border:1px solid var(--bo);border-radius:9px;padding:.6rem .8rem;margin-top:.4rem;">💡 '+T(note.th,note.en)+'</div>';
+    h+='<div style="font-size:.68rem;color:#9ca3af;margin-top:.5rem;">📖 '+T('เกณฑ์ BMI สำหรับคนเอเชีย: WHO Asia-Pacific (2000), กรมอนามัย (2566)','Asian BMI criteria: WHO Asia-Pacific (2000), Dept. of Health Thailand (2023)')+'</div>';
+  }
+  h+='<div style="font-size:.7rem;color:#9ca3af;margin-top:.7rem;border-top:1px solid var(--bo);padding-top:.5rem;line-height:1.5;">'+T('* ข้อมูลนี้แสดงเพื่อประกอบการพิจารณาเท่านั้น ไม่ได้นำไปคำนวณคะแนนสุขภาพหรือความเสี่ยงโรคด้านบน','* Shown for reference only — not included in the health score or disease risk above')+'</div>';
+  h+='</div>';
+  el.innerHTML=h;
 }
 
 function buildResult(){
@@ -1032,6 +1097,7 @@ function buildResult(){
   document.getElementById('rlist').innerHTML=rh;
   document.getElementById('alist').innerHTML=ah;
 
+  buildBMIBox();
   build6Month();
   build7Day();
   buildCatBars();
@@ -1285,6 +1351,15 @@ function buildPrint(){
   document.getElementById('ps-health').style.color=hp>=70?'#10b981':hp>=45?'#f59e0b':'#ef4444';
   document.getElementById('ps-level').textContent=hp>=70?T('สุขภาพดี ✅','Good Health ✅'):hp>=45?T('ปานกลาง ⚠️','Moderate ⚠️'):T('ต้องปรับปรุง 🚨','Needs Improvement 🚨');
 
+  // BMI/อายุ (แสดงประกอบ ไม่รวมในคะแนน)
+  var pbmiEl=document.getElementById('print-bmi');
+  if(pbmiEl){
+    var pbmi=getBMI(),pAge=parseInt(userAge),pparts=[];
+    if(pAge) pparts.push(T('อายุ','Age')+' '+pAge+' '+T('ปี','yrs'));
+    if(pbmi!==null){var pcat=getBMICategory(pbmi);pparts.push('BMI '+pbmi.toFixed(1)+' ('+T(pcat.th,pcat.en)+')');}
+    pbmiEl.innerHTML=pparts.length?'<div style="text-align:center;font-size:.78rem;color:#6b7280;margin-bottom:1.2rem;">📏 '+pparts.join(' · ')+' <span style="font-size:.68rem;color:#9ca3af;">— '+T('ไม่รวมในคะแนน','not in score')+'</span></div>':'';
+  }
+
   var dh='';
   D.forEach(function(d){
     var p=getDiseasePercent(d.k);
@@ -1321,7 +1396,11 @@ function copyResult(){
   D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
   var hp=Math.round((1-Math.min(1,totW/mxW))*100);
   var txt=T('🏫 SchoolHealth — ผลการประเมินสุขภาพ\n','🏫 SchoolHealth — Health Assessment Results\n');
-  txt+=T('คะแนนสุขภาพรวม: ','Overall Health Score: ')+hp+'%\n\n';
+  txt+=T('คะแนนสุขภาพรวม: ','Overall Health Score: ')+hp+'%\n';
+  var cbmi=getBMI(),cAge=parseInt(userAge);
+  if(cAge) txt+=T('อายุ: ','Age: ')+cAge+T(' ปี\n',' yrs\n');
+  if(cbmi!==null){var ccat=getBMICategory(cbmi);txt+='BMI: '+cbmi.toFixed(1)+' ('+T(ccat.th,ccat.en)+')'+T(' — ไม่รวมในคะแนน\n',' — not in score\n');}
+  txt+='\n';
   txt+=T('ความเสี่ยงแต่ละโรค:\n','Risk by Disease:\n');
   D.forEach(function(d){
     var p=getDiseasePercent(d.k);
@@ -1471,7 +1550,7 @@ document.addEventListener('keydown',function(e){
     if(e.key==='Escape'){modal.remove();return;}
     if(e.key==='Tab'){
       e.preventDefault();
-      var fl=[document.getElementById('name-inp'),document.getElementById('name-confirm-btn'),document.getElementById('name-cancel-btn')].filter(Boolean);
+      var fl=[document.getElementById('name-inp'),document.getElementById('age-inp'),document.getElementById('height-inp'),document.getElementById('weight-inp'),document.getElementById('name-confirm-btn'),document.getElementById('name-cancel-btn')].filter(Boolean);
       var fi=fl.indexOf(document.activeElement);
       fl[e.shiftKey?(fi<=0?fl.length-1:fi-1):(fi>=fl.length-1?0:fi+1)].focus();
     }
@@ -1490,6 +1569,7 @@ document.addEventListener('keydown',function(e){
 // ── โหลดข้อมูลที่บันทึกไว้ก่อนหน้า (ถ้ามี) ──
 loadFromStorage();
 try{var _sn=localStorage.getItem('sh_name');if(_sn)userName=_sn;}catch(e){}
+try{userAge=localStorage.getItem('sh_age')||'';userHeight=localStorage.getItem('sh_height')||'';userWeight=localStorage.getItem('sh_weight')||'';}catch(e){}
 if(LANG==='en'){
   document.querySelector('.lang-btn').textContent='🌐 EN';
   document.querySelectorAll('[data-th]').forEach(function(el){
