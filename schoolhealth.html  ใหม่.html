@@ -497,15 +497,15 @@ var Q=[
       {th:'รับประทานเป็นบางวัน',en:'Sometimes on some days',s:{to:1,st:0,nu:2}},
       {th:'รับประทานเกือบทุกวัน',en:'Almost every day',s:{to:2,st:1,nu:1}},
       {th:'รับประทานทุกวัน หลายครั้งต่อวัน',en:'Every day, multiple times',s:{to:3,st:2,nu:0}}]},
-  {e:'💧',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,
+  {e:'💧',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,waterDyn:true,
    th_t:'ในวันเรียน คุณดื่มน้ำเปล่ามากเพียงใด?',
    en_t:'How much plain water do you drink on school days?',
-   h_th:'ควรดื่มน้ำอย่างน้อย 8 แก้ว (2 ลิตร) ต่อวัน',h_en:'Should drink at least 8 glasses (2L) per day',
+   h_th:'ปริมาณน้ำที่เหมาะสมขึ้นกับน้ำหนักตัว ระบบจะประเมินจากน้ำหนักของคุณให้อัตโนมัติ',h_en:'Ideal water intake depends on body weight — scored automatically from your weight',
    ref:'กรมอนามัย (2566): ร่างกายต้องการน้ำ 2-2.5 ลิตร/วัน ดื่มน้ำน้อยเพิ่มความเสี่ยงนิ่วในไต',
-   o:[{th:'มากกว่า 8 แก้ว ดื่มน้ำสม่ำเสมอ',en:'More than 8 glasses, drink regularly',s:{ki:0,nu:3}},
-      {th:'5-7 แก้ว พอเพียง',en:'5-7 glasses, manageable',s:{ki:1,nu:2}},
-      {th:'3-4 แก้ว ดื่มน้อย',en:'3-4 glasses, drink little',s:{ki:2,nu:1}},
-      {th:'น้อยกว่า 3 แก้ว หรือดื่มน้ำอัดลมแทน',en:'Less than 3 glasses or drink soda instead',s:{ki:3,nu:0}}]},
+   o:[{th:'มากกว่า 2 ลิตร/วัน ดื่มน้ำสม่ำเสมอ',en:'More than 2 L/day, drink regularly',s:{ki:0,nu:3}},
+      {th:'1.5-2 ลิตร/วัน พอเพียง',en:'1.5-2 L/day, manageable',s:{ki:1,nu:2}},
+      {th:'1-1.5 ลิตร/วัน ดื่มน้อย',en:'1-1.5 L/day, drink little',s:{ki:2,nu:1}},
+      {th:'น้อยกว่า 1 ลิตร/วัน หรือดื่มน้ำอัดลมแทน',en:'Less than 1 L/day or drink soda instead',s:{ki:3,nu:0}}]},
   {e:'🚽',th_c:'โภชนาการ',en_c:'Nutrition',w:0.8,
    th_t:'คุณกลั้นปัสสาวะระหว่างเรียนบ่อยเพียงใด?',
    en_t:'How often do you hold your urination during class?',
@@ -736,6 +736,12 @@ function submitAnonymousData(){
     var pct=getDiseasePercent(d.k);
     return pct>best.pct?{name:d.th,pct:pct}:best;
   },{name:'',pct:-1});
+  // ถ้าไม่มีโรคใดเสี่ยงเลย (สุขภาพดี ความเสี่ยงทุกโรค 0%) ให้ขึ้น "ไม่มีความเสี่ยงเด่น" แทนโรคแรกในลิสต์
+  var topName=topD.pct>0?topD.name:T('ไม่มีความเสี่ยงเด่น','None');
+  // อายุ/BMI (ข้อมูลร่างกาย) สำหรับเก็บสถิติวิจัย
+  var bmiVal=getBMI();
+  var bmiStr=bmiVal!==null?bmiVal.toFixed(1):'';
+  var bmiCat=bmiVal!==null?getBMICategory(bmiVal).th:'';
   var p='of='+getDiseasePercent('of')
     +'&ey='+getDiseasePercent('ey')
     +'&sx='+getDiseasePercent('sx')
@@ -746,7 +752,12 @@ function submitAnonymousData(){
     +'&ea='+getDiseasePercent('ea')
     +'&name='+encodeURIComponent(userName||T('ไม่ระบุ','Anonymous'))
     +'&hp='+hp
-    +'&top='+encodeURIComponent(topD.name);
+    +'&top='+encodeURIComponent(topName)
+    +'&age='+encodeURIComponent(userAge)
+    +'&height='+encodeURIComponent(userHeight)
+    +'&weight='+encodeURIComponent(userWeight)
+    +'&bmi='+encodeURIComponent(bmiStr)
+    +'&bmicat='+encodeURIComponent(bmiCat);
   new Image().src=SHEET_URL+'?'+p;
 }
 
@@ -804,7 +815,7 @@ function showNameModal(){
     +'<div style="flex:1;"><label style="font-size:.72rem;color:#6b7280;display:block;margin-bottom:3px;">'+T('ส่วนสูง (ซม.)','Height (cm)')+'</label><input id="height-inp" type="number" min="100" max="250" inputmode="numeric" value="'+escapeHtml(userHeight)+'" placeholder="'+T('เช่น 165','165')+'" style="width:100%;border:2px solid #e5e7eb;border-radius:9px;padding:8px 9px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.88rem;outline:none;box-sizing:border-box;" onkeydown="if(event.key===\'Enter\')confirmName()" /></div>'
     +'<div style="flex:1;"><label style="font-size:.72rem;color:#6b7280;display:block;margin-bottom:3px;">'+T('น้ำหนัก (กก.)','Weight (kg)')+'</label><input id="weight-inp" type="number" min="20" max="300" inputmode="numeric" value="'+escapeHtml(userWeight)+'" placeholder="'+T('เช่น 55','55')+'" style="width:100%;border:2px solid #e5e7eb;border-radius:9px;padding:8px 9px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.88rem;outline:none;box-sizing:border-box;" onkeydown="if(event.key===\'Enter\')confirmName()" /></div>'
     +'</div>'
-    +'<p style="font-size:.68rem;color:#9ca3af;margin-bottom:.8rem;line-height:1.5;">'+T('* ไม่บังคับ — เว้นว่างได้ ใช้แสดงค่า BMI เพิ่มเติมเท่านั้น ไม่นำไปคิดคะแนน','* Optional — used only to show your BMI, not counted in the score')+'</p>'
+    +'<p style="font-size:.68rem;color:#9ca3af;margin-bottom:.8rem;line-height:1.5;">'+T('* กรุณากรอกให้ครบทุกช่อง — อายุ/ส่วนสูง/น้ำหนัก ใช้แสดงค่า BMI เพิ่มเติม ไม่นำไปคิดคะแนน','* Please fill in all fields — age/height/weight are used to show your BMI, not counted in the score')+'</p>'
     +'<div id="name-err" style="display:none;color:#ef4444;font-size:.8rem;margin-top:-6px;margin-bottom:.7rem;">'+T('⚠️ กรุณาใส่ชื่อก่อนนะครับ','⚠️ Please enter a name first')+'</div>'
     +'<button id="name-confirm-btn" onclick="confirmName()" style="width:100%;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;padding:12px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;margin-bottom:.6rem;">'+T('🔍 เริ่มตรวจสอบเลย','🔍 Start Assessment')+'</button>'
     +'<button id="name-cancel-btn" onclick="document.getElementById(\'name-modal-ov\').remove()" style="width:100%;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;padding:10px;border-radius:11px;font-family:\'Noto Sans Thai\',sans-serif;font-size:.86rem;cursor:pointer;">'+T('ยกเลิก','Cancel')+'</button>'
@@ -816,22 +827,29 @@ function showNameModal(){
 
 function confirmName(){
   var inp=document.getElementById('name-inp');
-  var val=inp?inp.value.trim():'';
-  if(!val){
-    if(inp) inp.style.borderColor='#ef4444';
-    var err=document.getElementById('name-err');
-    if(err) err.style.display='block';
-    return;
-  }
-  userName=val;
-  saveNameToHistory(userName);
-  // เก็บค่า อายุ/ส่วนสูง/น้ำหนัก (ไม่บังคับ) สำหรับแสดงค่า BMI เพิ่มเติม
   var ageEl=document.getElementById('age-inp');
   var hEl=document.getElementById('height-inp');
   var wEl=document.getElementById('weight-inp');
-  userAge=ageEl?ageEl.value.trim():'';
-  userHeight=hEl?hEl.value.trim():'';
-  userWeight=wEl?wEl.value.trim():'';
+  var val=inp?inp.value.trim():'';
+  var ageV=ageEl?ageEl.value.trim():'';
+  var hV=hEl?hEl.value.trim():'';
+  var wV=wEl?wEl.value.trim():'';
+  var errEl=document.getElementById('name-err');
+  // รีเซ็ตสีกรอบทุกช่องก่อนตรวจ
+  [inp,ageEl,hEl,wEl].forEach(function(el){if(el)el.style.borderColor='#e5e7eb';});
+  function fail(msg,el){
+    if(errEl){errEl.textContent=msg;errEl.style.display='block';}
+    if(el){el.style.borderColor='#ef4444';el.focus();}
+    return false;
+  }
+  // ต้องกรอกให้ครบทุกช่องก่อนจึงจะเริ่มได้
+  if(!val) return fail(T('⚠️ กรุณาใส่ชื่อก่อนนะครับ','⚠️ Please enter a name first'),inp);
+  if(!ageV||isNaN(+ageV)||+ageV<5||+ageV>25) return fail(T('⚠️ กรุณาใส่อายุให้ถูกต้อง (5-25 ปี)','⚠️ Please enter a valid age (5-25)'),ageEl);
+  if(!hV||isNaN(+hV)||+hV<100||+hV>250) return fail(T('⚠️ กรุณาใส่ส่วนสูงให้ถูกต้อง (100-250 ซม.)','⚠️ Please enter a valid height (100-250 cm)'),hEl);
+  if(!wV||isNaN(+wV)||+wV<20||+wV>300) return fail(T('⚠️ กรุณาใส่น้ำหนักให้ถูกต้อง (20-300 กก.)','⚠️ Please enter a valid weight (20-300 kg)'),wEl);
+  if(errEl) errEl.style.display='none';
+  userName=val;userAge=ageV;userHeight=hV;userWeight=wV;
+  saveNameToHistory(userName);
   try{
     localStorage.setItem('sh_name',userName);
     localStorage.setItem('sh_age',userAge);
@@ -894,6 +912,7 @@ function go(id){
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('nav ul a').forEach(function(a){a.classList.remove('active');});
   document.getElementById('nav-'+id).classList.add('active');
+  if(id==='quiz') renderQ();
   if(id==='result'){buildResult();resultBuilt=true;}
   if(id==='print') buildPrint();
   if(id==='know') buildKnow();
@@ -915,7 +934,21 @@ function renderQ(){
   document.getElementById('plb').textContent=progLabel;
   document.getElementById('ppc').textContent=pct+'%';
   document.getElementById('pfi').style.width=pct+'%';
-  document.getElementById('bgo').textContent=(cur===Q.length-1)?T('📊 ดูผลลัพธ์','📊 See Results'):T('ถัดไป →','Next →');
+  var bgo=document.getElementById('bgo');
+  var isLast=cur===Q.length-1;
+  if(quizDone){
+    // ทำเสร็จแล้ว: ล็อกคำตอบ — ปุ่ม "ทำแบบประเมินใหม่" เฉพาะข้อสุดท้าย ข้ออื่นใช้ "ถัดไป" เพื่อเลื่อนดู
+    if(isLast){
+      bgo.textContent=T('🔄 ทำแบบประเมินใหม่','🔄 Retake Assessment');
+      bgo.onclick=confirmReset;
+    }else{
+      bgo.textContent=T('ถัดไป →','Next →');
+      bgo.onclick=nextQ;
+    }
+  }else{
+    bgo.textContent=isLast?T('📊 ดูผลลัพธ์','📊 See Results'):T('ถัดไป →','Next →');
+    bgo.onclick=nextQ;
+  }
 
   var wLabel=q.w>=1.3?T('⭐ น้ำหนักสูง','⭐ High Weight'):q.w>=1.0?'':T('น้ำหนักต่ำ','Low Weight');
   var h='<span class="quiz-badge">📌 '+T(q.th_c,q.en_c)+'</span>';
@@ -924,22 +957,47 @@ function renderQ(){
   var hint=T(q.h_th,q.h_en);
   if(hint) h+='<div class="quiz-hint">💬 '+hint+'</div>';
   h+='<div class="quiz-ref">📖 '+q.ref+'</div>';
+  if(quizDone) h+='<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:9px;padding:.6rem .8rem;margin-bottom:.7rem;font-size:.76rem;color:#166534;line-height:1.6;">🔒 '+T('คุณทำแบบประเมินนี้เสร็จแล้ว คำตอบถูกล็อกไว้ — หากต้องการเปลี่ยน กรุณากด "🔄 ทำแบบประเมินใหม่"','You have completed this assessment. Answers are locked — tap "🔄 Retake Assessment" to change them.')+'</div>';
   h+='<div class="options-list">';
   q.o.forEach(function(o,i){
     var sel=chosen[cur]===i?'sel':'';
-    h+='<div class="option-item '+sel+'" onclick="pick('+i+')"><div class="option-circle">'+(chosen[cur]===i?'✓':'')+'</div><span class="option-label">'+T(o.th,o.en)+'</span></div>';
+    var oc=quizDone?'':' onclick="pick('+i+')"';
+    var lockStyle=quizDone?' style="cursor:default;opacity:'+(chosen[cur]===i?'1':'.5')+';"':'';
+    h+='<div class="option-item '+sel+'"'+oc+lockStyle+'><div class="option-circle">'+(chosen[cur]===i?'✓':'')+'</div><span class="option-label">'+T(o.th,o.en)+'</span></div>';
   });
   h+='</div>';
   document.getElementById('qcard').innerHTML=h;
 }
 
-function pick(i){chosen[cur]=i;renderQ();saveToStorage();}
+function pick(i){if(quizDone)return;chosen[cur]=i;renderQ();saveToStorage();}
+
+// ═══ ข้อน้ำดื่ม (waterDyn): คำนวณเป้าน้ำรายบุคคลจากน้ำหนัก แล้วให้คะแนนตามว่าดื่มถึงเป้าหรือไม่ (ไม่โชว์สูตร) ═══
+function waterTargetL(){
+  var w=parseFloat(userWeight);
+  if(!w||w<20||w>300) return 2.0;              // ค่าเริ่มต้นถ้าไม่มีน้ำหนัก
+  return Math.max(1.2,Math.min(3.0,w*0.033));  // ~33 มล./กก./วัน จำกัดช่วง 1.2–3.0 ล.
+}
+// ปริมาณที่ดื่มจริงโดยประมาณของแต่ละตัวเลือก (ลิตร/วัน) เรียงตามลำดับตัวเลือกในข้อน้ำดื่ม
+var WATER_INTAKE=[2.25,1.75,1.25,0.75];
+function waterScore(oi){
+  var ki;
+  if(oi===0){ ki=0; }                          // ดื่มมากที่สุด = ดีที่สุดเสมอ
+  else{
+    var r=WATER_INTAKE[oi]/waterTargetL();     // อัตราส่วน ดื่มจริง ÷ เป้าเฉพาะบุคคล
+    ki = r>=0.95?0 : r>=0.75?1 : r>=0.55?2 : 3;
+  }
+  return {ki:ki, nu:3-ki};
+}
+// คะแนนที่ใช้จริงของตัวเลือก — ข้อที่ตั้ง waterDyn จะคำนวณแบบไดนามิกจากน้ำหนัก
+function effScore(q,oi){
+  return q.waterDyn ? waterScore(oi) : q.o[oi].s;
+}
 
 function getWeightedScore(k){
   var total=0;
   Q.forEach(function(q,qi){
     if(chosen[qi]===undefined) return;
-    var s=q.o[chosen[qi]].s;
+    var s=effScore(q,chosen[qi]);
     if(s[k]!==undefined) total+=s[k]*q.w;
   });
   return total;
@@ -956,6 +1014,11 @@ function getWeightedMax(k){
 }
 
 function nextQ(){
+  if(quizDone){
+    // ทำเสร็จแล้ว: เลื่อนดูข้อถัดไปได้ (review) แต่ไม่แก้คำตอบ ไม่ส่งข้อมูลซ้ำ
+    if(cur<Q.length-1){cur++;saveToStorage();renderQ();}
+    return;
+  }
   if(chosen[cur]===undefined){alert(T('กรุณาเลือกคำตอบก่อนนะครับ 😊','Please select an answer first 😊'));return;}
   if(cur<Q.length-1){cur++;saveToStorage();renderQ();}
   else{quizDone=true;quizCompletedAt=new Date().toISOString();saveToStorage();submitAnonymousData();saveHistory();go('result');}
@@ -1013,11 +1076,20 @@ function getBMICategory(bmi){
   return {key:'obese2',th:'อ้วนระดับ 2',en:'Obese II',col:'#ef4444'};
 }
 var BMI_NOTE={
-  under:{th:'น้ำหนักต่ำกว่าเกณฑ์ อาจสัมพันธ์กับภาวะขาดสารอาหารและภูมิคุ้มกันที่ลดลง ควรรับประทานอาหารให้ครบ 5 หมู่และเพียงพอ',en:'Underweight may relate to malnutrition and lower immunity. Eat balanced, sufficient meals.'},
-  normal:{th:'น้ำหนักอยู่ในเกณฑ์สมส่วน เยี่ยมมาก รักษาพฤติกรรมการกินและการออกกำลังกายแบบนี้ต่อไป',en:'Your weight is in the healthy range. Keep up your current eating and exercise habits.'},
-  over:{th:'น้ำหนักเกินเกณฑ์เล็กน้อย ควรเพิ่มการเคลื่อนไหวและลดเครื่องดื่มหวาน เพื่อลดความเสี่ยงโรคเรื้อรังในระยะยาว',en:'Slightly overweight. Add movement and cut sugary drinks to lower long-term chronic disease risk.'},
-  obese1:{th:'อยู่ในเกณฑ์อ้วน ควรปรับพฤติกรรมการกินและออกกำลังกายสม่ำเสมอ หากกังวลควรปรึกษาแพทย์หรือนักโภชนาการ',en:'In the obese range. Adjust diet and exercise regularly; consult a doctor or dietitian if concerned.'},
-  obese2:{th:'อยู่ในเกณฑ์อ้วนระดับสูง แนะนำให้ปรึกษาแพทย์หรือนักโภชนาการเพื่อวางแผนดูแลสุขภาพอย่างเหมาะสม',en:'In the higher obese range. Consulting a doctor or dietitian for a proper health plan is recommended.'}
+  under:{th:'น้ำหนักต่ำกว่าเกณฑ์ อาจสัมพันธ์กับภาวะขาดสารอาหารและภูมิคุ้มกันที่ลดลง ควรรับประทานอาหารให้ครบ 5 หมู่และเพียงพอ',en:'Underweight may relate to malnutrition and lower immunity. Eat balanced, sufficient meals.',
+    ref:'มีงานวิจัยพบว่าผู้ที่น้ำหนักต่ำกว่าเกณฑ์มีแนวโน้มติดเชื้อทางเดินหายใจสูงกว่าคนน้ำหนักปกติ (Dobner & Kaser, 2018)',
+    ref_en:'Research links underweight to higher respiratory infection risk (Dobner & Kaser, 2018)'},
+  normal:{th:'น้ำหนักอยู่ในเกณฑ์สมส่วน เยี่ยมมาก รักษาพฤติกรรมการกินและการออกกำลังกายแบบนี้ต่อไป',en:'Your weight is in the healthy range. Keep up your current eating and exercise habits.',
+    ref:'',ref_en:''},
+  over:{th:'น้ำหนักเกินเกณฑ์เล็กน้อย ควรเพิ่มการเคลื่อนไหวและลดเครื่องดื่มหวาน เพื่อลดความเสี่ยงโรคเรื้อรังในระยะยาว',en:'Slightly overweight. Add movement and cut sugary drinks to lower long-term chronic disease risk.',
+    ref:'มีงานวิจัยพบว่าผู้ที่น้ำหนักเกินมีแนวโน้มปวดหลังและกรดไหลย้อนสูงกว่าคนน้ำหนักปกติ (Shiri et al., 2010; Hampel et al., 2005)',
+    ref_en:'Overweight is linked to higher risk of low back pain and acid reflux (Shiri et al., 2010; Hampel et al., 2005)'},
+  obese1:{th:'อยู่ในเกณฑ์อ้วน ควรปรับพฤติกรรมการกินและออกกำลังกายสม่ำเสมอ หากกังวลควรปรึกษาแพทย์หรือนักโภชนาการ',en:'In the obese range. Adjust diet and exercise regularly; consult a doctor or dietitian if concerned.',
+    ref:'มีงานวิจัยพบว่าภาวะอ้วนสัมพันธ์กับความเสี่ยงปวดหลัง กรดไหลย้อน นิ่วในไต และซึมเศร้าที่สูงขึ้น (Shiri 2010; Hampel 2005; Aune 2018; Quek 2017)',
+    ref_en:'Obesity is associated with higher risk of back pain, acid reflux, kidney stones, and depression (Shiri 2010; Hampel 2005; Aune 2018; Quek 2017)'},
+  obese2:{th:'อยู่ในเกณฑ์อ้วนระดับสูง แนะนำให้ปรึกษาแพทย์หรือนักโภชนาการเพื่อวางแผนดูแลสุขภาพอย่างเหมาะสม',en:'In the higher obese range. Consulting a doctor or dietitian for a proper health plan is recommended.',
+    ref:'มีงานวิจัยพบว่าภาวะอ้วนสัมพันธ์กับความเสี่ยงปวดหลัง กรดไหลย้อน นิ่วในไต และซึมเศร้าที่สูงขึ้น (Shiri 2010; Hampel 2005; Aune 2018; Quek 2017)',
+    ref_en:'Obesity is associated with higher risk of back pain, acid reflux, kidney stones, and depression (Shiri 2010; Hampel 2005; Aune 2018; Quek 2017)'}
 };
 function buildBMIBox(){
   var el=document.getElementById('bmi-box');
@@ -1035,7 +1107,8 @@ function buildBMIBox(){
     h+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem;padding:7px 0;"><span style="color:var(--mu)">'+T('ดัชนีมวลกาย (BMI)','Body Mass Index (BMI)')+'</span><span style="display:flex;align-items:center;gap:8px;"><b style="font-size:1rem;color:'+cat.col+'">'+bmi.toFixed(1)+'</b><span style="background:'+cat.col+'20;color:'+cat.col+';padding:2px 10px;border-radius:100px;font-size:.74rem;font-weight:700;">'+T(cat.th,cat.en)+'</span></span></div>';
     var note=BMI_NOTE[cat.key];
     h+='<div style="font-size:.78rem;color:var(--mu);line-height:1.6;background:#fff;border:1px solid var(--bo);border-radius:9px;padding:.6rem .8rem;margin-top:.4rem;">💡 '+T(note.th,note.en)+'</div>';
-    h+='<div style="font-size:.68rem;color:#9ca3af;margin-top:.5rem;">📖 '+T('เกณฑ์ BMI สำหรับคนเอเชีย: WHO Asia-Pacific (2000), กรมอนามัย (2566)','Asian BMI criteria: WHO Asia-Pacific (2000), Dept. of Health Thailand (2023)')+'</div>';
+    var noteRef=T(note.ref||'',note.ref_en||'');
+    if(noteRef) h+='<div style="font-size:.72rem;color:#6b7280;line-height:1.6;margin-top:.5rem;padding:.5rem .7rem;background:#eef2ff;border-radius:8px;border-left:3px solid var(--p2);">🔬 '+noteRef+'</div>';
   }
   h+='<div style="font-size:.7rem;color:#9ca3af;margin-top:.7rem;border-top:1px solid var(--bo);padding-top:.5rem;line-height:1.5;">'+T('* ข้อมูลนี้แสดงเพื่อประกอบการพิจารณาเท่านั้น ไม่ได้นำไปคำนวณคะแนนสุขภาพหรือความเสี่ยงโรคด้านบน','* Shown for reference only — not included in the health score or disease risk above')+'</div>';
   h+='</div>';
@@ -1607,6 +1680,7 @@ window.addEventListener('popstate',function(e){
   document.getElementById('page-'+pg).classList.add('active');
   document.querySelectorAll('nav ul a').forEach(function(a){a.classList.remove('active');});
   document.getElementById('nav-'+pg).classList.add('active');
+  if(pg==='quiz') renderQ();
   if(pg==='result'){buildResult();resultBuilt=true;}
   if(pg==='print') buildPrint();
   if(pg==='know') buildKnow();
