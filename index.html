@@ -219,6 +219,7 @@ footer span{color:var(--pri);}
     <li><a onclick="go('know')" id="nav-know" data-th="ความรู้เรื่องโรค" data-en="Knowledge">ความรู้เรื่องโรค</a></li>
     <li><a onclick="go('print')" id="nav-print" data-th="พิมพ์/แชร์" data-en="Print/Share">พิมพ์/แชร์</a></li>
     <li><a onclick="go('history')" id="nav-history" data-th="ประวัติ" data-en="History">ประวัติ</a></li>
+    <li><a href="https://docs.google.com/forms/d/13SrDBKfbcr53dHVqxI_Pmuz_HkBJ0_wcaNi6urlD5WE/viewform" target="_blank" rel="noopener noreferrer" id="nav-survey" data-th="ประเมินความพึงพอใจ ↗" data-en="Feedback ↗">ประเมินความพึงพอใจ ↗</a></li>
   </ul>
   <button class="lang-btn" onclick="toggleLang()">🌐 TH</button>
 </nav>
@@ -315,8 +316,8 @@ footer span{color:var(--pri);}
 
       <div class="proj-grid" id="projgrid"></div>
       <div class="month-grid">
-        <div class="month-card month-bad"><div class="mc-title" data-th="⚠️ ถ้าไม่เปลี่ยนพฤติกรรม" data-en="⚠️ If behavior unchanged">⚠️ ถ้าไม่เปลี่ยนพฤติกรรม</div><ul class="mc-list" id="bad6m"></ul></div>
-        <div class="month-card month-good"><div class="mc-title" data-th="✅ ถ้าเริ่มปรับพฤติกรรมตั้งแต่วันนี้" data-en="✅ If behavior improved today">✅ ถ้าเริ่มปรับพฤติกรรมตั้งแต่วันนี้</div><ul class="mc-list" id="good6m"></ul></div>
+        <div class="month-card month-bad"><div class="mc-title" data-th="⚠️ หากไม่ปลี่ยนพฤติกรรม" data-en="⚠️ If behavior unchanged">⚠️ หากไม่เปลี่ยนพฤติกรรม</div><ul class="mc-list" id="bad6m"></ul></div>
+        <div class="month-card month-good"><div class="mc-title" data-th="✅ หากเริ่มปรับพฤติกรรมตั้งแต่วันนี้" data-en="✅ If behavior improved today">✅ หากเริ่มปรับพฤติกรรมตั้งแต่วันนี้</div><ul class="mc-list" id="good6m"></ul></div>
       </div>
       <div class="advice-box"><div class="advice-title" data-th="🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน" data-en="🎯 Most Concerning Diseases in 6 Months">🎯 โรคที่น่ากังวลที่สุดใน 6 เดือน</div><ul class="advice-list" id="warn6m"></ul></div>
     </div>
@@ -497,15 +498,15 @@ var Q=[
       {th:'รับประทานเป็นบางวัน',en:'Sometimes on some days',s:{to:1,st:0,nu:2}},
       {th:'รับประทานเกือบทุกวัน',en:'Almost every day',s:{to:2,st:1,nu:1}},
       {th:'รับประทานทุกวัน หลายครั้งต่อวัน',en:'Every day, multiple times',s:{to:3,st:2,nu:0}}]},
-  {e:'💧',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,
+  {e:'💧',th_c:'โภชนาการ',en_c:'Nutrition',w:1.0,waterDyn:true,
    th_t:'ในวันเรียน คุณดื่มน้ำเปล่ามากเพียงใด?',
    en_t:'How much plain water do you drink on school days?',
-   h_th:'ควรดื่มน้ำอย่างน้อย 8 แก้ว (2 ลิตร) ต่อวัน',h_en:'Should drink at least 8 glasses (2L) per day',
+   h_th:'ปริมาณน้ำที่เหมาะสมขึ้นกับน้ำหนักตัว ระบบจะประเมินจากน้ำหนักของคุณให้อัตโนมัติ',h_en:'Ideal water intake depends on body weight — scored automatically from your weight',
    ref:'กรมอนามัย (2566): ร่างกายต้องการน้ำ 2-2.5 ลิตร/วัน ดื่มน้ำน้อยเพิ่มความเสี่ยงนิ่วในไต',
-   o:[{th:'มากกว่า 8 แก้ว ดื่มน้ำสม่ำเสมอ',en:'More than 8 glasses, drink regularly',s:{ki:0,nu:3}},
-      {th:'5-7 แก้ว พอเพียง',en:'5-7 glasses, manageable',s:{ki:1,nu:2}},
-      {th:'3-4 แก้ว ดื่มน้อย',en:'3-4 glasses, drink little',s:{ki:2,nu:1}},
-      {th:'น้อยกว่า 3 แก้ว หรือดื่มน้ำอัดลมแทน',en:'Less than 3 glasses or drink soda instead',s:{ki:3,nu:0}}]},
+   o:[{th:'มากกว่า 2 ลิตร/วัน ดื่มน้ำสม่ำเสมอ',en:'More than 2 L/day, drink regularly',s:{ki:0,nu:3}},
+      {th:'1.5-2 ลิตร/วัน พอเพียง',en:'1.5-2 L/day, manageable',s:{ki:1,nu:2}},
+      {th:'1-1.5 ลิตร/วัน ดื่มน้อย',en:'1-1.5 L/day, drink little',s:{ki:2,nu:1}},
+      {th:'น้อยกว่า 1 ลิตร/วัน หรือดื่มน้ำอัดลมแทน',en:'Less than 1 L/day or drink soda instead',s:{ki:3,nu:0}}]},
   {e:'🚽',th_c:'โภชนาการ',en_c:'Nutrition',w:0.8,
    th_t:'คุณกลั้นปัสสาวะระหว่างเรียนบ่อยเพียงใด?',
    en_t:'How often do you hold your urination during class?',
@@ -971,11 +972,33 @@ function renderQ(){
 
 function pick(i){if(quizDone)return;chosen[cur]=i;renderQ();saveToStorage();}
 
+// ═══ ข้อน้ำดื่ม (waterDyn): คำนวณเป้าน้ำรายบุคคลจากน้ำหนัก แล้วให้คะแนนตามว่าดื่มถึงเป้าหรือไม่ (ไม่โชว์สูตร) ═══
+function waterTargetL(){
+  var w=parseFloat(userWeight);
+  if(!w||w<20||w>300) return 2.0;              // ค่าเริ่มต้นถ้าไม่มีน้ำหนัก
+  return Math.max(1.2,Math.min(3.0,w*0.033));  // ~33 มล./กก./วัน จำกัดช่วง 1.2–3.0 ล.
+}
+// ปริมาณที่ดื่มจริงโดยประมาณของแต่ละตัวเลือก (ลิตร/วัน) เรียงตามลำดับตัวเลือกในข้อน้ำดื่ม
+var WATER_INTAKE=[2.25,1.75,1.25,0.75];
+function waterScore(oi){
+  var ki;
+  if(oi===0){ ki=0; }                          // ดื่มมากที่สุด = ดีที่สุดเสมอ
+  else{
+    var r=WATER_INTAKE[oi]/waterTargetL();     // อัตราส่วน ดื่มจริง ÷ เป้าเฉพาะบุคคล
+    ki = r>=0.95?0 : r>=0.75?1 : r>=0.55?2 : 3;
+  }
+  return {ki:ki, nu:3-ki};
+}
+// คะแนนที่ใช้จริงของตัวเลือก — ข้อที่ตั้ง waterDyn จะคำนวณแบบไดนามิกจากน้ำหนัก
+function effScore(q,oi){
+  return q.waterDyn ? waterScore(oi) : q.o[oi].s;
+}
+
 function getWeightedScore(k){
   var total=0;
   Q.forEach(function(q,qi){
     if(chosen[qi]===undefined) return;
-    var s=q.o[chosen[qi]].s;
+    var s=effScore(q,chosen[qi]);
     if(s[k]!==undefined) total+=s[k]*q.w;
   });
   return total;
