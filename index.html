@@ -209,7 +209,7 @@ footer span{color:var(--pri);}
 </head>
 <body>
 <nav>
-  <div class="logo"><div class="lb">🏫</div><div class="logo-text"><span class="logo-school">School</span><span class="logo-health">Care</span></div></div>
+  <div class="logo"><div class="lb">🏫</div><div class="logo-text"><span class="logo-school">School</span><span class="logo-health">Health</span></div></div>
   <ul>
     <li><a onclick="go('home')" id="nav-home" class="active">หน้าหลัก</a></li>
     <li><a onclick="showNameModal()" id="nav-quiz">แบบประเมิน</a></li>
@@ -217,6 +217,7 @@ footer span{color:var(--pri);}
     <li><a onclick="go('know')" id="nav-know">ความรู้เรื่องโรค</a></li>
     <li><a onclick="go('print')" id="nav-print">พิมพ์/แชร์</a></li>
     <li><a onclick="go('history')" id="nav-history">ประวัติ</a></li>
+    <li><a href="docs/references.pdf" target="_blank" rel="noopener noreferrer" id="nav-ref">แหล่งอ้างอิง ↗</a></li>
     <li><a href="https://docs.google.com/forms/d/13SrDBKfbcr53dHVqxI_Pmuz_HkBJ0_wcaNi6urlD5WE/viewform" target="_blank" rel="noopener noreferrer" id="nav-survey">ประเมินความพึงพอใจ ↗</a></li>
   </ul>
 </nav>
@@ -659,7 +660,7 @@ var KN=[
 var cur=0,chosen=[];
 var radarChart=null,resultBuilt=false,quizDone=false,quizCompletedAt=null;
 
-var SHEET_URL='https://script.google.com/macros/s/AKfycbzv0qCoVxnHTso3L1l7y89T8nBEW5b7_vUr1EVfBrmlT-kQ3MPZkV3dv1bIhj1KkWBw/exec';
+var SHEET_URL='https://script.google.com/macros/s/AKfycbxh3sMTldWiLf1vtbQQBc2ubyScWLrUPo6gG4J0xep0sAUPS0GDju_6arcdeBm0E7IM/exec';
 var userName='';
 var userAge='',userHeight='',userWeight='';
 
