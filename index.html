@@ -13,7 +13,7 @@
 body{font-family:'Noto Sans Thai','Prompt',sans-serif;background:var(--bg);color:var(--tx);}
 nav{background:#fff;border-bottom:1px solid var(--bo);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .logo{display:flex;align-items:center;gap:8px;font-family:'Prompt',sans-serif;font-weight:700;border:1.5px solid var(--bo);border-radius:12px;padding:5px 10px;background:#fff;}
-.lb{width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.lb{width:34px;height:34px;object-fit:contain;flex-shrink:0;display:block;}
 .logo-text{display:flex;flex-direction:column;line-height:1.2;}
 .logo-school{color:var(--tx);font-size:.82rem;}
 .logo-health{color:var(--pri);font-size:.82rem;}
@@ -23,8 +23,8 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 .page{display:none;}.page.active{display:block;}
 .hero{background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;padding:3rem 1.5rem 5rem;text-align:center;position:relative;overflow:hidden;}
 .hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:50px;background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%);}
-.hero-emoji{font-size:3rem;display:block;margin-bottom:.8rem;animation:bounce 2s infinite;}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-logo{width:132px;height:132px;display:block;margin:0 auto .9rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22));animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .hero h1{font-family:'Prompt',sans-serif;font-size:2rem;font-weight:700;line-height:1.3;margin-bottom:.8rem;}
 .hero p{opacity:.9;font-size:.93rem;max-width:480px;margin:0 auto 1.2rem;line-height:1.8;}
 .hero-subtitle{font-size:.78rem;opacity:.7;margin-bottom:1rem;}
@@ -204,12 +204,15 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
 @media print{nav,footer,.print-buttons,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
-@media(max-width:600px){.feature-grid,.disease-grid,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo{padding:3px 7px;gap:5px;}.logo-school,.logo-health{font-size:.72rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;}nav ul::-webkit-scrollbar{display:none;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{overflow-x:visible;margin:0;padding:0;width:100%;scroll-snap-type:none;}.know-grid{display:grid!important;grid-template-columns:1fr!important;width:100%;gap:12px;padding-right:0;}.know-card{width:auto;}}
+@media(max-width:600px){.feature-grid,.disease-grid,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo{padding:3px 7px;gap:5px;}.logo-school,.logo-health{font-size:.72rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;scroll-behavior:smooth;}nav ul::-webkit-scrollbar{display:none;}
+/* เงาไล่สีขอบขวา บอกใบ้ว่าแถบเมนูยังมีต่อ — จางหายเมื่อเลื่อนสุด */
+nav::after{content:'';position:absolute;top:0;right:0;width:30px;height:100%;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,0),#fff 75%);transition:opacity .3s;}
+nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{overflow-x:visible;margin:0;padding:0;width:100%;scroll-snap-type:none;}.know-grid{display:grid!important;grid-template-columns:1fr!important;width:100%;gap:12px;padding-right:0;}.know-card{width:auto;}}
 </style>
 </head>
 <body>
 <nav>
-  <div class="logo"><div class="lb">🏫</div><div class="logo-text"><span class="logo-school">School</span><span class="logo-health">Health</span></div></div>
+  <div class="logo"><img class="lb" src="logo/logo-nav.png" alt=""><div class="logo-text"><span class="logo-school">School</span><span class="logo-health">Care</span></div></div>
   <ul>
     <li><a onclick="go('home')" id="nav-home" class="active">หน้าหลัก</a></li>
     <li><a onclick="showNameModal()" id="nav-quiz">แบบประเมิน</a></li>
@@ -225,7 +228,7 @@ footer span{color:var(--pri);}
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero">
-    <span class="hero-emoji">🏫</span>
+    <img class="hero-logo" src="logo/logo.png" alt="School Care">
     <h1>ระบบประเมินและพยากรณ์<br>ความเสี่ยงสุขภาพและโรค<br>จากชีวิตในโรงเรียน</h1>
     <p>ตอบคำถาม 20 ข้อ รู้ผลทันที พร้อมแผนปรับพฤติกรรม 7 วันเฉพาะตัว</p>
     <p class="hero-subtitle">ใช้เวลาประมาณ 4-5 นาที | ฟรี | ไม่ต้องสมัครสมาชิก</p>
@@ -246,12 +249,12 @@ footer span{color:var(--pri);}
     <div class="disease-grid">
       <div class="disease-card"><span class="disease-emoji">🦴</span><div class="disease-name">ออฟฟิศซินโดรม</div><div class="disease-desc">นั่งเรียนนาน ท่านั่งผิด กระเป๋าหนัก</div><span class="disease-tag tag-red">เสี่ยงสูง</span></div>
       <div class="disease-card"><span class="disease-emoji">👁️</span><div class="disease-name">สายตาเสื่อม</div><div class="disease-desc">จ้องจอ กระดาน โทรศัพท์นานเกินไป</div><span class="disease-tag tag-red">เสี่ยงสูง</span></div>
-      <div class="disease-card"><span class="disease-emoji">🤢</span><div class="disease-name">โรคกระเพาะ</div><div class="disease-desc">กินเร็ว อดมื้อ กินขนมแทนอาหาร</div><span class="disease-tag tag-yellow">เสี่ยงปานกลาง</span></div>
+      <div class="disease-card"><span class="disease-emoji">🤢</span><div class="disease-name">โรคกระเพาะอาหาร</div><div class="disease-desc">กินเร็ว อดมื้อ กินขนมแทนอาหาร</div><span class="disease-tag tag-yellow">เสี่ยงปานกลาง</span></div>
       <div class="disease-card"><span class="disease-emoji">🧠</span><div class="disease-name">ภูมิคุ้มกันต่ำ</div><div class="disease-desc">อดนอน ไม่ล้างมือ อยู่ในที่แออัด</div><span class="disease-tag tag-yellow">เสี่ยงปานกลาง</span></div>
       <div class="disease-card"><span class="disease-emoji">💧</span><div class="disease-name">นิ่วในไต</div><div class="disease-desc">ดื่มน้ำน้อย กลั้นปัสสาวะนาน</div><span class="disease-tag tag-blue">เสี่ยงต่ำ-ปานกลาง</span></div>
       <div class="disease-card"><span class="disease-emoji">😰</span><div class="disease-name">ความเครียดสะสม</div><div class="disease-desc">เรียนหนัก สอบบ่อย ปัญหาความสัมพันธ์</div><span class="disease-tag tag-red">เสี่ยงสูง</span></div>
       <div class="disease-card"><span class="disease-emoji">🦷</span><div class="disease-name">ฟันผุ</div><div class="disease-desc">กินขนมหวาน น้ำอัดลมบ่อย</div><span class="disease-tag tag-yellow">เสี่ยงปานกลาง</span></div>
-      <div class="disease-card"><span class="disease-emoji">👂</span><div class="disease-name">การได้ยินเสื่อม</div><div class="disease-desc">ใช้หูฟังเสียงดังเป็นเวลานาน</div><span class="disease-tag tag-blue">เสี่ยงต่ำ-ปานกลาง</span></div>
+      <div class="disease-card"><span class="disease-emoji">👂</span><div class="disease-name">ภาวะสูญเสียการได้ยิน</div><div class="disease-desc">ใช้หูฟังเสียงดังเป็นเวลานาน</div><span class="disease-tag tag-blue">เสี่ยงต่ำ-ปานกลาง</span></div>
       <div class="disease-card"><span class="disease-emoji">🦠</span><div class="disease-name">โรคติดเชื้อ</div><div class="disease-desc">ไม่ล้างมือก่อนกิน อยู่ในที่แออัด</div><span class="disease-tag tag-yellow">เสี่ยงปานกลาง</span></div>
     </div>
   </div>
@@ -377,7 +380,7 @@ footer span{color:var(--pri);}
 </div>
 
 <footer>
-  <p>SchoolHealth — <span>โครงงานคอมพิวเตอร์ประเภทโปสเตอร์</span> | <span>พัฒนาโดย</span> <span>นักเรียนชั้น ม.6/2 โรงเรียนกาญจนาภิเษกวิทยาลัย กระบี่</span></p>
+  <p>SchoolHealth — <span>โครงงานวิทยาศาสตร์สาขาเทคโนโลยี</span> | <span>พัฒนาโดย</span> <span>นักเรียนชั้น มัธยมศึกษาปีที่6/2 โรงเรียนกาญจนาภิเษกวิทยาลัย กระบี่</span></p>
   <p style="margin-top:4px;font-size:.71rem;">⚠️ ผลการประเมินเป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์</p>
   <p style="margin-top:4px;font-size:.69rem;">Ref: WHO (2022), กรมอนามัย (2566), AAP Sleep Guidelines (2016), AOA (2023), CDC (2023)</p>
 </footer>
@@ -420,7 +423,7 @@ var Q=[
       {th:'1-2 วัน/สัปดาห์',s:{of:2,ph:1,sx:2}},
       {th:'แทบไม่ได้ออกกำลังกายเลย',s:{of:3,ph:0,sx:3}}]},
   {e:'👁️',th_c:'หน้าจอ',w:1.3,
-   th_t:'  เมื่อใช้หน้าจอ (คอมพิวเตอร์/โทรศัพท์/แท็บเล็ต) ติดต่อกันนาน คุณมีอาการตาแห้ง ตาแสบ หรือปวดหัวบ่อยเพียงใด?',
+   th_t:'  เมื่อใช้หน้าจอ (คอมพิวเตอร์/โทรศัพท์/แท็บเล็ต) ติดต่อกันนาน คุณมีอาการตาแห้ง แสบตา หรือปวดหัวบ่อยเพียงใด?',
    h_th:'',
    ref:'American Optometric Association (2023):  การจ้องจอต่อเนื่องทำให้ตาแห้ง ตาล้า และปวดศีรษะ แนะนำกฎ 20-20-20',
    o:[{th:'ไม่มีอาการเลย พักสายตาทุก 20 นาที',s:{ey:0,sc:3}},
@@ -428,7 +431,7 @@ var Q=[
       {th:'ตาแห้ง แสบ หรือปวดหัวบ่อยครั้งหลังใช้จอนาน',s:{ey:2,sc:1}},
       {th:'มีอาการทุกวัน ตาพร่ามัว ปวดหัวรบกวนการเรียน',s:{ey:3,sc:0}}]},
   {e:'📱',th_c:'หน้าจอ',w:1.0,
-   th_t:'คุณใช้โทรศัพท์หรือแท็บเล็ตในเตียงก่อนนอนบ่อยเพียงใด?',
+   th_t:'คุณใช้โทรศัพท์หรือแท็บเล็ตบนเตียงก่อนนอนบ่อยเพียงใด?',
    h_th:'',
    ref:'PMC (2018): การใช้อุปกรณ์หน้าจอบนเตียงก่อนนอนสัมพันธ์กับการเข้านอนช้าและระยะเวลานอนที่สั้นลงในวัยรุ่น',
    o:[{th:'ไม่ใช้จอในเตียง ปิดจออย่างน้อย 30 นาทีก่อนนอน',s:{ey:0,sl:3,sx:0,sc:3}},
@@ -446,13 +449,13 @@ var Q=[
   {e:'🍱',th_c:'โภชนาการ',w:1.0,
    th_t:'ในวันเรียน คุณรับประทานอาหารมื้อเช้าบ่อยเพียงใด?',
    h_th:'การอดมื้อเช้าสัมพันธ์กับความเสี่ยงโรคอ้วนและลดผลการเรียนในวัยรุ่น',
-   ref:'CDC MMWR (2024): การอดมื้ออาหารเพิ่มความเสี่ยงโรคกระเพาะและขาดสารอาหารในวัยรุ่น',
+   ref:'CDC MMWR (2024): การอดมื้ออาหารเพิ่มความเสี่ยงโรคกระเพาะอาหารและขาดสารอาหารในวัยรุ่น',
    o:[{th:'ทานทุกวัน อาหารครบ 5 หมู่',s:{st:0,sx:0,im:0,nu:3}},
       {th:'ทานบ้าง 3–4 วัน/สัปดาห์',s:{st:1,sx:1,im:1,nu:2}},
       {th:'ทาน 1–2 วัน/สัปดาห์เท่านั้น',s:{st:2,sx:2,im:2,nu:1}},
       {th:'แทบไม่ทานเลย อดมื้อเช้าเกือบทุกวัน',s:{st:3,sx:3,im:3,nu:0}}]},
   {e:'🥤',th_c:'โภชนาการ',w:1.0,
-   th_t:'คุณดื่มน้ำอัดลม ชมนม หรือเครื่องดื่มหวานบ่อยเพียงใด?',
+   th_t:'คุณดื่มน้ำอัดลม ชานม หรือเครื่องดื่มหวานบ่อยเพียงใด?',
    h_th:'เครื่องดื่มหวานมีน้ำตาลสูง ส่งผลต่อฟันและสุขภาพ',
    ref:'WHO Sugar Guidelines (2015): ควรจำกัดน้ำตาลอิสระให้น้อยกว่า 10% ของพลังงานทั้งวัน เพื่อลดความเสี่ยงฟันผุและน้ำหนักเกิน',
    o:[{th:'น้อยกว่า 2 ครั้ง/สัปดาห์ หรือแทบไม่ดื่มเลย ',s:{to:0,nu:3}},
@@ -470,11 +473,11 @@ var Q=[
   {e:'💧',th_c:'โภชนาการ',w:1.0,waterDyn:true,
    th_t:'ในวันเรียน คุณดื่มน้ำเปล่ามากเพียงใด?',
    h_th:'ปริมาณน้ำที่เหมาะสมขึ้นกับน้ำหนักตัว ระบบจะประเมินจากน้ำหนักของคุณให้อัตโนมัติ',
-   ref:'EFSA Dietary Reference Values (2566): ริมาณน้ำรวมที่แนะนำ ~2.0–2.5 ลิตร/วัน และการดื่มน้ำเพียงพอช่วยลดการเกิดนิ่วในไต',
+   ref:'EFSA Dietary Reference Values (2566): ปริมาณน้ำรวมที่แนะนำ ~2.0–2.5 ลิตร/วัน และการดื่มน้ำเพียงพอช่วยลดการเกิดนิ่วในไต',
    o:[{th:'มากกว่า 2 ลิตร/วัน ดื่มน้ำสม่ำเสมอ',s:{ki:0,nu:3}},
       {th:'1.5-2 ลิตร/วัน เพียงพอ',s:{ki:1,nu:2}},
       {th:'1-1.5 ลิตร/วัน ดื่มน้อย',s:{ki:2,nu:1}},
-      {th:'น้อยกว่า 1 ลิตร/วัน หรือดื่มน้ำอัดลมแทน',s:{ki:3,nu:0}}]},
+      {th:'น้อยกว่า 1 ลิตร/วัน หรือดื่มน้ำหวานแทน',s:{ki:3,nu:0}}]},
   {e:'🚽',th_c:'โภชนาการ',w:0.8,
    th_t:'คุณกลั้นปัสสาวะระหว่างเรียนบ่อยเพียงใด?',
    h_th:'การกลั้นปัสสาวะเป็นเวลานานเพิ่มความเสี่ยงต่อโรคไต',
@@ -527,7 +530,7 @@ var Q=[
    th_t:'ในแต่ละวัน คุณได้รับแสงแดดหรืออยู่กลางแจ้งหรือทำกิจกรรมนอกอาคารบ่อยเพียงใด?',
    h_th:'แสงแดดช่วยสร้างวิตามิน D และส่งเสริมอารมณ์ดี',
    ref:'Endocrine Society (2019): แสงแดด 15-30 นาที/วัน ช่วยสังเคราะห์วิตามิน D ลดความเสี่ยงซึมเศร้า',
-   o:[{th:'ได้รับแสงแดดทุกวัน อย่างน้อย 15-20 นาที',s:{sx:0,ey:0,ph:3}},
+   o:[{th:'ได้รับแสงแดดทุกวัน อย่างน้อย 15-30 นาที',s:{sx:0,ey:0,ph:3}},
       {th:'ได้รับบ้าง แต่ไม่สม่ำเสมอ',s:{sx:0,ey:0,ph:2}},
       {th:'แทบไม่ได้รับแสงแดดเลย',s:{sx:1,ey:1,ph:1}},
       {th:'ไม่ได้รับเลย หลีกเลี่ยงแสงแดดตลอด',s:{sx:2,ey:2,ph:0}}]},
@@ -1589,6 +1592,52 @@ window.addEventListener('popstate',function(e){
   if(pg==='history') buildHistory();
   window.scrollTo(0,0);
 });
+
+// ── บอกใบ้ว่าแถบเมนูเลื่อนได้ (มือถือ) ──
+// ผู้ใช้ครั้งแรกมักไม่รู้ว่ามีเมนูซ่อนอยู่ทางขวา จึงเลื่อนโชว์ให้เห็นเป็นระยะ
+// พอผู้ใช้แตะเลื่อนเองแล้ว = รู้แล้ว → หยุดใบ้ทันที ไม่กวนอีก
+(function(){
+  var ul=document.querySelector('nav ul');
+  var nav=document.querySelector('nav');
+  if(!ul||!nav) return;
+
+  var HINT_EVERY=30000;   // ใบ้ซ้ำทุก 30 วินาที
+  var HOLD=1200;          // ค้างไว้ทางขวา 1.2 วิ ก่อนเลื่อนกลับ
+  var timer=null,found=false;
+  var calm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function maxScroll(){return ul.scrollWidth-ul.clientWidth;}
+  function scrollable(){return maxScroll()>8;}
+
+  function updateFade(){
+    nav.classList.toggle('nav-end',!scrollable()||ul.scrollLeft>=maxScroll()-4);
+  }
+
+  function slide(x){
+    if(ul.scrollTo) ul.scrollTo({left:x,behavior:'smooth'});
+    else ul.scrollLeft=x;
+  }
+
+  function hint(){
+    if(found||calm||document.hidden||!scrollable()) return;
+    slide(maxScroll());
+    setTimeout(function(){if(!found) slide(0);},HOLD);
+  }
+
+  function stopHint(){
+    found=true;
+    if(timer){clearInterval(timer);timer=null;}
+  }
+
+  ul.addEventListener('scroll',updateFade,{passive:true});
+  ul.addEventListener('touchstart',stopHint,{passive:true});
+  ul.addEventListener('wheel',stopHint,{passive:true});
+  window.addEventListener('resize',updateFade);
+
+  updateFade();
+  setTimeout(hint,1800);                  // ใบ้ครั้งแรกหลังหน้าโหลดเสร็จ
+  timer=setInterval(hint,HINT_EVERY);
+})();
 </script>
 </body>
 </html>
