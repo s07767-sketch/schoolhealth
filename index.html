@@ -204,7 +204,7 @@ nav ul a.active,nav ul a:hover{color:var(--pri);background:rgba(59,130,246,.08);
 footer{background:#111827;color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.78rem;}
 footer span{color:var(--pri);}
 @media print{nav,footer,.print-buttons,.tabs{display:none!important;}.page{display:none!important;}#page-print{display:block!important;}.print-card{box-shadow:none;border:1px solid #ccc;}}
-@media(max-width:600px){.feature-grid,.disease-grid,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo{padding:3px 7px;gap:5px;}.logo-school,.logo-health{font-size:.72rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;scroll-behavior:smooth;}nav ul::-webkit-scrollbar{display:none;}
+@media(max-width:600px){.feature-grid,.disease-grid,.month-grid,.proj-grid,.print-diseases{grid-template-columns:1fr;}.hero h1{font-size:1.6rem;}.logo{padding:3px 7px;gap:5px;}.logo-school,.logo-health{font-size:.72rem;}nav ul{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:.3rem;padding-right:4px;}nav ul::-webkit-scrollbar{display:none;}
 /* เงาไล่สีขอบขวา บอกใบ้ว่าแถบเมนูยังมีต่อ — จางหายเมื่อเลื่อนสุด */
 nav::after{content:'';position:absolute;top:0;right:0;width:30px;height:100%;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,0),#fff 75%);transition:opacity .3s;}
 nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-scroll-inner{overflow-x:visible;margin:0;padding:0;width:100%;scroll-snap-type:none;}.know-grid{display:grid!important;grid-template-columns:1fr!important;width:100%;gap:12px;padding-right:0;}.know-card{width:auto;}}
@@ -1602,8 +1602,9 @@ window.addEventListener('popstate',function(e){
   if(!ul||!nav) return;
 
   var HINT_EVERY=30000;   // ใบ้ซ้ำทุก 30 วินาที
-  var HOLD=1200;          // ค้างไว้ทางขวา 1.2 วิ ก่อนเลื่อนกลับ
-  var timer=null,found=false;
+  var GLIDE=1800;         // เวลาเลื่อน 1 เที่ยว (ยิ่งมากยิ่งช้า)
+  var HOLD=1400;          // ค้างไว้ทางขวาก่อนเลื่อนกลับ
+  var timer=null,anim=null,found=false;
   var calm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
   function maxScroll(){return ul.scrollWidth-ul.clientWidth;}
@@ -1613,20 +1614,35 @@ window.addEventListener('popstate',function(e){
     nav.classList.toggle('nav-end',!scrollable()||ul.scrollLeft>=maxScroll()-4);
   }
 
-  function slide(x){
-    if(ul.scrollTo) ul.scrollTo({left:x,behavior:'smooth'});
-    else ul.scrollLeft=x;
+  // ค่อย ๆ เร่ง ค่อย ๆ ชะลอ ไม่มีกระตุกหัวท้าย
+  function ease(t){return -(Math.cos(Math.PI*t)-1)/2;}
+
+  // เลื่อนเองทีละเฟรม เพื่อคุมความเร็วได้ (smooth ของเบราว์เซอร์เร็วตายตัว ปรับไม่ได้)
+  function glide(to,done){
+    var from=ul.scrollLeft,delta=to-from,t0=null;
+    if(anim) cancelAnimationFrame(anim);
+    if(Math.abs(delta)<1){if(done)done();return;}
+    function step(ts){
+      if(t0===null) t0=ts;
+      var p=Math.min(1,(ts-t0)/GLIDE);
+      ul.scrollLeft=from+delta*ease(p);
+      if(p<1) anim=requestAnimationFrame(step);
+      else{anim=null;if(done)done();}
+    }
+    anim=requestAnimationFrame(step);
   }
 
   function hint(){
     if(found||calm||document.hidden||!scrollable()) return;
-    slide(maxScroll());
-    setTimeout(function(){if(!found) slide(0);},HOLD);
+    glide(maxScroll(),function(){
+      setTimeout(function(){if(!found) glide(0);},HOLD);
+    });
   }
 
   function stopHint(){
     found=true;
     if(timer){clearInterval(timer);timer=null;}
+    if(anim){cancelAnimationFrame(anim);anim=null;}   // ปล่อยนิ้วผู้ใช้คุมทันที ไม่แย่งกันเลื่อน
   }
 
   ul.addEventListener('scroll',updateFade,{passive:true});
