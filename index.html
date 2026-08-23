@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SchoolHealth By SMTE</title>
+<title>SchoolCare By SMTE</title>
 <link href="fonts/fonts.css" rel="stylesheet">
 <script src="libs/chart.umd.min.js" onerror="(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';s.onerror=function(){window._chartFailed=true;};document.head.appendChild(s);}())"></script>
 <script src="libs/html2canvas.min.js" onerror="(function(){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onerror=function(){window._h2cFailed=true;};document.head.appendChild(s);}())"></script>
@@ -221,7 +221,7 @@ nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-s
     <li><a onclick="go('print')" id="nav-print">พิมพ์/แชร์</a></li>
     <li><a onclick="go('history')" id="nav-history">ประวัติ</a></li>
     <li><a href="docs/references.pdf" target="_blank" rel="noopener noreferrer" id="nav-ref">แหล่งอ้างอิง ↗</a></li>
-    <li><a href="https://docs.google.com/forms/d/13SrDBKfbcr53dHVqxI_Pmuz_HkBJ0_wcaNi6urlD5WE/viewform" target="_blank" rel="noopener noreferrer" id="nav-survey">ประเมินความพึงพอใจ ↗</a></li>
+    <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSd0ecITugTAETTutZapPL_pe_j-aO67y0Q7cUTOQ1RhR5H4og/viewform" target="_blank" rel="noopener noreferrer" id="nav-survey">ประเมินความพึงพอใจ ↗</a></li>
   </ul>
 </nav>
 
@@ -336,7 +336,7 @@ nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-s
   <div class="print-wrap">
     <div class="print-card" id="printable">
       <div class="print-header">
-        <h2>🏫 SchoolHealth — <span>ผลการประเมินสุขภาพ</span></h2>
+        <h2>🏫 SchoolCare — <span>ผลการประเมินสุขภาพ</span></h2>
         <p id="print-date"></p>
         <p style="font-size:.72rem;color:#9ca3af;margin-top:4px;">การประเมินพฤติกรรมสุขภาพจากชีวิตในโรงเรียน</p>
       </div>
@@ -351,7 +351,7 @@ nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-s
         <div class="print-advice-title">💡 คำแนะนำหลักสำหรับคุณ</div>
         <ul class="print-advice-list" id="print-advice"></ul>
       </div>
-      <div class="print-disclaimer">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolHealth — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
+      <div class="print-disclaimer">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolCare — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
     </div>
     <div class="print-buttons">
       <button class="btn-print" id="btn-print-main" onclick="doPrint()">🖨️ พิมพ์เป็น PDF</button>
@@ -380,7 +380,7 @@ nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-s
 </div>
 
 <footer>
-  <p>SchoolHealth — <span>โครงงานวิทยาศาสตร์สาขาเทคโนโลยี</span> | <span>พัฒนาโดย</span> <span>นักเรียนชั้น มัธยมศึกษาปีที่6/2 โรงเรียนกาญจนาภิเษกวิทยาลัย กระบี่</span></p>
+  <p>SchoolCare — <span>โครงงานวิทยาศาสตร์สาขาเทคโนโลยี</span> | <span>พัฒนาโดย</span> <span>นักเรียนชั้น มัธยมศึกษาปีที่6/2 โรงเรียนกาญจนาภิเษกวิทยาลัย กระบี่</span></p>
   <p style="margin-top:4px;font-size:.71rem;">⚠️ ผลการประเมินเป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์</p>
   <p style="margin-top:4px;font-size:.69rem;">Ref: WHO (2022), กรมอนามัย (2566), AAP Sleep Guidelines (2016), AOA (2023), CDC (2023)</p>
 </footer>
@@ -408,7 +408,7 @@ var Q=[
       {th:'คอยื่นไปข้างหน้าเกือบตลอดเวลา ศีรษะก้มต่ำ',s:{of:3,ph:0}}]},
   {e:'🎒',th_c:'กายภาพ',w:0.8,
    th_t:'กระเป๋านักเรียนของคุณหนักประมาณกี่เปอร์เซ็นต์ของน้ำหนักตัว?',
-   h_th:'แนะนำให้กระเป๋าไม่เกิน 10–15% ของน้ำหนักตัว ',
+   h_th:'แนะนำให้กระเป๋าไม่เกิน 10–15% ของน้ำหนักตัว (น้ำหนักตัว×10/100) ',
    ref:'AAP Grand Rounds (2007): กระเป๋ามากกว่า10%-15% ของน้ำหนักตัวเพิ่มความเสี่ยงปวดหลังในเด็ก',
    o:[{th:'น้อยกว่า 10% ของน้ำหนักตัว ไม่รู้สึกหนัก',s:{of:0,ph:3}},
       {th:'10–15% ของน้ำหนักตัว พอรับได้',s:{of:1,ph:2}},
@@ -1385,7 +1385,7 @@ function copyResult(){
   var totW=0,mxW=0;
   D.forEach(function(d){totW+=getWeightedScore(d.k);mxW+=getWeightedMax(d.k);});
   var hp=Math.round((1-Math.min(1,totW/mxW))*100);
-  var txt='🏫 SchoolHealth — ผลการประเมินสุขภาพ\n';
+  var txt='🏫 SchoolCare — ผลการประเมินสุขภาพ\n';
   txt+='คะแนนสุขภาพรวม: '+hp+'%\n';
   var cbmi=getBMI(),cAge=parseInt(userAge);
   if(cAge) txt+='อายุ: '+cAge+' ปี\n';
