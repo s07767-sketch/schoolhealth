@@ -351,7 +351,7 @@ nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-s
         <div class="print-advice-title">💡 คำแนะนำหลักสำหรับคุณ</div>
         <ul class="print-advice-list" id="print-advice"></ul>
       </div>
-      <div class="print-disclaimer">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolCare — โครงงานคอมพิวเตอร์ประเภทโปสเตอร์ | อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
+      <div class="print-disclaimer">⚠️ ผลการประเมินนี้เป็นการคัดกรองพฤติกรรมสุขภาพเบื้องต้นเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยของแพทย์ได้ | SchoolCare — โครงงานคอมพิวเตอร์สาขาเทคโนโลยี| อ้างอิง: WHO (2022), กรมอนามัย กระทรวงสาธารณสุข (2566)</div>
     </div>
     <div class="print-buttons">
       <button class="btn-print" id="btn-print-main" onclick="doPrint()">🖨️ พิมพ์เป็น PDF</button>
@@ -380,7 +380,7 @@ nav.nav-end::after{opacity:0;}nav ul a{font-size:.72rem;padding:3px 5px;}.know-s
 </div>
 
 <footer>
-  <p>SchoolCare — <span>โครงงานวิทยาศาสตร์สาขาเทคโนโลยี</span> | <span>พัฒนาโดย</span> <span>นักเรียนชั้น มัธยมศึกษาปีที่6/2 โรงเรียนกาญจนาภิเษกวิทยาลัย กระบี่</span></p>
+  <p>SchoolCare — <span>โครงงานวิทยาศาสตร์สาขาเทคโนโลยี</span> | <span>พัฒนาโดย</span> <span>นักเรียนชั้นมัธยมศึกษาปีที่6/2 โรงเรียนกาญจนาภิเษกวิทยาลัย กระบี่</span></p>
   <p style="margin-top:4px;font-size:.71rem;">⚠️ ผลการประเมินเป็นการคัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์</p>
   <p style="margin-top:4px;font-size:.69rem;">Ref: WHO (2022), กรมอนามัย (2566), AAP Sleep Guidelines (2016), AOA (2023), CDC (2023)</p>
 </footer>
@@ -783,7 +783,7 @@ function confirmName(){
   }
   // ต้องกรอกให้ครบทุกช่องก่อนจึงจะเริ่มได้
   if(!val) return fail('⚠️ กรุณาใส่ชื่อก่อนนะครับ',inp);
-  if(!ageV||isNaN(+ageV)||+ageV<5||+ageV>25) return fail('⚠️ กรุณาใส่อายุให้ถูกต้อง (5-25 ปี)',ageEl);
+  if(!ageV||isNaN(+ageV)||+ageV<5||+ageV>25) return fail('⚠️ กรุณาใส่อายุให้ถูกต้อง (12-60 ปี)',ageEl);
   if(!hV||isNaN(+hV)||+hV<100||+hV>250) return fail('⚠️ กรุณาใส่ส่วนสูงให้ถูกต้อง (100-250 ซม.)',hEl);
   if(!wV||isNaN(+wV)||+wV<20||+wV>300) return fail('⚠️ กรุณาใส่น้ำหนักให้ถูกต้อง (20-300 กก.)',wEl);
   if(errEl) errEl.style.display='none';
