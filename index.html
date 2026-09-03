@@ -783,7 +783,7 @@ function confirmName(){
   }
   // ต้องกรอกให้ครบทุกช่องก่อนจึงจะเริ่มได้
   if(!val) return fail('⚠️ กรุณาใส่ชื่อก่อนนะครับ',inp);
-  if(!ageV||isNaN(+ageV)||+ageV<5||+ageV>25) return fail('⚠️ กรุณาใส่อายุให้ถูกต้อง (12-60 ปี)',ageEl);
+  if(!ageV||isNaN(+ageV)||+ageV<5||+ageV>25) return fail('⚠️ กรุณาใส่อายุให้ถูกต้อง (12-25 ปี)',ageEl);
   if(!hV||isNaN(+hV)||+hV<100||+hV>250) return fail('⚠️ กรุณาใส่ส่วนสูงให้ถูกต้อง (100-250 ซม.)',hEl);
   if(!wV||isNaN(+wV)||+wV<20||+wV>300) return fail('⚠️ กรุณาใส่น้ำหนักให้ถูกต้อง (20-300 กก.)',wEl);
   if(errEl) errEl.style.display='none';
